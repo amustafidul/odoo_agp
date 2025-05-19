@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_bank_harian_form" model="ir.ui.view">
+        <field name="name">bank.harian.form</field>
+        <field name="model">account.keuangan.bank.harian</field>
+        <field name="arch" type="xml">
+            <form string="Bank Harian">
+                <header>
+                    <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <!-- <field name="saldo_awal"/>
+                        <field name="jumlah"/>
+                        <field name="saldo_akhir"/> -->
+                    </group>
+                    <notebook>
+                        <page name="summary" string="Ringkasan">
+                            <button name="action_generate_summary" type="object" string="Generate Summary" class="btn-primary"/>
+                            <field name="bank_harian_summary_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="is_generated" invisible="1"/>
+                                    <field name="no" invisible="1" width="1"/>
+                                    <field name="bank_harian_master_id" string="Nama Bank" width="30"/>
+                                    <field name="keterangan" width="50"/>
+                                    <field name="dana_ditahan" width="10"/>
+                                    <field name="saldo" width="20"/>
+                                </tree>
+                            </field>
+                             <group class="oe_subtotal_footer oe_right">
+                                <field name="summary"/>
+                                <!-- <field name="jumlah_keseluruhan"/> -->
+                            </group>
+                        </page>
+                        <page name="detail" string="Detail">
+                            <field name="bank_harian_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <!-- <field name="no" invisible="1" width="1"/> -->
+                                    <field name="bank_harian_master_id" string="Nama Bank" width="25"/>
+                                    <field name="keterangan" width="30"/>
+                                    <!-- <field name="dana_ditahan" width="10"/> -->
+                                    <field name="saldo" width="15"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="jumlah"/>
+                            </group>
+                        </page>
+                        
+                    </notebook>                    
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_bank_harian_tree" model="ir.ui.view">
+        <field name="name">bank.harian.tree</field>
+        <field name="model">account.keuangan.bank.harian</field>
+        <field name="arch" type="xml">
+            <tree string="Bank Harian">
+                <field name="name" optional="show"/>
+                <!-- <field name="saldo_awal" optional="show"/>
+                <field name="jumlah" optional="show"/>
+                <field name="saldo_akhir" optional="show"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_bank_harian" model="ir.actions.act_window">
+        <field name="name">Bank Harian</field>
+        <field name="res_model">account.keuangan.bank.harian</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="menu_tagihan_rutin_root" name="Tagihan Rutin" parent="account.menu_finance"/> -->
+    <!-- <menuitem id="menu_tagihan_rutin" name="Tagihan Rutin" parent="parent_menu_board_keuangan" action="action_tagihan_rutin"/> -->
+    </data>
+</odoo>

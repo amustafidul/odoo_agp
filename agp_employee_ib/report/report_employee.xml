@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_report_data_pegawai" model="ir.actions.report">
+        <field name="name">Data Pegawai</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">agp_employee_ib.report_data_pegawai</field>
+        <field name="print_report_name">'Data Pegawai - %s' % object.name</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

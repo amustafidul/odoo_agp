@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="agp_action_print_template_inherit" owl="1">
+        <t t-inherit="web.ReportAction" t-inherit-mode="extension">
+            <xpath expr="//button[@t-on-click='print']" position="after">
+                <button type="button" class="btn btn-secondary" style="background-color: lightgreen;" t-on-click="onPrintPdf">Preview as PDF</button>
+            </xpath>
+        </t>
+    </t>
+</templates>

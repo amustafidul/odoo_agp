@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_grt" model="report.paperformat">
+            <field name="name">Invoice GRT Paper Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">16</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="dpi">90</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">13</field>
+        </record>
+
+        <!-- Define the report -->
+        <report
+            id="report_invoice_grt_pdf"
+            string="Invoice GRT"
+            model="account.keuangan.invoice"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.invoice_grt"
+            file="agp_keuangan_ib.invoice_grt"
+            paperformat="paperformat_grt"
+            attachment_use="False"/>    
+
+        <template id="agp_keuangan_ib.invoice_grt">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <!-- Invoice Header -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <div style="flex-grow: 1; text-align: center;">
+                                    <h2 style="color: black; text-decoration: underline;">INVOICE</h2>
+                                </div>
+                                <img src="/agp_keuangan_ib/static/description/iso.png" alt="Logo" style="width: 100px; height: auto;" />
+                            </div>
+                            
+                            <div style="margin-top: 20px;">
+                                <!-- Left-aligned labels with values on the right -->
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="font-weight: bold;">Nomor</td>
+                                        <td>:</td>
+                                        <td><t t-esc="doc.nomor_referensi"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Tanggal</td>
+                                        <td>:</td>
+                                        <td>
+                                            <t t-esc="doc.tanggal_invoice.strftime('%d %B %Y')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%; font-weight: bold;">Nama</td>
+                                        <td style="width: 5%;">:</td>
+                                        <td style="width: 70%;"><t t-esc="doc.ditujukan_kepada.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%; font-weight: bold;">Alamat</td>
+                                        <td style="width: 5%;">:</td>
+                                        <td style="width: 70%;"><t t-esc="doc.alamat_perusahaan"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%; font-weight: bold;"></td>
+                                        <td style="width: 5%;"></td>
+                                        <td style="width: 70%;"><t t-esc="doc.sub_branch_ids.name"/></td>
+                                    </tr>
+
+                                    <tr style="height: 40px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="text-align: justify; white-space: pre-wrap;">
+                                            <t t-esc="doc.kata_pengantar" /> 
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>NAMA KAPAL &amp; NAMA SHIPPER</th>
+                                                <th>TA</th>
+                                                <th>TD</th>
+                                                <th>MUATAN/MT</th>
+                                                <th>GT BG</th>
+                                                <th>FV TUNDA</th>
+                                                <th>VC TUNDA</th>
+                                                <th>FV PANDU</th>
+                                                <th>VC PANDU</th>
+                                                <th>PERGERAKAN (IN &amp; OUT)</th>
+                                                <th>TOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="doc.line_ids" t-as="line" style="text-align: right;">
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="line.name"/> <span t-esc="line.nama_shipper"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="line.ta and line.ta.strftime('%d/%m/%Y') or ''"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="line.td and line.td.strftime('%d/%m/%Y') or ''"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.muatan" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.gtbg" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.fc_tunda" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.vc_tunda" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.fc_pandu" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.vc_pandu" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="line.pergerakan_in_out"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        Rp. <span t-esc="line.total_sebelum_pajak" t-options="{'widget': 'float', 'precision': 3}"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="10" style="text-align: right; font-weight: bold; border-top: 1px solid #000;">BIAYA PILOTAGE &amp; TUG ASSIST </td>
+                                                <td style="text-align: right; font-weight: bold; border-top: 1px solid #000;">
+                                                    Rp. <t t-esc="doc.total_sebelum_pajak" t-options="{'widget': 'float', 'precision': 0}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="10" style="text-align: right; font-weight: bold; border-top: 1px solid #000;">PPN 11%</td>
+                                                <td style="text-align: right; font-weight: bold; border-top: 1px solid #000;">
+                                                    Rp. <t t-esc="doc.total_pajak" t-options="{'widget': 'float', 'precision': 0}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="10" style="text-align: right; font-weight: bold; border-top: 1px solid #000;">JUMLAH TAGIHAN</td>
+                                                <td style="text-align: right; font-weight: bold; border-top: 1px solid #000;">
+                                                    Rp. <t t-esc="doc.total_sesudah_pajak" t-options="{'widget': 'float', 'precision': 0}"/>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr><td colspan="11" style="height: 20px;"></td></tr> <!-- baris kosong dengan tinggi 20px -->
+                                            
+                                            <tr>
+                                                <td colspan="11" style="text-align: left; font-weight: bold; border-top: 1px solid #000; font-style: italic;">Terbilang : 
+                                                    <t t-esc="doc.total_terbilang"/>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tfoot> 
+                                    </table>
+                                    <br></br>
+                                    <br></br>
+                                    <div style="text-align: right; margin-top: 20px;">
+                                        <table class="table-bordered" style="display: inline-block; border-collapse: collapse; width: 30%;">
+                                            <colgroup>
+                                                <col style="width: 100%;"/>
+                                            </colgroup>
+                                            <tr>
+                                                <td style="text-align: center; padding: 30px; border: 1px solid #000;">
+                                                    <t t-esc="doc.jabatan" /><br/><br/><br/><br/><br/><br/><br/>
+                                                    <strong><t t-esc="doc.ttd" /></strong><br/>
+                                                    <br/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+   
+                                    <br></br>
+                                    <br></br>
+
+                                    <strong>BANK INFORMATION:</strong>
+                                    <div>
+                                        <span>Nama: </span>
+                                        <span t-esc="doc.company_name"/>
+                                    </div>
+                                    <div>
+                                        <span>Bank: </span>
+                                        <span t-esc="doc.acc_holder_name"/>
+                                    </div>
+                                    <div>
+                                        <span>No.Rek: </span>
+                                        <span t-esc="doc.acc_number"/>
+                                    </div>
+                                    <div>
+                                        <span>Contact Person: </span>
+                                        <span t-esc="doc.phone" /> / <span t-esc="doc.email" />
+                                    </div>
+                                    <td></td>
+                                    <td></td>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

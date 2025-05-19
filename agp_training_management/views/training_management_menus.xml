@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_agp_training_root"
+        name="Training"
+        web_icon="agp_training_management,static/description/odoo_icon_training.png"
+        sequence="35"
+        groups="agp_training_management.group_agp_training_user"/>
+
+    <menuitem
+        id="menu_tna_main"
+        name="Training Need Analysis"
+        parent="menu_agp_training_root"
+        sequence="10"
+        groups="agp_training_management.group_agp_training_user"/>
+
+    <menuitem
+        id="menu_tna_period"
+        name="Periode TNA"
+        parent="menu_tna_main"
+        action="action_tna_period"
+        sequence="10"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_tna_submission_my"
+        name="Usulan TNA Saya"
+        parent="menu_tna_main"
+        action="action_tna_submission_my"
+        sequence="20"
+        groups="agp_training_management.group_agp_training_user"/>
+
+    <menuitem
+        id="menu_tna_submission_all_sdm"
+        name="Semua Usulan TNA (SDM)"
+        parent="menu_tna_main"
+        action="action_tna_submission_all_sdm"
+        sequence="30"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_tna_proposed_training_all_sdm_review"
+        name="Review &amp; Realisasi Usulan (SDM)"
+        parent="menu_tna_main"
+        action="action_tna_proposed_training_all_sdm_review"
+        sequence="40"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_training_execution_main"
+        name="Pelaksanaan Training"
+        parent="menu_agp_training_root"
+        sequence="20"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_training_course_all_action"
+        name="Semua Pelaksanaan Training"
+        parent="menu_training_execution_main"
+        action="action_training_course_all"
+        sequence="10"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_training_evaluation_all"
+        name="Semua Evaluasi Training"
+        parent="menu_training_execution_main"
+        action="agp_training_management.action_training_evaluation" sequence="20"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_training_reports_main"
+        name="Laporan Training"
+        parent="menu_agp_training_root"
+        sequence="30"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_report_employee_completed_training"
+        name="Histori Training per Karyawan"
+        parent="menu_training_reports_main"
+        action="action_hr_employee_completed_training" sequence="10"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+    <menuitem
+        id="menu_wizard_tna_rekap"
+        name="Laporan Rekapitulasi TNA"
+        parent="menu_training_reports_main"
+        action="action_tna_rekap_report_wizard" sequence="20"
+        groups="agp_training_management.group_agp_training_officer"/>
+
+<!--    <menuitem-->
+<!--        id="menu_wizard_tna_rkap_report"-->
+<!--        name="Laporan Training (RKAP)"-->
+<!--        parent="menu_training_reports_main"-->
+<!--        action="action_tna_rkap_report_wizard" sequence="30"-->
+<!--        groups="agp_training_management.group_agp_training_officer"/>-->
+
+    <menuitem
+        id="menu_training_config_main"
+        name="Konfigurasi Training"
+        parent="menu_agp_training_root"
+        sequence="99"
+        groups="agp_training_management.group_agp_training_manager"/>
+
+    <menuitem
+        id="menu_tna_training_scope_config"
+        name="Lingkup Diklat"
+        parent="menu_training_config_main"
+        action="action_tna_training_scope" sequence="10"
+        groups="agp_training_management.group_agp_training_manager"/>
+</odoo>

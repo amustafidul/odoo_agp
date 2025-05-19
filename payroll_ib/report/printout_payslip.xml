@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="internal_layout_ib">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div class="header">
+            <div class="row">
+                <div class="col-3">
+                    <span t-esc="context_timestamp(datetime.datetime.now() + datetime.timedelta(hours=6)).strftime('%Y-%m-%d %H:%M')"/>
+                </div>
+                <div class="col-2 offset-2 text-center">
+                </div>
+                <div class="col-2 offset-3 text-end">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><span class="page"/></li>
+                        <li class="list-inline-item">/</li>
+                        <li class="list-inline-item"><span class="topage"/></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+          <t t-out="0"/>
+        </div>
+    </template>
+
+    <template id="report_payroll_master">
+        <t t-call="web.html_container">
+            <t t-call="payroll_ib.internal_layout_ib">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page" style="font-family: 'Arial', sans-serif; font-size: 12px; color: #333;">
+                        <!-- Header Section -->
+                        <div style="text-align:center; margin-bottom: 20px;">
+                            <img src="/payroll_ib/static/src/img/company_logo.png" style="height:60px; margin-bottom: 10px;" alt="Logo"/>
+                            <h2 style="margin: 5px 0; font-size: 18px;">PT Adhi Guna Putera</h2>
+                            <p style="margin: 0; font-size: 12px;">Jl. Kartini VII No.2, RT.10/RW.4, Kartini, Kecamatan Sawah Besar, Jakarta Pusat 10750</p>
+                            <p style="margin: 5px 0; font-size: 10px;">
+                                Tanggal Cetak:
+                                <t t-set="current_time" t-value="datetime.datetime.now() + datetime.timedelta(hours=7)"/>
+                                <t t-esc="current_time.strftime('%d-%m-%Y %H:%M')"/>
+                            </p>
+                        </div>
+                        <hr style="border: 1px solid #ddd; margin: 10px 0;" />
+
+                        <!-- Title -->
+                        <h3 style="text-align:center; font-size: 16px; margin: 10px 0;">Perincian Gaji Pegawai yang Dibayarkan</h3>
+                        <t t-set="start_date" t-value="doc.date_from"/>
+                        <t t-set="end_date" t-value="doc.date_to"/>
+                        <p style="text-align:center; font-size: 12px; margin: 5px 0;">
+                            <t t-if="start_date and end_date">
+                                Periode: <t t-esc="start_date.strftime('%d-%m-%Y')"/> - <t t-esc="end_date.strftime('%d-%m-%Y')"/>
+                            </t>
+                            <t t-else="">
+                                <br/>
+                            </t>
+                        </p>
+
+                        <!-- Employee Info -->
+                        <table style="width:100%; margin-top:20px; font-size: 12px;">
+                            <tr>
+                                <td style="width:25%; font-weight:bold;">NIPEG</td>
+                                <td style="width:25%;">: <t t-esc="doc.employee_id.nip_organik or ''"/></td>
+                                <td style="width:25%; font-weight:bold;">Grade</td>
+                                <td>: <t t-esc="doc.grade_id.name or ''"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">Nama</td>
+                                <td>: <t t-esc="doc.employee_id.name or ''"/></td>
+                                <td style="font-weight:bold;">Jabatan</td>
+                                <td>: <t t-esc="doc.jabatan_id.name or ''"/></td>
+                            </tr>
+                        </table>
+
+                        <hr style="border: 1px solid #ddd; margin: 15px 0;" />
+
+                        <!-- Payment Section -->
+                        <h4 style="font-size: 14px; margin-bottom: 5px;">Pembayaran</h4>
+                        <table style="width:100%; border-collapse: collapse; font-size: 12px;">
+                            <tr>
+                                <td style="width:70%; padding: 5px;">Overtime</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.overtime_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">Gaji Dasar</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.basic_salary_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">Tunjangan Posisi</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.tunjangan_posisi_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">BPFP</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.bpfp_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">Tunjangan Kemahalan</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.tunjangan_kemahalan_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr style="font-weight:bold;">
+                                <td style="padding: 5px;">Total Pembayaran</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.salary_amount_total or 0.0)"/> IDR</td>
+                            </tr>
+                        </table>
+
+                        <hr style="border: 1px solid #ddd; margin: 15px 0;" />
+
+                        <!-- Deduction Section -->
+                        <h4 style="font-size: 14px; margin-bottom: 5px;">Potongan</h4>
+                        <table style="width:100%; border-collapse: collapse; font-size: 12px;">
+                            <tr>
+                                <td style="width:70%; padding: 5px;">IP BPJS Jaminan Hari Tua</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.bpjs_jht_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">IP BPJS Jaminan Pensiun</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.bpjs_jaminan_pensiun_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px;">IP BPJS Jaminan Kesehatan</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.bpjs_jaminan_kesehatan_amount or 0.0)"/> IDR</td>
+                            </tr>
+                            <tr style="font-weight:bold;">
+                                <td style="padding: 5px;">Total Potongan</td>
+                                <td style="text-align:right; padding: 5px;">: <t t-esc="'{:,.2f}'.format(doc.amount_total_potongan or 0.0)"/> IDR</td>
+                            </tr>
+                        </table>
+
+                        <hr style="border: 1px solid #ddd; margin: 15px 0;" />
+
+                        <!-- Net Salary Section -->
+                        <h4 style="font-size: 14px; margin-bottom: 5px;">Total Penghasilan Bersih</h4>
+                        <p style="font-size: 16px; font-weight: bold; text-align:right;">: <t t-esc="'{:,.2f}'.format(doc.nett_salary_amount or 0.0)"/> IDR</p>
+
+                        <!-- Footer Section -->
+                        <div style="text-align:right; margin-top:60px; font-size: 12px;">
+                            <p>MANAGER BIDANG SDM</p>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <p>(RISSA MARINA WIDODO)</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="payslip_report_payroll" model="ir.actions.report">
+        <field name="name">Payslip</field>
+        <field name="model">odoo.payroll.master</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">payroll_ib.report_payroll_master</field>
+        <field name="binding_model_id" ref="model_odoo_payroll_master"/>
+        <field name="print_report_name">('Payslip Details - %s' % (object.employee_id.name))</field>
+    </record>
+</odoo>

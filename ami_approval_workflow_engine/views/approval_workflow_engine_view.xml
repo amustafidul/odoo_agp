@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_approval_workflow_tree" model="ir.ui.view">
+        <field name="name">approval.workflow.tree</field>
+        <field name="model">approval.workflow</field>
+        <field name="arch" type="xml">
+            <tree string="Approval Workflow">
+                <header>
+                    <button name="sync_to_model" string="Sync to Model" type="object" class="btn-primary" attrs="{'invisible': [('synced', '=', True)]}"/>
+                    <button name="remove_sync" string="Remove sync from model" type="object" class="btn-primary" attrs="{'invisible': [('synced', '=', False)]}"/>
+                </header>
+                <field name="name"/>
+                <field name="res_model"/>
+                <field name="synced"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_approval_workflow_form" model="ir.ui.view">
+        <field name="name">approval.workflow.form</field>
+        <field name="model">approval.workflow</field>
+        <field name="arch" type="xml">
+            <form string="Approval Workflow">
+            <header>
+                <button name="sync_to_model" string="Sync to Model" type="object" class="btn-primary" attrs="{'invisible': [('synced', '=', True)]}"/>
+                <button name="remove_sync" string="Remove sync from model" type="object" attrs="{'invisible': [('synced', '=', False)]}"/>
+            </header>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="name" placeholder="Eg. Timeoff Approval Workflow"
+                               attrs="{'readonly': [('synced', '=', True)]}"/>
+                        <field name="res_model" placeholder="Select a model (ensure no duplicate workflows exist)"
+                               help="You cannot create multiple workflows for the same model."
+                               attrs="{'readonly': [('synced', '=', True)]}"/>
+                        <field name="is_hr_leave_model" invisible="1"/>
+                        <field name="holiday_status_id" attrs="{'invisible': [('is_hr_leave_model','=',False)],
+                                                                'required': [('is_hr_leave_model','=',True)],
+                                                                'readonly': [('synced', '=', True)]}"/>
+                        <field name="synced" readonly="1"/>
+                        <field name="is_user" invisible="1"/>
+                        <field name="is_jabatan" invisible="1"/>
+                        <field name="is_ds" invisible="1"/>
+                        <field name="is_role" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="workflow_type" string="Workflow Type" invisible="1"/>
+                        <field name="approval_type" string="Approval Type"
+                               attrs="{'readonly': [('synced', '=', True)], 'required': [('synced', '=', False)]}"/>
+                        <field name="is_nominal" invisible="1"/>
+                    </group>
+                    <group string="Admin override for edit line approval" attrs="{'invisible': ['|', ('is_superuser', '=', False),('synced', '=', False)]}">
+                        <field name="is_superuser" invisible="1"/>
+                        <field name="is_admin_override" widget="boolean_toggle"
+                               attrs="{'invisible': ['|', ('is_superuser', '=', False),('synced', '=', False)]}"
+                               options="{'terminology': {'boolean': {'true': 'Override Active', 'false': 'Override Inactive'}}}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Approval Line" name="approval_line">
+                        <field name="line_ids" attrs="{'readonly': [('synced', '=', True),('is_admin_override', '=', False)],
+                                                                'required': [('synced', '=', False)]}">
+                            <tree editable="bottom" multi_edit="1">
+                                <field name="name" widget="handle" nolabel="1" width="5px"/>
+                                <field name="sequence" optional="show" width="50px"/>
+                                <field name="workflow_type" string="Type" required="1" optional="show"/>
+                                <field name="is_user" invisible="1"/>
+                                <field name="is_jabatan" invisible="1"/>
+                                <field name="is_ds" invisible="1"/>
+                                <field name="is_role" invisible="1"/>
+                                <field name="approver_user_id" string="Approver" invisible="1"/>
+                                <field name="user_id" attrs="{'column_invisible': [('parent.is_user', '=', False)], 'readonly': [('workflow_type','!=','user')]}"
+                                       placeholder="Klik di sini..."/>
+                                <field name="approver_user_id_temp" invisible="1"/>
+                                <field name="approver_jabatan_id"
+                                       attrs="{'column_invisible': [('parent.is_jabatan', '=', False)], 'readonly': [('workflow_type','!=','jabatan')]}"
+                                       placeholder="Klik di sini..."/>
+                                <field name="approver_ds_level" attrs="{'column_invisible': [('parent.is_ds', '=', False)], 'readonly': [('workflow_type','!=','ds')]}"
+                                       placeholder="Silahkan isi dengan level manager..."/>
+                                <field name="approver_role_id" attrs="{'column_invisible': [('parent.is_role', '=', False)], 'readonly': [('workflow_type','!=','role')]}"
+                                       placeholder="Klik di sini..."/>
+                                <field name="is_nominal" invisible="1"/>
+                                <field name="min_nominal" attrs="{'column_invisible': [('parent.is_nominal', '=', False)]}"/>
+                                <field name="max_nominal" attrs="{'column_invisible': [('parent.is_nominal', '=', False)]}"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <group>
+                                        <field name="sequence"/>
+                                        <field name="workflow_type" string="Type"/>
+                                        <field name="is_nominal" invisible="1"/>
+                                        <field name="min_nominal" attrs="{'invisible': [('is_nominal', '=', False)]}"/>
+                                        <field name="max_nominal" attrs="{'invisible': [('is_nominal', '=', False)]}"/>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_approval_workflow" model="ir.actions.act_window">
+        <field name="name">Approval Workflows</field>
+        <field name="res_model">approval.workflow</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_approval_workflow_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first approval workflow.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="seq_asuransi_karyawan" model="ir.sequence">
+        <field name="name">Sequence Asuransi Karyawan</field>
+        <field name="code">asuransi.karyawan</field>
+        <field name="prefix">ASK/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="seq_asuransi_direksi" model="ir.sequence">
+        <field name="name">Sequence Asuransi Direksi</field>
+        <field name="code">asuransi.direksi</field>
+        <field name="prefix">ASD/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

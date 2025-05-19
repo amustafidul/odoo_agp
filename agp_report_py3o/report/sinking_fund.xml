@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <odoo>
+        <record id="sinking_fund_form_py3o" model="ir.actions.report">
+            <field name="name">Sinking Fund</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">account.keuangan.sinking</field>
+            <field name="report_name">sinking_fund_form</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/sinking_fund_form.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_sinking"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="sinking_fund_py3o" model="ir.actions.report">
+            <field name="name">Sinking Fund PDF</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">sinking.fund.export.wizard</field>
+            <field name="report_name">sinking_fund</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/sinking_fund.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_sinking_fund_export_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+    </odoo>
+
+
+

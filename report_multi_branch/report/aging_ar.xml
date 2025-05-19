@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_aging_ar" model="report.paperformat">
+        <field name="name">Aging AR A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_aging_ar" model="ir.actions.report">
+        <field name="name">Aging AR</field>
+        <field name="model">aging.ar.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_aging_ar</field>
+        <field name="report_file">report_multi_branch.report_aging_ar</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_aging_ar"/>
+    </record>
+
+    <template id="report_aging_ar">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <h4 style="text-align: center">
+                            <b>AGING PIUTANG <span t-esc="jenis_kegiatan"/>
+                            </b>
+                        </h4>
+                        <h4 style="text-align: center">
+                            <b>PER <span t-esc="periode"/>
+                            </b>
+                        </h4>
+
+                        <style>
+                            .laporan-item tr th {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            vertical-align: middle;
+                            background-color: #ff6347;
+                            }
+
+                            .laporan-item tr td {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            }
+                        </style>
+                        <table class="laporan-item" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th rowspan="2">NO</th>
+                                    <th rowspan="2">KODE DEBITUR</th>
+                                    <th rowspan="2">NAMA DEBITUR</th>
+                                    <th>SALDO</th>
+                                    <th colspan="5">AGING</th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>
+                                        <span t-esc="periode"/>
+                                    </th>
+                                    <th>0-6 BULAN</th>
+                                    <th>7-12 BULAN</th>
+                                    <th>13-24 BULAN</th>
+                                    <th>25-36 BULAN</th>
+                                    <th>&gt; 36 BULAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <tr t-foreach="lines" t-as="line">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <td class="text-center">
+                                        <span t-esc="no"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line['code']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['name']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total5'])"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

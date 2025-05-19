@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_approval_workflow_admin,access.approval.workflow,model_approval_workflow,group_approval_admin,1,1,1,1
+access_approval_workflow_line_admin,access.approval.workflow.line,model_approval_workflow_line,group_approval_admin,1,1,1,1
+access_approval_workflow_viewer,access_approval_workflow_viewer,model_approval_workflow,group_approval_viewer,1,0,0,0
+access_approval_workflow_line_viewer,access_approval_workflow_line_viewer,model_approval_workflow_line,group_approval_viewer,1,0,0,0

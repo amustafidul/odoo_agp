@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Action untuk Invoice -->
+        <record id="action_cash_in_out" model="ir.actions.act_window">
+            <field name="name">Cash In/Out</field>
+            <field name="res_model">account.keuangan.transaction</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Cash In/Out
+                </p><p>
+                    Create Cash In/Out, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Form View untuk Invoice -->
+        <record id="view_cash_in_out_form" model="ir.ui.view">
+            <field name="name">cash.in.out.form</field>
+            <field name="model">account.keuangan.transaction</field>
+            <field name="arch" type="xml">
+                <form string="Cash In and Out">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="bank_account_id"/>
+                            <field name="total_paid" readonly="1"/>
+                        </group>
+                        <!-- <notebook>
+                            <page string="Payments">
+                                <field name="payment_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="payment_date"/>
+                                        <field name="amount_paid"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook> -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View untuk Invoice -->
+        <record id="view_cash_in_out_tree" model="ir.ui.view">
+            <field name="name">cash.in.out.tree</field>
+            <field name="model">account.keuangan.transaction</field>
+            <field name="arch" type="xml">
+                 <tree string="Cash In and Cash Out">
+                        <field name="name" />
+                        <field name="date" />
+                        <field name="bank_account_id" />
+                        <field name="total_paid" />
+                    </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

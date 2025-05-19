@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_branch_tree" model="ir.ui.view">
+        <field name="name">hr.branch.tree</field>
+        <field name="model">hr.branch</field>
+        <field name="arch" type="xml">
+            <tree string="HR Branch">
+                <field name="name"/>
+                <field name="location"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_branch_form" model="ir.ui.view">
+        <field name="name">hr.branch.form</field>
+        <field name="model">hr.branch</field>
+        <field name="arch" type="xml">
+            <form string="HR Branch">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="location"/>
+                            <field name="manager_id" attrs="{'invisible': [('location','!=','branch_office')]}"/>
+                            <field name="company_id"/>
+                            <field name="unit_penempatan_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_branch" model="ir.actions.act_window">
+        <field name="name">HR Branch</field>
+        <field name="res_model">hr.branch</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hr_branch_config"
+              name="HR Branch"
+              parent="hr.menu_config_employee"
+              action="action_hr_branch"
+              sequence="50"/>
+</odoo>

@@ -1,0 +1,1 @@
+from . import report_odoo_payroll

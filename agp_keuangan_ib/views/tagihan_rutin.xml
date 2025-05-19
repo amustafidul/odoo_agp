@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_tagihan_rutin_form" model="ir.ui.view">
+        <field name="name">tagihan.rutin.form</field>
+        <field name="model">tagihan.rutin</field>
+        <field name="arch" type="xml">
+            <form string="Tagihan Rutin">
+                <header>
+                    <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group colspan="4">
+                            <group>
+                                <field name="name"/>
+                                <field name="shl_option" widget="radio"/>
+                                <field name="shl_id" attrs="{'invisible': [('shl_option', '!=', 'shl')]}"/>
+                                <field name="lainnya" attrs="{'invisible': [('shl_option', '!=', 'lainnya')]}"/>
+                                <field name="nominal_pinjaman"/>
+                            </group>
+                            <group>
+                                <field name="bunga"/>
+                                <field name="cicilan"/>
+                                <field name="periode_mulai"/>
+                                <field name="grace_period"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Totals" colspan="4">
+                            <group>
+                                <field name="total_nominal_pokok" 
+                                        string="Total Nominal Pokok" 
+                                        readonly="1"/>
+                                <field name="total_nominal_bunga" 
+                                        string="Total Nominal Bunga" 
+                                        readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="total_nominal_angsuran" 
+                                        string="Total Nominal Angsuran" 
+                                        readonly="1"/>
+                                <field name="total_nominal_dibayar" 
+                                        string="Total Sudah Dibayar" 
+                                        readonly="1"/>
+                                <field name="total_nominal_belum_dibayar" 
+                                        string="Total Belum Dibayar" 
+                                        readonly="1"/>
+                            </group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Angsuran">
+                            <field name="angsuran_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="periode"/>
+                                    <field name="sisa_cicilan_next"/>
+                                    <field name="sisa_pokok"/>
+                                    <field name="nominal_pokok"/>
+                                    <field name="nominal_bunga"/>
+                                    <field name="nominal_cicilan"/>
+                                    <field name="nominal_pembayaran"/>
+                                    <field name="nominal_bayar"/>
+                                    <!-- <field name="sisa_cicilan"/> -->
+                                    <field name="tgl_pembayaran"/>
+                                    <field name="status_pembayaran" readonly="1"/>
+                                    <!-- <field name="adjusted_nominal_cicilan" readonly="1"/> -->
+                                    <field name="keterangan"/>
+                                </tree>
+                            </field>
+                            <!-- Bagian Totals -->
+                            <!-- <group string="Totals" colspan="4">
+                                <group>
+                                    <field name="total_nominal_pokok" 
+                                           string="Total Nominal Pokok" 
+                                           readonly="1"/>
+                                    <field name="total_nominal_bunga" 
+                                           string="Total Nominal Bunga" 
+                                           readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="total_nominal_pembayaran" 
+                                           string="Total Nominal Pembayaran" 
+                                           readonly="1"/>
+                                    <field name="total_nominal_angsuran" 
+                                           string="Total Nominal Angsuran" 
+                                           readonly="1"/>
+                                </group>
+                                
+                            </group> -->
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_tagihan_rutin_tree" model="ir.ui.view">
+        <field name="name">tagihan.rutin.tree</field>
+        <field name="model">tagihan.rutin</field>
+        <field name="arch" type="xml">
+            <tree string="Tagihan Rutin">
+                <field name="name" optional="show"/>
+                <field name="nominal_pinjaman" optional="show"/>
+                <field name="bunga" optional="show"/>
+                <field name="cicilan" optional="show"/>
+                <field name="periode_mulai" optional="show"/>
+                <field name="grace_period" optional="show"/>
+                <!-- <field name="total_sisa_pokok" optional="show"/> -->
+                <!-- <field name="total_nominal_pokok" optional="show"/> -->
+                <!-- <field name="total_nominal_bunga" optional="show"/> -->
+                <field name="total_nominal_angsuran" optional="show"/>
+                <field name="total_nominal_pembayaran" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_tagihan_rutin" model="ir.actions.act_window">
+        <field name="name">Tagihan Rutin</field>
+        <field name="res_model">tagihan.rutin</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="menu_tagihan_rutin_root" name="Tagihan Rutin" parent="account.menu_finance"/> -->
+    <!-- <menuitem id="menu_tagihan_rutin" name="Tagihan Rutin" parent="parent_menu_board_keuangan" action="action_tagihan_rutin"/> -->
+    </data>
+</odoo>

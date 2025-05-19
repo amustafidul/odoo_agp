@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_payroll_tad_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.tad.report.wizard.form</field>
+        <field name="model">payroll.tad.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="TAD Report">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="hr_branch_id"/>
+                </group>
+                <footer>
+                    <button name="action_print_excel" string="Export Excel" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_tad_report_wizard" model="ir.actions.act_window">
+        <field name="name">TAD Report</field>
+        <field name="res_model">payroll.tad.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_payroll_organik_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.organik.report.wizard.form</field>
+        <field name="model">payroll.organik.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Organik Report">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="all_branch"/>
+                    <field name="hr_branch_ids" widget="many2many_tags" attrs="{'invisible': [('all_branch','!=',False)]}"/>
+                </group>
+                <footer>
+                    <button name="action_print_excel" string="Export Excel" type="object" class="btn-primary"/>
+                    <button name="action_print_pdf" string="Export PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_organik_report_wizard" model="ir.actions.act_window">
+        <field name="name">Organik Report</field>
+        <field name="res_model">payroll.organik.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_payroll_pkwt_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.pkwt.report.wizard.form</field>
+        <field name="model">payroll.pkwt.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="PKWT Report">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="all_branch"/>
+                    <field name="hr_branch_ids" widget="many2many_tags" attrs="{'invisible': [('all_branch','!=',False)]}"/>
+                </group>
+                <footer>
+                    <button name="action_print_excel" string="Export Excel" type="object" class="btn-primary"/>
+                    <button name="action_print_pdf" string="Export PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_pkwt_report_wizard" model="ir.actions.act_window">
+        <field name="name">PKWT Report</field>
+        <field name="res_model">payroll.pkwt.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_payroll_direksi_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.direksi.report.wizard.form</field>
+        <field name="model">payroll.direksi.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Report Gaji Direksi">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="all_branch"/>
+                    <field name="hr_branch_ids" widget="many2many_tags" attrs="{'invisible': [('all_branch','!=',False)]}"/>
+                </group>
+                <footer>
+                    <button name="action_print_excel" string="Export Excel" type="object" class="btn-primary"/>
+                    <button name="action_print_pdf" string="Export PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_direksi_report_wizard" model="ir.actions.act_window">
+        <field name="name">Report Gaji Direksi</field>
+        <field name="res_model">payroll.direksi.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_payroll_dekom_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.dekom.report.wizard.form</field>
+        <field name="model">payroll.dekom.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Report Gaji Dekom">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="all_jabatan"/>
+                    <field name="jabatan_komplit_ids" widget="many2many_tags" attrs="{'invisible': [('all_jabatan','!=',False)]}"/>
+                </group>
+                <footer>
+                    <button name="action_print_excel" string="Export Excel" type="object" class="btn-primary"/>
+                    <button name="action_print_pdf" string="Export PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_dekom_report_wizard" model="ir.actions.act_window">
+        <field name="name">Report Gaji Dekom</field>
+        <field name="res_model">payroll.dekom.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

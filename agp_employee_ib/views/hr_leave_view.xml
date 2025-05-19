@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_open_reject_wizard" model="ir.actions.act_window">
+        <field name="name">Reject Leave</field>
+        <field name="res_model">hr.leave.reject.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_leave_reject_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_open_ask_for_revision_wizard" model="ir.actions.act_window">
+        <field name="name">Ask for Revision</field>
+        <field name="res_model">hr.leave.ask.for.revision.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_leave_ask_for_revision_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hr_holidays.hr_leave_action_new_request">
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Keep track of your PTOs.
+            </p><p>
+                A great way to keep track on your leaves requests, sick days, and approval status.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hr_holidays.hr_leave_action_my">
+        <field name="name">My Leaves</field>
+    </record>
+
+    <record id="hr_leave_view_tree_my_inherit_ib" model="ir.ui.view">
+        <field name="name">hr.leave.view.tree.my.inherit.ib</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree_my"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Leaves Type</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hr_holidays.hr_leave_action_action_approve_department">
+        <field name="name">All Leaves</field>
+        <field name="context">{
+            'search_default_active_employee': 3,
+            'search_default_active_time_off': 4,
+            'hide_employee_name': 1,
+            'holiday_status_name_get': False}
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_filter_inherit_ib" model="ir.ui.view">
+        <field name="name">view.hr.holidays.filter.inherit.ib</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='active_time_off']" position="attributes">
+                <attribute name="string">Active Leaves</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='validated']" position="attributes">
+                <attribute name="string">Approved Leaves</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='archive']" position="attributes">
+                <attribute name="string">Archived Leaves</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='archived_leaves']" position="attributes">
+                <attribute name="string">Cancelled Leaves</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_view_tree_inherit_ib" model="ir.ui.view">
+        <field name="name">hr.leave.view.tree.inherit.ib</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Leaves Type</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="is_dynamic_approval_time_off" invisible="1"/>
+                <field name="is_visible_to_current_user" invisible="1"/>
+                <button name="action_submit_dyamic_approval_timeoff" type="object" string="Confirm" class="btn-primary"
+                        attrs="{'invisible': ['|', ('is_dynamic_approval_time_off','=',False),('state','!=','draft')]}"/>
+                <button name="%(action_open_reject_wizard)d" type="action" string="Reject" class="btn-primary"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','on_review'),('is_visible_to_current_user','=',False)]}"/>
+                <button name="%(action_open_ask_for_revision_wizard)d" type="action" string="Ask For Revision" class="btn-primary"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','on_review'),('is_visible_to_current_user','=',False)]}"/>
+                <button name="action_approve_dynamic_approval" type="object" string="Approve" class="btn-primary"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','on_review'),('is_visible_to_current_user','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_allocation_view_tree_inherit_ib" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.tree.inherit.ib</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Leaves Type</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_allocation_view_form_manager_inherit_ib" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.form.manager.inherit.ib</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form_manager"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">1</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_to']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Leaves Type</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_allocation_view_form_inherit_ib" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.form.inherit.ib</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Leaves Type</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_leave_form_inherit_ib" model="ir.ui.view">
+        <field name="name">view.hr.leave.form.inherit.ib</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Leaves Type</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <field name="is_dynamic_approval_time_off" invisible="1"/>
+                <field name="is_hr_leave_model" invisible="1"/>
+                <field name="is_visible_to_current_user" invisible="1"/>
+                <button name="action_submit_dyamic_approval_timeoff" type="object" string="Confirm" class="btn-primary"
+                        attrs="{'invisible': ['|', ('is_dynamic_approval_time_off','=',False),('state','!=','draft')]}"/>
+                <button name="%(action_open_reject_wizard)d" type="action" string="Reject"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','on_review'),('is_visible_to_current_user','=',False)]}"/>
+                <button name="%(action_open_ask_for_revision_wizard)d" type="action" string="Ask For Revision"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','on_review'),('is_visible_to_current_user','=',False)]}"/>
+                <button name="action_approve_dynamic_approval" type="object" string="Approve" class="btn-primary"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','on_review'),('is_visible_to_current_user','=',False)]}"/>
+                <button name="set_to_draft" type="object" string="Mark as Draft"
+                        attrs="{'invisible': ['|', '|', ('is_dynamic_approval_time_off','=',False),('state','!=','ask_for_revision'),('is_hr_leave_model', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="attrs">
+                    {
+                        'invisible':
+                            ['|','|','|',('id','=',False),
+                            ('state','!=','draft'),
+                            ('active','=',False),
+                            ('is_dynamic_approval_time_off','=',True)]
+                    }
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Jenis Cuti</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="after">
+                <field name="delegation_id" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_refuse']" position="replace">
+                <button name="set_to_draft" type="object" string="Revise" attrs="{'invisible': [('state','!=','validate')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_view_form_dashboard_new_ib" model="ir.ui.view">
+        <field name="name">hr.leave.view.form.dashboard.new.ib</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_dashboard_new_time_off"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="string">Jenis Cuti</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="after">
+                <field name="is_sick_time_off" invisible="1"/>
+                <field name="is_paid_time_off" invisible="1"/>
+                <field name="is_spd_time_off" invisible="1"/>
+                <field name="paid_time_off_type_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='number_of_days_display']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_allocation_view_tree_inherit_my_ibad" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.tree.inherit.my.ibad</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_tree_my"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

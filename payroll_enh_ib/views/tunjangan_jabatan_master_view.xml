@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_odoo_payroll_tunjangan_master_tree" model="ir.ui.view">
+        <field name="name">odoo.payroll.tunjangan.master.tree</field>
+        <field name="model">odoo.payroll.tunjangan</field>
+        <field name="arch" type="xml">
+            <tree string="Positional Allowance">
+                <field name="name"/>
+                <field name="jabatan_id" string="Job Position"/>
+                <field name="unit_id" string="Placement Unit" invisible="1"/>
+                <field name="hr_branch_id" string="Placement Unit"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="amount_tunjangan" string="Allowance"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoo_payroll_tunjangan_master_form" model="ir.ui.view">
+        <field name="name">odoo.payroll.tunjangan.master.form</field>
+        <field name="model">odoo.payroll.tunjangan</field>
+        <field name="arch" type="xml">
+            <form string="Positional Allowance">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="jabatan_id" required="1" string="Job Position"/>
+                            <field name="unit_id" required="0" invisible="1"/>
+                            <field name="hr_branch_id" required="1" string="Placement Unit"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount_tunjangan" required="1" string="Amount"/>
+                            <field name="amount_bpfp" required="1"/>
+                            <field name="koef_kemahalan_percent" required="1" string="Dearness Coefficient (%)"/>
+                            <field name="amount_kemahalan" string="Dearness Value"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_odoo_payroll_tunjangan_master" model="ir.actions.act_window">
+        <field name="name">Positional Allowance</field>
+        <field name="res_model">odoo.payroll.tunjangan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create your positional allowance master here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_payroll_tunjangan" name="Positional Allowance" parent="hr_payroll_community.menu_hr_payroll_community_configuration"
+              action="action_odoo_payroll_tunjangan_master" sequence="14"/>
+</odoo>

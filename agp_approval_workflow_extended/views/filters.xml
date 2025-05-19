@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_users_search_inherit_level" model="ir.ui.view">
+            <field name="name">res.users.search.inherit.level</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <group expand="1" string="Group By">
+                        <filter name="group_by_branch" string="AGP Cabang" context="{'group_by': 'branch_id'}"/>
+                        <filter name="group_by_level" string="AGP Level" context="{'group_by': 'level'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,177 @@
+BANJARMASIN
+tes1_banjarmasin -> Asep
+tes2_banjarmasin -> Sutisna
+tes3_banjarmasin -> Mulyana
+tes4_banjarmasin -> Usep
+tes5_banjarmasin -> Engkus
+tes6_banjarmasin -> Agus
+tes7_banjarmasin -> Dayat
+tes8_banjarmasin -> Aceng
+tes9_banjarmasin -> Ajat
+
+BELAWAN
+tes1_belawan -> Anggia
+tes2_belawan -> Adelia
+tes3_belawan -> Andini
+tes4_belawan -> Andari
+tes5_belawan -> Anne
+tes6_belawan -> Assyifa
+tes7_belawan -> Annisa
+tes8_belawan -> Aulia
+tes9_belawan -> Amel
+
+CILACAP
+tes1_cilacap -> Trisno
+tes2_cilacap -> Jarwo
+tes3_cilacap -> Yanto
+tes4_cilacap -> Sujiwo
+tes5_cilacap -> Tarno
+tes6_cilacap -> Wiryo
+tes7_cilacap -> Listio
+tes8_cilacap -> Andiro
+tes9_cilacap -> Mulyono
+
+BATAM
+tes1_batam -> Agung
+tes2_batam -> Dila
+tes3_batam -> Jemmy
+tes4_batam -> Yusuf
+tes5_batam -> Malik
+tes6_batam -> Dodi
+tes7_batam -> Danang
+tes8_batam -> Raffi
+tes9_batam -> Husein
+
+BALIKPAPAN
+tes1_balikpapan -> Zulfi
+tes2_balikpapan -> Fadlan
+tes3_balikpapan -> Diah
+tes4_balikpapan -> Iwan
+tes5_balikpapan -> Gina
+tes6_balikpapan -> Dewi
+tes7_balikpapan -> Hilda
+tes8_balikpapan -> Fajar
+tes9_balikpapan -> Dira
+
+GRESIK
+tes1_gresik -> Bayu
+tes2_gresik -> Eko
+tes3_gresik -> Dito
+tes4_gresik -> Darno
+tes5_gresik -> Anggoro
+tes6_gresik -> Yulianto
+tes7_gresik -> Suharto
+tes8_gresik -> Sundoro
+tes9_gresik -> Darto
+
+JAWA BARAT
+tes1_jabar -> Aep
+tes2_jabar -> Ndin
+tes3_jabar -> Aang
+tes4_jabar -> Acep
+tes5_jabar -> Maman
+tes6_jabar -> Mulyadi
+tes7_jabar -> Iky
+tes8_jabar -> Enjang
+tes9_jabar -> Dadang
+
+LHOKSEUMAWE
+tes1_lksm -> Teuku
+tes2_lksm -> Keumala
+tes3_lksm -> Ceudah
+tes4_lksm -> Zuhrah
+tes5_lksm -> Cut Andini
+tes6_lksm -> Meulu
+tes7_lksm -> Galang
+tes8_lksm -> Tengku
+tes9_lksm -> Antana
+
+MAKASSAR
+tes1_makassar -> Andi
+tes2_makassar -> Syahrul
+tes3_makassar -> Yasin
+tes4_makassar -> Makkunrai
+tes5_makassar -> Balla
+tes6_makassar -> Abdul Razak
+tes7_makassar -> Karaeng
+tes8_makassar -> Hasanudin
+tes9_makassar -> Daeng
+
+MAKASSAR
+tes1_makassar -> Andi
+tes2_makassar -> Syahrul
+tes3_makassar -> Yasin
+tes4_makassar -> Makkunrai
+tes5_makassar -> Balla
+tes6_makassar -> Abdul Razak
+tes7_makassar -> Karaeng
+tes8_makassar -> Hasanudin
+tes9_makassar -> Hakim
+
+MERAK
+tes1_merak -> Mamat
+tes2_merak -> Asnawi
+tes3_merak -> Sangsang
+tes4_merak -> Masduki
+tes5_merak -> Syarifah
+tes6_merak -> Bahrudin
+tes7_merak -> Saifudin
+tes8_merak -> Maman
+tes9_merak -> Setiawan
+
+NUSA TENGGARA
+tes1_ntb -> Mashudi
+tes2_ntb -> Syukur
+tes3_ntb -> Agus
+tes4_ntb -> Latif
+tes5_ntb -> Bahanan
+tes6_ntb -> Nasrudin
+tes7_ntb -> Lalu
+tes8_ntb -> Baiq
+tes9_ntb -> Gede
+
+PADANG
+tes1_padang -> Mochtar
+tes2_padang -> Saijunus
+tes3_padang -> Fadhil
+tes4_padang -> Natsir
+tes5_padang -> Saiful
+tes6_padang -> Ali
+tes7_padang -> Amir
+tes8_padang -> Ajo
+tes9_padang -> Rachman
+
+PAITON
+tes1_paiton -> Abisatya
+tes2_paiton -> Galuh
+tes3_paiton -> Retnaning
+tes4_paiton -> Gita
+tes5_paiton -> Pramesty
+tes6_paiton -> Ajeng
+tes7_paiton -> Glewo
+tes8_paiton -> Dinan
+tes9_paiton -> Ayu
+
+PANJANG
+tes1_lampung -> Ellanda
+tes2_lampung -> Rolly
+tes3_lampung -> Yusi
+tes4_lampung -> Eka
+tes5_lampung -> Kurnia
+tes6_lampung -> Lasesa
+tes7_lampung -> Andi
+tes8_lampung -> Tio
+tes9_lampung -> Rizky
+
+TANJUNG JATI
+tes1_tjati -> Parlinggoman
+tes2_tjati -> Abet
+tes3_tjati -> Jagar
+tes4_tjati -> Ingot
+tes5_tjati -> Barani
+tes6_tjati -> Parade
+tes7_tjati -> Martinus
+tes8_tjati -> Juan
+tes9_tjati -> Benaya
+
+

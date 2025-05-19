@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tna_submission_search" model="ir.ui.view">
+        <field name="name">tna.submission.search</field>
+        <field name="model">tna.submission</field>
+        <field name="arch" type="xml">
+            <search string="Cari Usulan TNA">
+                <field name="name" string="Nomor Usulan"/>
+                <field name="period_id"/>
+                <field name="department_id"/>
+                <field name="branch_id"/>
+                <field name="user_id" string="Diajukan Oleh"/>
+                <field name="employee_id" string="Penanggung Jawab"/>
+                <field name="state"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Diajukan ke SDM" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Selesai Diproses" name="processed" domain="[('state', '=', 'processed')]"/>
+                <separator/>
+                <filter string="Periode Ini" name="current_period" domain="[('period_id.state','=','open')]" help="Usulan untuk periode TNA yang sedang dibuka"/>
+                <group expand="0" string="Kelompokkan Berdasarkan...">
+                    <filter string="Periode TNA" name="group_by_period" context="{'group_by': 'period_id'}"/>
+                    <filter string="Divisi" name="group_by_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Cabang" name="group_by_branch" context="{'group_by': 'branch_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_tna_submission_tree" model="ir.ui.view">
+        <field name="name">tna.submission.tree</field>
+        <field name="model">tna.submission</field>
+        <field name="arch" type="xml">
+            <tree string="Usulan TNA" decoration-info="state=='draft'" decoration-success="state=='processed'" decoration-warning="state=='submitted'">
+                <field name="name"/>
+                <field name="period_id"/>
+                <field name="department_id"/>
+                <field name="branch_id" optional="hide"/>
+                <field name="employee_id" widget="many2one_avatar_user" string="Penanggung Jawab"/>
+                <field name="submission_date" optional="hide"/>
+                <field name="total_proposed_trainings" sum="Total Judul Usulan"/>
+                <field name="total_estimated_participants" sum="Total Estimasi Peserta"/>
+                <field name="total_estimated_cost" sum="Total Estimasi Biaya" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tna_submission_form" model="ir.ui.view">
+        <field name="name">tna.submission.form</field>
+        <field name="model">tna.submission</field>
+        <field name="arch" type="xml">
+            <form string="Form Usulan TNA">
+                <header>
+                    <button name="action_submit_to_sdm" string="Ajukan ke SDM" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_mark_processed_by_sdm" string="Tandai Selesai Diproses" type="object" class="btn-success" groups="hr.group_hr_manager" attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+                    <button name="action_reset_to_draft" string="Reset ke Draft" type="object" attrs="{'invisible': [('state', 'not in', ['submitted','processed'])]}" confirm="Apakah Anda yakin ingin mereset usulan ini ke draft? Ini juga akan mereset status item usulan training di dalamnya." groups="hr.group_hr_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,processed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group id="group_left">
+                            <field name="period_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'default_state':'open'}"/>
+                            <field name="department_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="branch_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group id="group_right">
+                            <field name="user_id" string="Pengusul (User Sistem)" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="employee_id" string="Penanggung Jawab (Pegawai)" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="submission_date" readonly="1" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                            <field name="gm_approval_user_id" string="Disetujui GM (User)" groups="base.group_no_one"/>
+                            <field name="gm_approval_date" groups="base.group_no_one"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Usulan Training" name="proposed_trainings_page">
+                            <field name="proposed_training_ids"
+                                attrs="{'readonly': [('state', 'in', ['submitted', 'processed'])]}"
+                                context="{'default_submission_id': active_id,
+                                    'default_department_id': department_id,
+                                    'default_branch_id': branch_id,
+                                    'default_period_id': period_id,
+                                    'default_company_id': company_id,
+                                    'default_currency_id': currency_id}">
+                                <tree>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" required="1" string="Nama Training/Diklat"/>
+                                    <field name="training_scope_id" options="{'no_create': True}"/>
+                                    <field name="estimated_participant_count" force_save="1" readonly="1"/>
+                                    <field name="estimated_duration_days" string="Durasi (Hari)"/>
+                                    <field name="estimated_duration_hours" string="Durasi (Jam)"/>
+                                    <field name="estimated_cost" required="1" sum="Total Estimasi Biaya"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="proposed_organizer" string="Penyelenggara (Usulan)"/>
+                                    <field name="proposed_period_char" string="Periode Usulan"/>
+                                    <field name="state" readonly="1" force_save="1" widget="badge"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="name"/>
+                                                <field name="training_scope_id" options="{'no_create': True}"/>
+                                                <field name="description" nolabel="1" placeholder="Justifikasi dan deskripsi kebutuhan training..."/>
+                                            </group>
+                                            <group>
+                                                <field name="proposed_period_char"/>
+                                                <field name="estimated_duration_days"/>
+                                                <field name="estimated_duration_hours"/>
+                                            </group>
+                                        </group>
+                                        <separator string="Estimasi Biaya &amp; Penyelenggara"/>
+                                        <group>
+                                            <field name="estimated_cost"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="proposed_organizer"/>
+                                        </group>
+                                        <separator string="Peserta Diusulkan"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="participant_line_ids"
+                                               attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"
+                                               context="{'default_proposed_training_id': active_id, 'default_currency_id': currency_id}">
+                                            <tree editable="bottom">
+                                                <field name="sequence" widget="handle"/>
+                                                <field name="employee_id" required="1" options="{'no_create': True}"/>
+                                                <field name="employment_type" readonly="1" force_save="1"/>
+                                                <field name="estimated_cost_participant" required="1" sum="Total Biaya Peserta"/>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="notes" optional="show"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="employee_id" required="1"/>
+                                                    <field name="employment_type" readonly="1"/>
+                                                    <field name="estimated_cost_participant" required="1"/>
+                                                    <field name="currency_id" invisible="1"/>
+                                                    <field name="notes"/>
+                                                </group>
+                                            </form>
+                                        </field>
+                                        <group class="oe_subtotal_footer oe_right" name="tna_proposed_training_total_manual">
+                                            <field name="estimated_participant_count" nolabel="0" readonly="1" force_save="1"/>
+                                            <field name="estimated_cost" nolabel="0" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1" force_save="1"/>
+                                        </group>
+                                        <div style="clear:both;"/>
+                                        <separator string="Informasi Tambahan (Readonly dari Header)"/>
+                                        <group>
+                                            <field name="department_id" readonly="1"/>
+                                            <field name="branch_id" readonly="1"/>
+                                            <field name="period_id" readonly="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" name="tna_submission_total">
+                                <field name="total_estimated_cost" nolabel="0" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="total_proposed_trainings" nolabel="0"/>
+                                <field name="total_estimated_participants" nolabel="0"/>
+                            </group>
+                            <div style="clear:both;"/>
+                        </page>
+                        <page string="Catatan Pengusul">
+                            <field name="notes_kadiv_gm" nolabel="1" placeholder="Catatan dari Kadiv/GM terkait usulan ini..." attrs="{'readonly': [('state', 'in', ['submitted', 'processed'])]}"/>
+                        </page>
+                        <page string="Catatan Review SDM" groups="hr.group_hr_manager">
+                            <field name="notes_sdm" nolabel="1" placeholder="Catatan dari SDM Pusat setelah review..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tna_submission_my" model="ir.actions.act_window">
+        <field name="name">Usulan TNA Saya</field>
+        <field name="res_model">tna.submission</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="context">{'default_user_id': uid}</field>
+        <field name="search_view_id" ref="view_tna_submission_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Klik 'Buat' untuk membuat Usulan TNA baru yang akan diajukan ke SDM.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_tna_submission_all_sdm" model="ir.actions.act_window">
+        <field name="name">Semua Usulan TNA (SDM)</field>
+        <field name="res_model">tna.submission</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="view_tna_submission_search"/>
+         <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Belum ada Usulan TNA yang masuk dari departemen/cabang.
+            </p>
+        </field>
+    </record>
+</odoo>

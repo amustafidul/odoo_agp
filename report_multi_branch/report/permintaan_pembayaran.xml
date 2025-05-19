@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence Data -->
+        <record id="seq_report_spp" model="ir.sequence">
+            <field name="name">Surat Permintaan Pembayaran</field>
+            <field name="code">report.spp</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+
+    <record id="view_spp_form" model="ir.ui.view">
+        <field name="name">spp.form</field>
+        <field name="model">report.report_multi_branch.spp</field>
+        <field name="arch" type="xml">
+            <form string="Permintaan Pembayaran">
+                <sheet>
+                <div class="oe_title">
+                    <span class="o_form_label">Surat Permintaan Pembayaran</span>
+                    <h1>
+                        <field name="name" placeholder="Draft" />
+                    </h1>
+                </div>
+                    <group>
+                        <group class="header_left_group">
+                            <!-- <field name="name"/> -->
+                            <field name="unit_kerja"/>
+                            <field name="partner_id"/>
+                            <field name="alamat"/>
+                            <field name="tanggal_spp"/>
+                            <field name="rek_bank"/>
+                            <field name="disetujui1"/>
+                            <field name="diminta1"/>
+                            <field name="disiapkan1"/>
+                            <field name="surat_permohonan"/>
+                            <field name="invoice"/>
+                            <field name="kwitansi"/>
+                            <field name="faktur_pajak"/>
+                            <field name="pph"/>
+                            <field name="perjanjian_pekerjaan"/>
+                            <field name="surat_perintah_kerja"/>
+                            <field name="berita_acara"/>
+                            <field name="berita_acara2"/>
+                            <!-- <field name="tipe_berita_acara" attrs="{'invisible': [('berita_acara', '!=', 'ada')]}"/> -->
+                            <field name="lainnya"/>
+                            <field name="lainnya1" attrs="{'invisible': [('lainnya', '!=', 'ada')]}"/>
+                        </group>
+                        <group class="header_right_group">
+                            <field name="branch_ids"/>
+                            <field name="sub_branch_ids"/>
+                            <field name="verifikasi_keuangan1"/>
+                            <field name="verifikasi_pajak1"/>
+                            <field name="manager_keuangan3"/>
+                            <field name="manager_keuangan1"/>
+                            <field name="manager_anggaran1"/>
+                            <field name="kepala_div_keuangan1"/>
+                            <field name="kepala_div_akuntansi1"/>
+                            <field name="wewenang1"/>
+                            <field name="jabatan_wewenang1"/>
+                            <field name="wewenang2"/>
+                            <field name="jabatan_wewenang2"/>
+                        </group>
+                    </group>    
+                    <notebook>
+                        <page string="Rincian Pembayaran">
+                            <field name="line_ids">
+                                <tree>
+                                    <field name="rincian"/>
+                                    <field name="jumlah" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_jumlah" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_spp_tree" model="ir.ui.view">
+        <field name="name">spp.tree</field>
+        <field name="model">report.report_multi_branch.spp</field>
+        <field name="arch" type="xml">
+            <tree string="Permintaan Pembayaran">
+                <field name="name"/>
+                <field name="unit_kerja"/>
+                <field name="partner_id"/>
+                <field name="total_jumlah"/>
+                <field name="created_by"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_view_spp" model="ir.actions.act_window">
+        <field name="name">Surat Permintaan Pembayaran</field>
+        <field name="res_model">report.report_multi_branch.spp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_spp_tree"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- <menuitem id="menu_spp" 
+                  name="Surat Permintaan Pembayaran" 
+                  parent="account.menu_finance_entries" 
+                  sequence="2" />
+
+    <menuitem id="menu_action_view_spp"
+              name="Surat Permintaan Pembayaran"
+              action="action_view_spp"
+              parent="menu_spp"
+              sequence="11"/> -->
+    
+    <menuitem id="submenu_spp" name="Surat Permintaan Pembayaran" parent="account.menu_finance" action="action_view_spp" sequence="4" />
+
+</odoo>

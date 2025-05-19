@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tna_period_search" model="ir.ui.view">
+        <field name="name">tna.period.search</field>
+        <field name="model">tna.period</field>
+        <field name="arch" type="xml">
+            <search string="Cari Periode TNA">
+                <field name="name" string="Nama Periode"/>
+                <field name="year"/>
+                <field name="semester"/>
+                <field name="responsible_user_id"/>
+                <field name="state"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Dibuka" name="open" domain="[('state', '=', 'open')]"/>
+                <filter string="Ditutup" name="closed" domain="[('state', '=', 'closed')]"/>
+                <filter string="Diproses SDM" name="processing" domain="[('state', '=', 'processing')]"/>
+                <filter string="Selesai" name="completed" domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Kelompokkan Berdasarkan...">
+                    <filter string="Tahun" name="group_by_year" context="{'group_by': 'year'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Penanggung Jawab" name="group_by_responsible" context="{'group_by': 'responsible_user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_tna_period_tree" model="ir.ui.view">
+        <field name="name">tna.period.tree</field>
+        <field name="model">tna.period</field>
+        <field name="arch" type="xml">
+            <tree string="Periode TNA" decoration-info="state=='draft'" decoration-success="state=='completed'" decoration-warning="state in ('open', 'closed')" decoration-muted="state=='processing'">
+                <field name="name"/>
+                <field name="year"/>
+                <field name="semester"/>
+                <field name="date_start_submission"/>
+                <field name="date_end_submission"/>
+                <field name="responsible_user_id" widget="many2one_avatar_user"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state" widget="badge" decoration-success="state == 'completed'" decoration-info="state == 'open' or state == 'draft'" decoration-warning="state == 'closed' or state == 'processing'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tna_period_form" model="ir.ui.view">
+        <field name="name">tna.period.form</field>
+        <field name="model">tna.period</field>
+        <field name="arch" type="xml">
+            <form string="Periode TNA">
+                <header>
+                    <button name="action_open_submission" string="Buka Pengisian" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_close_submission" string="Tutup Pengisian" type="object" attrs="{'invisible': [('state', '!=', 'open')]}"/>
+                    <button name="action_start_processing" string="Mulai Review SDM" type="object" attrs="{'invisible': [('state', '!=', 'closed')]}"/>
+                    <button name="action_mark_completed" string="Selesaikan Periode" type="object" class="btn-success" attrs="{'invisible': [('state', '!=', 'processing')]}"/>
+                    <button name="action_reset_to_draft" string="Reset ke Draft" type="object" attrs="{'invisible': [('state', 'not in', ['open','closed','processing','completed'])]}" confirm="Apakah Anda yakin ingin mereset periode ini ke draft? Ini akan mempengaruhi usulan yang mungkin sudah dibuat." groups="base.group_system"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,closed,processing,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" nolabel="1" default_focus="1" placeholder="Nama Periode TNA"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="year"/>
+                            <field name="semester"/>
+                        </group>
+                        <group>
+                            <field name="date_start_submission"/>
+                            <field name="date_end_submission"/>
+                        </group>
+                        <group>
+                             <field name="responsible_user_id" widget="many2one_avatar_user"/>
+                             <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Form Usulan Diterima (Submissions)">
+                            <field name="submission_ids" readonly="1" context="{'default_period_id': active_id}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="department_id"/>
+                                    <field name="branch_id" optional="hide"/>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                    <field name="submission_date"/>
+                                    <field name="total_proposed_trainings"/>
+                                    <field name="total_estimated_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="state" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Catatan Internal">
+                            <field name="notes" nolabel="1" placeholder="Catatan internal terkait periode TNA ini..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tna_period" model="ir.actions.act_window">
+        <field name="name">Periode TNA</field>
+        <field name="res_model">tna.period</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="search_view_id" ref="view_tna_period_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Buat Periode TNA baru untuk memulai pengumpulan kebutuhan training tahunan/semesteran.
+            </p>
+        </field>
+    </record>
+</odoo>

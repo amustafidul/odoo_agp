@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+
+        <record id="nodin_bayar_wizard_form" model="ir.ui.view">
+            <field name="name">nodin.bayar.wizard.form</field>
+            <field name="model">nodin.bayar.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="amount_total_nodin" />
+                        <field name="amount_bayar" />
+                    </group>
+                    <footer>
+                        <button string="Bayar" name="ok" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="hr_employee_keterangan_jabatan_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.keterangan.jabatan.view.tree</field>
+        <field name="model">hr.employee.keterangan.jabatan</field>
+        <field name="arch" type="xml">
+            <tree string="Keterangan Jabatan">
+                <field name="name"/>
+                <field name="type"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_employee_keterangan_jabatan_form_view" model="ir.ui.view">
+        <field name="name">hr.employee.keterangan.jabatan.view.form</field>
+        <field name="model">hr.employee.keterangan.jabatan</field>
+        <field name="arch" type="xml">
+            <form string="Keterangan Jabatan">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="dinas_workflow_config" string="Konfigurasi SPPD">
+                            <label for="nodin_workflow" string="Jajaran Direksi"/>
+                            <field name="nodin_workflow" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_keterangan_jabatan_action" model="ir.actions.act_window">
+        <field name="name">Keterangan Jabatan</field>
+        <field name="res_model">hr.employee.keterangan.jabatan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat master data keterangan jabatan baru
+            </p>
+        </field>
+    </record>
+</odoo>

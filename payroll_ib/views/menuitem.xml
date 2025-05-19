@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="menu_payroll_root" name="Payroll" web_icon="payroll_ib,static/description/odoo_payroll.png" sequence="37"/>
+
+    <menuitem id="menu_payroll_form" name="Payroll Form" parent="menu_payroll_root" action="action_odoo_payroll_master" sequence="1"/>
+
+    <menuitem id="menu_payroll_reporting" name="Reporting" parent="hr_payroll_community.menu_hr_payroll_community_root" sequence="99"/>
+    <menuitem id="menu_tad_payroll_report" name="TAD Report" parent="menu_payroll_reporting" action="payroll_ib.action_payroll_tad_report_wizard" sequence="1"/>
+    <menuitem id="menu_organik_payroll_report" name="Organik Report" parent="menu_payroll_reporting" action="payroll_ib.action_payroll_organik_report_wizard" sequence="2"/>
+    <menuitem id="menu_pkwt_payroll_report" name="PKWT Report" parent="menu_payroll_reporting" action="payroll_ib.action_payroll_pkwt_report_wizard" sequence="3"/>
+    <menuitem id="menu_direksi_payroll_report" name="Report Direksi" parent="menu_payroll_reporting" action="payroll_ib.action_payroll_direksi_report_wizard" sequence="4"/>
+    <menuitem id="menu_dekom_payroll_report" name="Report Dekom" parent="menu_payroll_reporting" action="payroll_ib.action_payroll_dekom_report_wizard" sequence="5"/>
+
+</odoo>

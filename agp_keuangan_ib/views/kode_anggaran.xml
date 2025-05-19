@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_kode_anggaran" model="ir.ui.view">
+        <field name="name">kode.anggaran.list</field>
+        <field name="model">account.keuangan.kode.anggaran</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1" string="Kode Anggaran">
+                <field name="kode_anggaran"/>
+                <field name="account_type"/>
+                <field name="deskripsi"/>
+                <field name="account_code_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="kelompok"/>
+                <field name="jenis_kegiatan_id"/>
+                <field name="unit_penempatan_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="saldo" options="{'no_open': True, 'no_create': True}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kode_anggaran_no_saldo" model="ir.ui.view">
+        <field name="name">kode.anggaran.list</field>
+        <field name="model">account.keuangan.kode.anggaran</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1" string="Kode Anggaran">
+                <field name="kode_anggaran"/>
+                <field name="account_type"/>
+                <field name="deskripsi"/>
+                <field name="account_code_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="kelompok"/>
+                <field name="jenis_kegiatan_id"/>
+                <field name="unit_penempatan_id" options="{'no_open': True, 'no_create': True}"/>
+                <!-- <field name="saldo" options="{'no_open': True, 'no_create': True}"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kode_anggaran_search" model="ir.ui.view">
+        <field name="name">kode.anggaran.search</field>
+        <field name="model">account.keuangan.kode.anggaran</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="kode_anggaran"/>
+                <field name="deskripsi"/>
+                <filter string="Kode Anggaran" name="filter_kode_anggaran" domain="[('kode_anggaran', 'ilike', self)]"/>
+                <filter string="Deskripsi" name="filter_deskripsi" domain="[('deskripsi', 'ilike', self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_kode_anggaran" model="ir.actions.act_window">
+        <field name="name">Kode Anggaran</field>
+        <field name="res_model">account.keuangan.kode.anggaran</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

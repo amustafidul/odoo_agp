@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="menu_training_root" name="Training" web_icon="agp_training_ib,static/description/odoo_icon_training.png" sequence="36"/>
+
+    <menuitem id="menu_training_request" name="Permohonan" parent="menu_training_root" action="action_training_course" sequence="1"/>
+    <menuitem id="menu_training_evaluation" name="Evaluasi" parent="menu_training_root" action="action_training_evaluation" sequence="2"/>
+</odoo>

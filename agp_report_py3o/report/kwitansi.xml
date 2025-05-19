@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <odoo>
+        <record id="kwitansi_py3o" model="ir.actions.report">
+            <field name="name">Kwitansi PDF</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">account.keuangan.invoice</field>
+            <field name="report_name">kwitansi</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/kwitansi.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_invoice"/>
+            <field name="binding_type">report</field>
+        </record>
+    </odoo>
+
+

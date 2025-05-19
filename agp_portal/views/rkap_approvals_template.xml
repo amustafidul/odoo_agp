@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="rkap_approvals_template" name="RKAP Approvals">
+        <!-- Load Materialize CSS & JS -->
+        <t t-call-assets="web.assets_frontend" />
+
+        <t t-set="page_title" t-value="'Approval History - ' + record.name + ' - AGP Odoo Portal Page'"/>
+        <title t-esc="page_title"/>
+        <link rel="icon" href="/agp_portal/static/src/images/agp.png" type="image/png" />
+
+        <div class="container" style="overflow: auto; height: 100vh;">
+            <br></br>
+            <br></br>
+            <div class="card" style="background-color: #4a8fff;">
+                <div>
+                    <img src="/agp_portal/static/src/images/63b54ed71dbbe.png" style="width: 25%;" class="approval-image" alt="Approval Image" />
+                </div>
+            </div>
+            <div class="card" style="background-color: #e0fffb;">
+                <div class="card-content">
+                    <span class="card-title">Approval History for <t t-esc="record.name" /></span>
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Nama User</th>
+                                <th>Tanggal dan Jam</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="approval_lines" t-as="line">
+                                <td t-esc="line.user_id.name" />
+                                <td t-esc="line.id_formatted_date" />
+                                <td t-esc="line.note" />
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

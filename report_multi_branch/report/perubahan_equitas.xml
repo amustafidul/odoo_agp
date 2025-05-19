@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_perubahan_equitas" model="report.paperformat">
+        <field name="name">Perubahan Equitas A4</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_perubahan_equitas" model="ir.actions.report">
+        <field name="name">Perubahan Equitas</field>
+        <field name="model">perubahan.equitas.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_perubahan_equitas</field>
+        <field name="report_file">report_multi_branch.report_perubahan_equitas</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_perubahan_equitas" />
+    </record>
+
+    <template id="report_perubahan_equitas">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <table class="table-condensed" width="100%">
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">PT ADHI GUNA PUTERA</b>
+                                </td>
+                                <td colspan="8"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">PT ADHI GUNA PUTERA</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">&#160;&#160;DAN ENTITAS ANAK</b>
+                                </td>
+                                <td colspan="8"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px"> AND ITS SUBSIDIARY</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">LAPORAN PERUBAHAN EKUITAS KONSOLIDASIAN</b>
+                                </td>
+                                <td colspan="8"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">CONSOLIDATED STATEMENT OF CHANGES IN EQUITY</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">Untuk tahun yang Berakhir <span t-esc="current_year" />
+                                    </b>
+                                </td>
+                                <td colspan="8"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">For the Year Ended 31, <span t-esc="current_year" />
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">(dalam Rupiah)</b>
+                                </td>
+                                <td colspan="8"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">(expressed in Rupiah)</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="10" style="border-bottom: 2px solid black">
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="10">
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="6" align="center" style="border-bottom: 2px solid black">
+                                    <b>Diatribusikan Kepada Pemilik Entitas Induk</b>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="3" align="center" style="border-bottom: 2px solid black">
+                                    <b>Saldo laba/ Retained earing</b>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Modal saham/ <br />
+                                        Shares capital</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Tambahan modal disetor/ <br />
+                                        Additional paid in capital</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Ditentukan Penggunanya/ <br />
+                                        Specified Use</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Tidak Ditentukan Penggunaannya/ <br />
+                                        Not Specified Use</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Penghasilan Komprehensif Lain/ <br />
+                                        Other comprehensive income</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Jumlah/ <br />
+                                        Amount</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Diatribusikan kepada Kepentingan Non-Pengendali/ <br />
+                                        Attribute to Interests
+                                        Non-Controller</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Jumlah Ekuitas/ <br />
+                                        Amount of Equity</b>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Saldo per 1 Januari <span t-esc="previous_year" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_B2'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_C2'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_G2'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Balance of January 1, <span t-esc="previous_year" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dividen</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_E3'])" />
+                                </td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_G3'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>Dividen</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Laba bersih tahun <span t-esc="previous_year" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_E4'])" />
+                                </td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_G4'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Net profit <span t-esc="previous_year" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pengukuran kembali atas program imbalan pasti</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_F5'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_G5'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>Remeasurement of defined benefits pension plan</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Saldo per 31 Desember <span t-esc="previous_year" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_B6'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_C6'])" />
+                                </td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_E6'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_F6'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['pre_total_G6'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Balance of December 31, <span t-esc="previous_year" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                                <td>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Saldo per 1 Januari <span t-esc="current_year" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_B2'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_C2'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_G2'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Balance of January 1, <span t-esc="current_year" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dividen</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_E3'])" />
+                                </td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_G3'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>Dividen</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Laba bersih tahun <span t-esc="current_year" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_E4'])" />
+                                </td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_G4'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Net profit <span t-esc="current_year" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pengukuran kembali atas program imbalan pasti</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_F5'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_G5'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>Remeasurement of defined benefits pension plan</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Saldo per 31 Desember <span t-esc="current_year" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_B6'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_C6'])" />
+                                </td>
+                                <td></td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_E6'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_F6'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-esc="'{0:,.0f}'.format(value['cur_total_G6'])" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Balance of December 31, <span t-esc="current_year" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

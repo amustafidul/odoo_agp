@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kartu_neraca_view" model="ir.ui.view">
+        <field name="name">Kartu Neraca</field>
+        <field name="model">kartu.neraca.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="report_type"/>
+                        <field name="partner_id"/>
+                        <field name="account_id"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="jenis_kegiatan_id" domain="[('company_id', '=', company_id)]"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="action_xls" string="Cetak Xls" type="object" class="oe_highlight" data-hotkey="w"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kartu_neraca" model="ir.actions.act_window">
+        <field name="name">Kartu Neraca</field>
+        <field name="res_model">kartu.neraca.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="kartu_neraca_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_kartu_neraca" name="Kartu Neraca" sequence="55" action="action_kartu_neraca" parent="accounting_pdf_reports.menu_finance_partner_reports" groups="account.group_account_manager"/>
+</odoo>

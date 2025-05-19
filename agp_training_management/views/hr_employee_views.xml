@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_inherit_training_history" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.training.history</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[last()]" position="after">
+                <page string="Histori Training">
+                    <field name="completed_training_ids" readonly="1">
+                        <tree>
+                            <field name="training_name"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="organizer"/>
+                            <field name="certificate_number"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(action_hr_employee_completed_training)d" type="action"
+                    class="oe_stat_button"
+                    icon="fa-graduation-cap"
+                    context="{'default_employee_id': active_id, 'search_default_employee_id': active_id}"
+                    groups="hr.group_hr_user">
+                    <field name="completed_training_count" widget="statinfo" string="Training Diikuti"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

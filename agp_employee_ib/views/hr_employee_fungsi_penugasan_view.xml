@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="hr_employee_fungsi_penugasan_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.fungsi.penugasan.view.tree</field>
+        <field name="model">hr.employee.fungsi.penugasan</field>
+        <field name="arch" type="xml">
+            <tree string="Jabatan">
+                <field name="name" string="Jabatan"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="nilai_koefisien"/>
+                <field name="nilai_tunjangan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_employee_fungsi_penugasan_form_view" model="ir.ui.view">
+        <field name="name">hr.employee.fungsi.penugasan.view.form</field>
+        <field name="model">hr.employee.fungsi.penugasan</field>
+        <field name="arch" type="xml">
+            <form string="Jabatan">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="Jabatan"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="nilai_koefisien"/>
+                            <field name="nilai_tunjangan"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_fungsi_penugasan_action" model="ir.actions.act_window">
+        <field name="name">Jabatan</field>
+        <field name="res_model">hr.employee.fungsi.penugasan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat master data jabatan baru
+            </p>
+        </field>
+    </record>
+</odoo>

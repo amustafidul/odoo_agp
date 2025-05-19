@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_data_pegawai">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center">DATA PEGAWAI</h2>
+
+                        <div>
+                            <strong>Nama Pegawai:</strong>
+                            <span t-esc="doc.name or ''"/>
+                        </div>
+
+                        <div>
+                            <strong>NIK:</strong>
+                            <span t-if="doc.employment_type == 'organik'">
+                                <t t-esc="doc.nip_organik or ''"/>
+                            </span>
+                            <span t-elif="doc.employment_type == 'pkwt'">
+                                <t t-esc="doc.nip_pkwt or ''"/>
+                            </span>
+
+                            <span t-else=""></span>
+                        </div>
+
+                        <div>
+                            <strong>Jabatan:</strong>
+                            <span t-if="doc.employment_type in ['organik','pkwt']">
+                                <t t-esc="doc.keterangan_jabatan_id.name or ''"/>
+                            </span>
+                            <span t-else="">
+                                <t t-esc="doc.fungsi_penugasan_id.name or ''"/>
+                            </span>
+                        </div>
+
+                        <div>
+                            <t t-set="ijazah_last" t-value="doc.hr_employee_ijazah_ids.sorted(key=lambda x: x.create_date, reverse=True)[:1]"/>
+                            <t t-if="ijazah_last">
+                                <t t-set="pend_sel" t-value="ijazah_last[0].pendidikan_terakhir_selc or ''"/>
+                                <t t-set="pend_label"
+                                   t-value="dict(ijazah_last[0]._fields['pendidikan_terakhir_selc'].selection).get(pend_sel, '')"/>
+                                <div>
+                                    <strong>Pendidikan Terakhir:</strong>
+                                    <span t-esc="pend_label"/>
+                                </div>
+                            </t>
+                        </div>
+
+                        <div>
+                            <strong>Tempat/Tanggal Lahir:</strong>
+                            <span>
+                                <t t-esc="doc.place_of_birth or ''"/>
+                                <span t-if="doc.place_of_birth and doc.date_of_birth">, </span>
+                                <t t-esc="doc.date_of_birth or ''"/>
+                            </span>
+                        </div>
+
+                        <br/>
+                        <h4>Riwayat Jabatan</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No. SK</th>
+                                    <th>Jabatan</th>
+                                    <th>TMT</th>
+                                    <th>Masa Jabatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.histori_jabatan_ids" t-as="hj">
+                                    <td t-esc="hj.sk_number or ''"/>
+                                    <td t-esc="hj.jabatan or ''"/>
+                                    <td t-esc="hj.tmt_date or ''"/>
+                                    <td t-esc="hj.masa_jabatan_bulan or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h4>Hukuman</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No. SK</th>
+                                    <th>Tanggal Mulai</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Masa Hukuman</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.hr_employee_hukuman_ids" t-as="huk">
+                                    <td t-esc="huk.sk_number or ''"/>
+                                    <td t-esc="huk.date_start or ''"/>
+                                    <td t-esc="huk.date_end or ''"/>
+                                    <td t-esc="huk.masa_hukuman or ''"/>
+                                    <td t-esc="huk.description or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h4>Ijazah</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Pendidikan Terakhir</th>
+                                    <th>Jurusan</th>
+                                    <th>Asal Sekolah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.hr_employee_ijazah_ids" t-as="ijz">
+                                    <td>
+                                        <t t-set="sel_val" t-value="ijz.pendidikan_terakhir_selc or ''"/>
+                                        <t t-esc="dict(ijz._fields['pendidikan_terakhir_selc'].selection).get(sel_val, '')"/>
+                                    </td>
+                                    <td t-esc="ijz.jurusan or ''"/>
+                                    <td t-esc="ijz.asal_sekolah or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h4>Sertifikasi &amp; Pelatihan</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nama Sertifikasi</th>
+                                    <th>Tanggal Mulai</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Tanggal Kadaluarsa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.hr_employee_sertifikasi_pelatihan_ids" t-as="sp">
+                                    <td t-esc="sp.name or ''"/>
+                                    <td t-esc="sp.certification_start_date or ''"/>
+                                    <td t-esc="sp.certification_end_date or ''"/>
+                                    <td t-esc="sp.certification_expiration_date or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h4>Penilaian Kinerja</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tahun</th>
+                                    <th>Semester</th>
+                                    <th>Penilaian</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.penilaian_kerja_ids" t-as="pk">
+                                    <td t-esc="pk.tahun or ''"/>
+                                    <td t-esc="pk.semester or ''"/>
+                                    <td t-esc="pk.penilaian or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h4>Assesment</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Hasil</th>
+                                    <th>Lampiran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.assesment_ids" t-as="ass">
+                                    <td t-esc="ass.date or ''"/>
+                                    <td t-esc="ass.hasil or ''"/>
+                                    <td>
+                                        <t t-if="ass.attachment_file">
+                                            <span>✓ Ada Lampiran</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>-</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

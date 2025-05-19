@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kkhc_approval_line,History Approval KKHC,model_kkhc_approval_line,,1,1,1,1
+access_kkhc_document_line,Dokumen Terkait KKHC,model_kkhc_document_line,,1,1,1,1
+access_kkhc_reject_wizard,Reject KKHC,model_kkhc_reject_wizard,,1,1,1,1
+access_rkap_approval_line,History Approval RKAP,model_rkap_approval_line,,1,1,1,1
+access_rkap_reject_wizard,Reject RKAP,model_rkap_reject_wizard,,1,1,1,1
+access_nodin_approval_line,History Approval Nota Dinas,model_nodin_approval_line,,1,1,1,1
+access_nodin_document_line,Dokumen Terkait Nota Dinas,model_nodin_document_line,,1,1,1,1
+access_nodin_reject_wizard,Reject Nota Dinas,model_nodin_reject_wizard,,1,1,1,1
+access_account_keuangan_monitor_kkhc_line,Monitor KKHC Lines,model_account_keuangan_monitor_kkhc_line,,1,1,1,1
+access_agp_kode_masalah,Kode Masalah,model_agp_kode_masalah,,1,1,1,1
+access_account_keuangan_nota_dinas_bod,Nota Dinas BoD,model_account_keuangan_nota_dinas_bod,,1,1,0,0
+access_nodin_bayar_wizard,Wizard Bayar Nodin,model_nodin_bayar_wizard,,1,1,1,1
+
+access_account_keuangan_kkhc_line_wizard,access.account.keuangan.kkhc.line.wizard,model_account_keuangan_kkhc_line_wizard,,1,1,1,1
+access_account_keuangan_kkhc_bod,KKHC Hide for BOD,model_account_keuangan_kkhc,agp_keuangan_dro.group_board_of_director,1,0,0,0
+
+access_account_keuangan_kkhc_reject,KKHC with Item Reject by KP,model_account_keuangan_kkhc_reject,,1,0,0,0
+access_account_keuangan_kkhc_reject_line,Items of KKHC with Item Reject by KP,model_account_keuangan_kkhc_reject_line,,1,0,0,0
+
+access_account_keuangan_rkap_maker,Maker RKAP,model_account_keuangan_rkap,agp_keuangan_dro.group_budgetting_maker_branch,1,0,0,0

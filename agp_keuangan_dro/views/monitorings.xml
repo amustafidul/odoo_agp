@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- RKAP  -->
+        <record id="account_keuangan_rkap_line_view_tree" model="ir.ui.view">
+            <field name="name">account.keuangan.rkap.line.view.tree</field>
+            <field name="model">account.keuangan.rkap.line</field>
+            <field name="arch" type="xml">
+                <tree string="RKAP Lines" create="0">
+                    <field name="rkap_id" readonly="1"/>
+                    <field name="branch_id" readonly="1"/>
+                    <field name="header_state" string="Status RKAP" readonly="1"/>
+                    <field name="kode_anggaran_id" readonly="1"/>
+                    <field name="deskripsi" readonly="1"/>
+                    <field name="account_code_id" readonly="1"/>
+                    <field name="is_approved_by_divs" invisible="1" readonly="1"/>
+                    <field name="nominal" string="Pengajuan" readonly="1"/>
+                    <field name="pemakaian_anggaran" string="Realisasi" readonly="1"/>
+                    <field name="realisasi" string="Sisa Pengajuan" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- RKAP Search View with Auto-Search -->
+        <record id="account_keuangan_rkap_line_search_view" model="ir.ui.view">
+            <field name="name">account.keuangan.rkap.line.view.search</field>
+            <field name="model">account.keuangan.rkap.line</field>
+            <field name="arch" type="xml">
+                <search string="Search RKAP Lines" auto_search="1">
+                    <field name="branch_id"/>
+                    <field name="rkap_id"/>
+                    <field name="header_state"/>
+                    <field name="kode_anggaran_id"/>
+                    <field name="account_code_id"/>
+                    <filter name="group_by_branch" string="Group by Branch" domain="[]" context="{'group_by': 'branch_id'}"/>
+                    <filter name="group_by_rkap" string="Group by RKAP" domain="[]" context="{'group_by': 'rkap_id'}"/>
+                    <filter name="group_by_status" string="Group by Status" domain="[]" context="{'group_by': 'header_state'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- RKAP Actions with Default Grouping -->
+        <!-- <record id="account_keuangan_rkap_line_usaha_action" model="ir.actions.act_window">
+            <field name="name">RKAP Lines Usaha</field>
+            <field name="res_model">account.keuangan.rkap.line</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account_keuangan_rkap_line_view_tree"/>
+            <field name="domain">[('item_type', '=', 'item_usaha')]</field>
+            <field name="search_view_id" ref="account_keuangan_rkap_line_search_view"/>
+            <field name="context">{'group_by': ['branch_id', 'rkap_id', 'header_state']}</field>
+        </record> -->
+
+        <!-- <record id="account_keuangan_rkap_line_umum_action" model="ir.actions.act_window">
+            <field name="name">RKAP Lines Umum</field>
+            <field name="res_model">account.keuangan.rkap.line</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account_keuangan_rkap_line_view_tree"/>
+            <field name="domain">[('item_type', '=', 'item_umum')]</field>
+            <field name="search_view_id" ref="account_keuangan_rkap_line_search_view"/>
+            <field name="context">{'group_by': ['branch_id', 'rkap_id', 'header_state']}</field>
+        </record> -->
+
+        <!-- Action Pak Yulman dan Bu Wahyu -->
+        <record id="action_approve_as_kadiv" model="ir.actions.server">
+            <field name="name">Approve sebagai Kadiv</field>
+            <field name="model_id" ref="agp_keuangan_ib.model_account_keuangan_kkhc_line"/>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_kkhc_line"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = records._action_approve_as_kadiv()
+            </field>
+        </record>
+
+        <!-- KKHC -->
+        <record id="account_keuangan_kkhc_line_view_tree_divisi" model="ir.ui.view">
+            <field name="name">account.keuangan.kkhc.line.view.tree</field>
+            <field name="model">account.keuangan.kkhc.line</field>
+            <field name="arch" type="xml">
+                <tree string="KKHC Lines" create="0" editable="top">
+                    <button name="%(action_approve_as_kadiv)d" type="action" string="Approve sebagai Kadiv" groups="agp_keuangan_dro.group_division_head" />
+                    <field name="available_kode_anggaran_ids" invisible="1"/>
+                    <field name="kkhc_id" readonly="1"/>
+                    <field name="branch_id" readonly="1"/>
+                    <field name="header_state" string="Status KKHC" readonly="1" />
+                    <field name="kode_anggaran_id" readonly="0" />
+                    <field name="is_approved_by_divs" invisible="1"/>
+                    <field name="deskripsi" readonly="1" />
+                    <field name="account_code_id" readonly="1" />
+                    <field name="deskripsi_penggunaan" readonly="1" />
+                    <field name="bank_account_id" optional="hide" readonly="1" />
+                    <field name="nominal_pengajuan" string="Pengajuan" readonly="1" />
+                    <field name="nominal_disetujui_divisi" string='Disetujui' readonly="0"/>
+                    <!-- <field name="sisa_pengajuan" string="Sisa" readonly="0" /> -->
+                </tree>
+            </field>
+        </record>
+
+        <!-- KKHC Search View with Auto-Search -->
+        <record id="account_keuangan_kkhc_line_search_view" model="ir.ui.view">
+            <field name="name">account.keuangan.kkhc.line.view.search</field>
+            <field name="model">account.keuangan.kkhc.line</field>
+            <field name="arch" type="xml">
+                <search string="Search KKHC Lines" auto_search="1">
+                    <field name="branch_id"/>
+                    <field name="kkhc_id"/>
+                    <field name="header_state"/>
+                    <field name="kode_anggaran_id"/>
+                    <field name="account_code_id"/>
+                    <filter name="group_by_branch" string="Group by Branch" domain="[]" context="{'group_by': 'branch_id'}"/>
+                    <filter name="group_by_rkap" string="Group by KKHC" domain="[]" context="{'group_by': 'kkhc_id'}"/>
+                    <filter name="group_by_status" string="Group by Status" domain="[]" context="{'group_by': 'header_state'}"/>
+                </search>
+            </field>
+        </record> 
+
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_employee_history_wizard_form" model="ir.ui.view">
+        <field name="name">hr.employee.history.wizard.form</field>
+        <field name="model">hr.employee.history.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update Histori Jabatan">
+                <group>
+                    <field name="employee_ids" widget="many2many_tags" readonly="1"/>
+                    <field name="history_line_ids" widget="one2many_list">
+                        <tree editable="bottom">
+                            <field name="employee_id" readonly="1"/>
+                            <field name="jabatan_awal" readonly="1"/>
+                            <field name="jabatan_sekarang"/>
+                            <field name="tmt_date"/>
+                            <field name="tanggal_pengangkatan" required="1"/>
+                            <field name="tanggal_selesai_kontrak" attrs="{'readonly': [('jabatan_sekarang','=','organik')],
+                                                                                        'required': [('jabatan_sekarang','!=','organik')]}"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button string="Update History" type="object" name="action_update_history" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

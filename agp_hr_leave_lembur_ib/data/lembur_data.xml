@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="default_lembur_status_type_lembur" model="hr.leave.type.lembur">
+            <field name="name">Default Lembur Status</field>
+            <field name="leave_validation_type">dynamic_approval</field>
+        </record>
+    </data>
+</odoo>

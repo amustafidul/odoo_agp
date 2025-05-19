@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_position_payroll,access_employee_position_payroll,model_employee_position_payroll,,1,1,1,1
+access_employee_unit_payroll,access_employee_unit_payroll,model_employee_unit_payroll,,1,1,1,1
+access_odoo_payroll_nilai_kemahalan,access_odoo_payroll_nilai_kemahalan,model_odoo_payroll_nilai_kemahalan,,1,1,1,1
+access_odoo_payroll_tunjangan,access_odoo_payroll_tunjangan,model_odoo_payroll_tunjangan,,1,1,1,1
+access_wizard_create_mass_payslip,access_wizard_create_mass_payslip,model_wizard_create_mass_payslip,,1,1,1,1

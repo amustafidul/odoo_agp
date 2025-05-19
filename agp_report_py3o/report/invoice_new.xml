@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="invoice_report_py3o" model="ir.actions.report">
+        <field name="name">Invoice New</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.move</field>
+        <field name="report_name">py3o_invoice</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_py3o</field>
+        <field name="py3o_template_fallback">report/report_invoice_v1.odt</field>
+        <field
+                name="print_report_name"
+        >object.name.replace(' ', '_') + '- Invoice'
+        </field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

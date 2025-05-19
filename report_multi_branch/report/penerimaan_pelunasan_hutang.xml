@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- Define the report -->
+        <record id="paperformat_penerimaan_pelunasan_hutang" model="report.paperformat">
+            <field name="name">Penerimaan/Pelunasan Hutang A4</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_penerimaan_pelunasan_hutang_pdf" model="ir.actions.report">
+            <field name="name">Penerimaan/Pelunasan Hutang</field>
+            <field name="model">account.payment</field>
+            <!-- <field name="report_type">qweb-pdf</field> -->
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">report_multi_branch.report_penerimaan_pelunasan_hutang</field>
+            <field name="report_file">report_multi_branch.report_penerimaan_pelunasan_hutang</field>
+            <field name="paperformat_id" ref="report_multi_branch.paperformat_penerimaan_pelunasan_hutang"/>
+        </record>
+
+
+        <!-- Define the template for the report -->
+        <template id="report_penerimaan_pelunasan_hutang">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+
+                        <div class="page">
+                            <table class="table-condensed" width="100%">
+                                <tr>
+                                    <td width="10%" style="border: hidden; vertical-align : middle ; text-align : center">
+                                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 45px;"/>
+                                    </td>
+                                    <td width="60%" style="border-left: hidden; border-top: hidden; border-bottom: hidden; vertical-align : middle ; text-align : left">
+                                        <b style="font-size: 25px">PT. ADHI GUNA PUTERA</b>
+                                        <br/>
+                                        <b style="font-size: 20px">KANTOR PUSAT</b>
+                                    </td>
+                                    <td width="30%" style="border: 1px solid black; padding-left: 5px">
+                                        <span>Nomor Urut Komputer :</span>
+                                        <span t-field="o.name"/>
+                                        <br/>
+                                        <span>Tgl. Rencana Pengeluaran :</span>
+                                        <span t-field="o.date"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-3">
+                                </div>
+                                <div class="col-6 text-center">
+                                    <b style="border-bottom: 1px solid black">LEMBAR VERIFIKASI PERSETUJUAN</b>
+                                    <br/>
+                                    <t t-if="o.partner_type == 'customer' and o.is_internal_transfer == False">
+                                        <b>PENERIMAAN MELALUI KAS/BANK</b>
+                                    </t>
+                                    <t t-if="o.partner_type == 'supplier' and o.is_internal_transfer == False">
+                                        <b>PENGELUARAN MELALUI KAS/BANK</b>
+                                    </t>
+                                </div>
+                                <div class="col-3">
+                                </div>
+                            </div>
+
+                            <br/>
+
+
+                            <div>KELENGKAPAN DATA PENDUKUNG :</div>
+                            <table class="laporan-item" style="border: none" width="100%">
+                                <tr>
+                                    <td style="border: hidden" width="2%">01</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Kwitansi Bermaterai</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">02</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Invoice</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">03</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Nota - Nota</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">04</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Pemohonan Pengambilan Uang Muka</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">05</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Rekening Koran Bank</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">06</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Bukti Potong PPh 23, PPh 26, PPh 15, PPh Psl 4</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">07</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Anggaran</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">08</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Foto Copy Cek</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">09</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Bukti Transfer / Slip Bank</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">10</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Memorial</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: hidden" width="2%">11</td>
+                                    <td style="border: hidden; padding-left: 5px" width="93%">Lain - Lain</td>
+                                    <td style="border: hidden" width="5%">
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+
+                            <div style="border-bottom: 1px solid black">KETERANGAN</div>
+                            <br/>
+                            <table class="table-condensed" width="100%">
+                                <tr>
+                                    <td width="70%" style="border: hidden">
+                                        <!-- <t t-if="o.partner_type == 'customer' and o.is_internal_transfer == False">
+                                            <span>Penerimaan</span>
+                                        </t>
+                                        <t t-if="o.partner_type == 'supplier' and o.is_internal_transfer == False">
+                                            <span>Pembayaran</span>
+                                        </t> -->
+                                        <span t-field="o.ref" style="word-break: break-all;"/>
+                                    </td>
+                                    <td width="5%" style="border-left: hidden; border-top: hidden; border-bottom: hidden" align="right">
+                                        <b>Rp</b>
+                                    </td>
+                                    <td width="25%" style="border: 1px solid black" align="right">
+                                        <t t-set="total_rupiah" t-value="0.0" />
+                                        <t t-foreach="o.move_id.line_ids" t-as="line">
+                                            <!-- <t t-set="total_rupiah" t-value="total_rupiah + line.debit - line.credit" /> -->
+                                            <t t-set="total_rupiah" t-value="total_rupiah + line.debit" />
+                                        </t>
+                                        <b>
+                                            <span t-esc="'{0:,.0f}'.format(total_rupiah)"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+
+                            <table class="table-condensed" width="100%">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th style="border: 1px solid black">BIDANG</th>
+                                        <th style="border: 1px solid black">POS ANGGARAN</th>
+                                        <th style="border: 1px solid black">KODE AKUN</th>
+                                        <th style="border: 1px solid black">JUMLAH</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.move_id.line_ids" t-as="line">
+                                        <td style="border: 1px solid black"></td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="line.account_id.display_name"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="line.account_id.code"/>
+                                        </td>
+                                        <td style="border: 1px solid black" align="right">
+                                            <!-- Tampilkan debit jika ada, jika tidak tampilkan kredit dengan tanda negatif -->
+                                            <span t-field="line.debit" t-if="line.debit > 0.0"/>
+                                            <span t-field="line.credit" t-if="line.credit > 0.0"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <br/>
+                            <br/>
+                            <br/>
+
+                            <table class="table-condensed" width="100%">
+                                <tr class="text-center">
+                                    <td style="border: 1px solid black">KELENGKAPAN DOKUMEN</td>
+                                    <td style="border: 1px solid black">DIBUAT OLEH</td>
+                                    <td style="border: 1px solid black" colspan="2">VERIFIKATOR</td>
+                                </tr>
+                                <tr>
+                                    <td width="25%" rowspan="2" style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black">
+                                        <br/>
+                                        <br/>
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                        <span>LENGKAP</span>
+                                        <br/>
+                                        <span style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px">
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        </span>
+                                        <span>TIDAK LENGKAP</span>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                    </td>
+                                    <td width="25%" style="border-bottom: 1px solid black" rowspan="2"></td>
+                                    <td width="25%" style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; height: 10px" class="text-center">KEUANGAN</td>
+                                    <td width="25%" style="border-right: 1px solid black; border-bottom: 1px solid black; height: 10px" class="text-center">AKUNTANSI</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; height: 120px"></td>
+                                    <td style="border-bottom: 1px solid black; border-right: 1px solid black; height: 120px"></td>
+                                </tr>
+                            </table>
+
+                            <br/>
+                            <br/>
+                            <br/>
+
+                            <table class="table-bordered;bottom:0px;position: absolute;" width="100%">
+                              <colgroup>
+                                    <col style="width: 30%;"/>
+                                    <col style="width: 30%;"/>
+                              </colgroup>
+                              <tr>
+                                  <td style="width: 33%; text-align: center; padding: 10px; border: 1px solid #000;">
+                                      MENGETAHUI,<br/><br/><br/><br/>
+                                      __________________________<br/>
+                                      <br/>
+        
+                                  </td>
+                                  
+                                  <td style="width: 33%; text-align: center; padding: 10px; border: 1px solid #000;">
+                                      MENYETUJUI,<br/><br/><br/><br/>
+                                      __________________________<br/>
+                                      <br/>
+                                  </td>
+                                  
+                                  <td style="width: 33%; text-align: center; padding: 10px; border: 1px solid #000;">
+                                      PEMOHON,<br/><br/><br/><br/>
+                                      __________________________<br/>
+                                      <br/>
+                                  </td>
+                              </tr>
+                            </table>
+                        </div>
+
+
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

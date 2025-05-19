@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_compare_tax" model="report.paperformat">
+        <field name="name">Compare Tax A4</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_compare_tax" model="ir.actions.report">
+        <field name="name">Compare Tax</field>
+        <field name="model">compare.tax.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_compare_tax</field>
+        <field name="report_file">report_multi_branch.report_compare_tax</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_compare_tax" />
+    </record>
+
+    <template id="report_compare_tax">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+
+                        <h4 style="text-align: center">
+                            <b>
+                                <t t-if="type == 'masuk'">Compare Tax Masukan</t>
+                                <t t-if="type == 'keluar'">Compare Tax Keluaran</t>
+                            </b>
+                        </h4>
+
+
+                        <style>
+                            .laporan-item tr th {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            vertical-align: middle;
+                            background-color: #00b8e6;
+                            }
+
+                            .laporan-item tr td {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            }
+                        </style>
+                        <table class="laporan-item" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>No NPWP</th>
+                                    <th>Nama PT</th>
+                                    <th>No Faktur</th>
+                                    <th>Total Pembelian</th>
+                                    <th>Total Pajak Tarikan</th>
+                                    <th>Total Pajak Odoo</th>
+                                    <th>Invoice</th>
+                                    <!-- <th>Type Query</th> -->
+                                    <!-- <th>Query</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <t t-set="no" t-value="0"/> -->
+                                <tr t-foreach="lines" t-as="line">
+                                    <!-- <t t-set="no" t-value="no + 1"/> -->
+                                    <t t-set="compare_style" t-value="'background-color: #FFFFFF;'"/>
+                                    
+                                    <t t-if="line['nominal_ppn'] == line['total_pajak_odoo'] and line['nominal_ppn'] > 0 and line['total_pajak_odoo'] > 0">
+                                        <t t-set="compare_style" t-value="'background-color: #008000;'"/>
+                                    </t>
+                                    <t t-if="line['nominal_ppn'] != line['total_pajak_odoo'] and line['total_pajak_odoo'] > 0">
+                                        <t t-set="compare_style" t-value="'background-color: #FF0000;'"/>
+                                    </t>
+                                    <td class="text-center">
+                                        <span t-esc="line['no_npwp']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line['nama_pt']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['no_faktur']"/>
+                                    </td>
+                                    <td align="right">
+                                        <!-- <span t-esc="line['nominal_invoice']"/> -->
+                                        <span t-esc="'{0:,.0f}'.format(line['nominal_invoice'])"/>
+                                    </td>
+                                    <td t-att-style="compare_style" align="right">
+                                        <!-- <span t-esc="line['nominal_ppn']"/> -->
+                                        <span t-esc="'{0:,.0f}'.format(line['nominal_ppn'])"/>
+                                    </td>
+                                    <td t-att-style="compare_style" align="right">
+                                        <!-- <span t-esc="line['amount_tax']"/> -->
+                                        <span t-esc="'{0:,.0f}'.format(line['total_pajak_odoo'])"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['invoice']"/>
+                                    </td>
+                                    <!-- <td>
+                                        <span t-esc="line['tipe_pajak']"/>
+                                    </td> -->
+                                    <!-- <td>
+                                        <span t-esc="line['tipe_query']"/>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

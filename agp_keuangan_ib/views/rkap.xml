@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <data noupdate="1">
+            <!-- Sequence Data -->
+            <record id="seq_rkap" model="ir.sequence">
+                <field name="name">Keuangan RKAP</field>
+                <field name="code">sequence.keuangan.rkap</field>
+                <field name="padding">4</field>
+                <field name="number_next">1</field>
+                <field name="number_increment">1</field>
+            </record>
+        </data>
+
+        <!-- Action untuk Invoice -->
+        <record id="action_rkap" model="ir.actions.act_window">
+            <field name="name">RKAP</field>
+            <field name="res_model">account.keuangan.rkap</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="context">{'show_generate_konsolidasi_button': 'group_board_of_director' in user_groups}</field> -->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a RKAP
+                </p><p>
+                    Create RKAP, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+        <!-- Form View untuk Invoice -->
+        <record id="view_rkap_form" model="ir.ui.view">
+            <field name="name">rkap.form</field>
+            <field name="model">account.keuangan.rkap</field>
+            <field name="arch" type="xml">
+                <form string="RKAP">
+                    <header>
+                        <!-- <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/> -->
+                        <!-- <button name="action_print" type="object" string="Preview" states="posted" class="btn-secondary"/> -->
+                        <!-- <button name="action_print" type="object" string="Preview" states="draft" class="btn-secondary"/> -->
+                        <!-- <field name="state" widget="statusbar" statusbar_visible="draft,posted"/> -->
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <!-- Menggunakan span untuk teks statis "Invoice" -->
+                            <span class="o_form_label">RKAP</span>
+
+                            <h1>
+                                <!-- Menggunakan field name untuk menampilkan nilai dari field 'name' di model -->
+                                <field name="name"  placeholder="Draft"/>
+                                <!-- <span attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'draft'), ('name', '!=', '/'), ('posted_before', '=', True), ('quick_edit_mode', '=', True)]}">Draft</span> -->
+                            </h1>
+                        </div>
+                        <br></br>
+                        
+                        <group>
+                            <group>
+                                <field name="tahun_anggaran"/>
+                                <field name="branch_id"/>
+                                <field name="ref"/>
+                                <field name="keterangan"/>
+                            </group>
+                            <group>
+                                <field name="state" invisible="1"/>
+                                <field name="tanggal_pengajuan"/>
+                                <field name="tanggal_disetujui" attrs="{'readonly': [('state', '=', 'approved')], 'invisible': [('state', '=', 'draft')]}"/> 
+                                <field name="jumlah_pemasukan"/>
+                                <field name="pemakaian_pemasukan"/>
+                                <field name="sisa_pemasukan"/>
+                                <field name="jumlah_pengeluaran"/>
+                                <field name="pemakaian_pengeluaran"/>
+                                <field name="sisa_pengeluaran"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page id="rkap_tab" name="rkap_tab" string="RKAP Lines">
+                                <field name="rkap_line_ids" attrs="{'readonly': [('state', '=', 'approved')]}" widget="section_and_note_one2many" context="{'default_rkap_id': id}">
+                                    <tree editable="bottom" string="RKAP Lines" default_order="id">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <!-- <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/> -->
+                                            <!-- <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/> -->
+                                        </control>
+                                        <field name="header_state" invisible="1" />
+    
+                                        <!-- Displayed fields -->
+                                        <field name="sequence" string="No." />
+                                        <field name="kode_anggaran_id" options="{'no_create': True}" 
+                                            attrs="{'readonly': [('header_state', '=', 'approved')]}"
+                                            context="{'tree_view_ref': 'module_name.view_kode_anggaran_no_saldo'}"/>
+                                        <field name="deskripsi" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                        <field name="account_code_id" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                        <!-- <field name="deskripsi_penggunaan"/> -->
+                                        <field name="nominal" string="Saldo" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                        <field name="pemakaian_anggaran" string="Realisasi" readonly="1" />
+                                        <field name="realisasi" string="Sisa Saldo" readonly="1" />
+                                        <!-- <button name="action_approve" type="object" string="Setujui" states="draft" class="btn-primary"/>
+                                        <button name="action_reject" type="object" string="Tolak" states="draft" class="btn-danger"/> -->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View untuk Invoice -->
+        <record id="view_rkap_tree" model="ir.ui.view">
+            <field name="name">invoice.rkap.tree</field>
+            <field name="model">account.keuangan.rkap</field>
+            <field name="arch" type="xml">
+                <tree string="RKAP">
+                    <field name="name" optional="show"/>
+                    <field name="branch_id" optional="show"/>
+                    <field name="ref" optional="hide"/>
+                    <field name="keterangan" optional="hide"/>
+                    <field name="tanggal_pengajuan" optional="hide"/>
+                    <field name="tanggal_disetujui" optional="hide"/>
+                    <field name="jumlah_pemasukan" optional="show"/>
+                    <field name="pemakaian_pemasukan" optional="show"/>
+                    <field name="sisa_pemasukan" optional="show"/>
+                    <field name="jumlah_pengeluaran" optional="show"/>
+                    <field name="pemakaian_pengeluaran" optional="show"/>
+                    <field name="sisa_pengeluaran" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

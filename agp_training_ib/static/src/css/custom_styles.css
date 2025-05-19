@@ -1,0 +1,39 @@
+.stars {
+    display: flex;
+    gap: 5px;
+}
+
+.stars .fa-star {
+    color: yellow;
+    font-size: 24px;
+}
+
+.stars .fa-star.filled {
+    color: #ffcc00;
+}
+
+.badge-draft {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-on_review {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.badge-approved {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-rejected {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.o_kanban_card:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+}

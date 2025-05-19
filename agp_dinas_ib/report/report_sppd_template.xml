@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_hr_leave_dinas_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="padding: 30px; font-size: 12px;">
+                        <h2 style="text-align: center; font-size: 18px; margin-bottom: 25px;">SURAT PERINTAH PERJALANAN DINAS (SPPD)</h2>
+
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 30%;"><strong>Nomor</strong></td>
+                                <td><t t-esc="doc.name"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tanggal</strong></td>
+                                <td><t t-esc="doc.create_date.strftime('%d-%m-%Y') if doc.create_date else '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nota Dinas</strong></td>
+                                <td><t t-esc="doc.nota_dinas_id.name or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pemohon</strong></td>
+                                <td><t t-esc="doc.assigner_id.name or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tujuan</strong></td>
+                                <td><t t-esc="doc.destination_place or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tanggal Berangkat</strong></td>
+                                <td><t t-esc="doc.date_from.strftime('%d-%m-%Y') if doc.date_from else '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tanggal Kembali</strong></td>
+                                <td><t t-esc="doc.date_to.strftime('%d-%m-%Y') if doc.date_to else '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Transportasi</strong></td>
+                                <td>
+                                    <t t-esc="' / '.join(doc.transport_ids.mapped('name')) if doc.transport_ids else '-'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pemberi Undangan</strong></td>
+                                <td><t t-esc="doc.pemberi_undangan or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Agenda</strong></td>
+                                <td><t t-esc="doc.agenda_dinas or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fasilitas</strong></td>
+                                <td><t t-esc="doc.facility or '-'"/></td>
+                            </tr>
+                        </table>
+
+                        <div style="margin-top: 25px;">
+                            <strong>Peserta Dinas:</strong>
+                            <ul>
+                                <li><t t-esc="doc.assignee_id.name or '-'"/> (Utama)</li>
+                                <t t-foreach="doc.participant_ids" t-as="part">
+                                    <li><t t-esc="part.name"/></li>
+                                </t>
+                            </ul>
+                        </div>
+
+                        <t t-if="doc.pengikut_eksternal">
+                            <div style="margin-top: 25px;">
+                                <strong>Pengikut Eksternal:</strong>
+                                <ul>
+                                    <t t-foreach="doc.external_follower_ids" t-as="ext">
+                                        <li><t t-esc="ext.name"/> - <t t-esc="ext.institution or '-'"/></li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </t>
+
+                        <div style="margin-top: 30px;">
+                            <strong>Total Biaya Dinas:</strong> <t t-esc="doc.total_biaya_dinas"/> <t t-esc="doc.currency_id.symbol"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_hr_leave_dinas"
+        string="Cetak SPPD"
+        model="hr.leave.dinas"
+        report_type="qweb-pdf"
+        name="agp_dinas_ib.report_hr_leave_dinas_template"
+        file="agp_dinas_ib.report_hr_leave_dinas_template"
+        print_report_name="'SPPD - %s' % (object.name)"
+    />
+</odoo>

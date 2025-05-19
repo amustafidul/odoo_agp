@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="rule_tna_submission_user_own_draft_actions" model="ir.rule">
+            <field name="name">TNA Submission: Pengusul - Own Draft (Write/Unlink)</field>
+            <field name="model_id" ref="model_tna_submission"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="domain_force">[('user_id','=',user.id), ('state','=','draft')]</field>
+        </record>
+        <record id="rule_tna_submission_user_read_own" model="ir.rule">
+            <field name="name">TNA Submission: Pengusul - Read Own</field>
+            <field name="model_id" ref="model_tna_submission"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+        </record>
+        <record id="rule_tna_submission_officer_manager_read_all" model="ir.rule">
+            <field name="name">TNA Submission: Officer/Manager SDM - Read All</field>
+            <field name="model_id" ref="model_tna_submission"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+        <record id="rule_tna_submission_manager_all" model="ir.rule">
+            <field name="name">TNA Submission: Manager SDM - All Operations Access</field>
+            <field name="model_id" ref="model_tna_submission"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+
+        <record id="rule_tna_proposed_training_user_actions_via_submission_draft" model="ir.rule">
+            <field name="name">TNA Proposed Training: Pengusul - via Submission Draft (Write/Unlink)</field>
+            <field name="model_id" ref="model_tna_proposed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="domain_force">[('submission_id.user_id','=',user.id), ('submission_id.state','=','draft'), ('state','in',('new','pending_approval'))]</field>
+        </record>
+        <record id="rule_tna_proposed_training_user_read_via_submission_own" model="ir.rule">
+            <field name="name">TNA Proposed Training: Pengusul - Read via Submission Own</field>
+            <field name="model_id" ref="model_tna_proposed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[('submission_id.user_id','=',user.id)]</field>
+        </record>
+        <record id="rule_tna_proposed_training_officer_manager_read_all" model="ir.rule">
+            <field name="name">TNA Proposed Training: Officer/Manager SDM - Read All</field>
+            <field name="model_id" ref="model_tna_proposed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+        <record id="rule_tna_proposed_training_manager_all" model="ir.rule">
+            <field name="name">TNA Proposed Training: Manager SDM - All Operations Access</field>
+            <field name="model_id" ref="model_tna_proposed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+
+        <record id="rule_tna_proposed_participant_user_actions_via_submission_draft" model="ir.rule">
+            <field name="name">TNA Proposed Participant: Pengusul - via Submission Draft (Write/Unlink)</field>
+            <field name="model_id" ref="model_tna_proposed_participant"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="domain_force">[('proposed_training_id.submission_id.user_id','=',user.id), ('proposed_training_id.submission_id.state','=','draft')]</field>
+        </record>
+        <record id="rule_tna_proposed_participant_user_read_via_submission_own" model="ir.rule">
+            <field name="name">TNA Proposed Participant: Pengusul - Read via Submission Own</field>
+            <field name="model_id" ref="model_tna_proposed_participant"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[('proposed_training_id.submission_id.user_id','=',user.id)]</field>
+        </record>
+        <record id="rule_tna_proposed_participant_officer_manager_read_all" model="ir.rule">
+            <field name="name">TNA Proposed Participant: Officer/Manager SDM - Read All</field>
+            <field name="model_id" ref="model_tna_proposed_participant"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+
+        <record id="rule_training_course_officer_block_delete_if_completed" model="ir.rule">
+            <field name="name">Training Course: Officer SDM - Block Delete if Completed</field>
+            <field name="model_id" ref="model_training_course"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[('state', '=', 'completed')]</field>
+        </record>
+        <record id="rule_training_course_officer_manager_read_all" model="ir.rule">
+            <field name="name">Training Course: Officer/Manager SDM - Read All</field>
+            <field name="model_id" ref="model_training_course"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+        <record id="rule_training_course_manager_all" model="ir.rule">
+            <field name="name">Training Course: Manager SDM - All Operations Access</field>
+            <field name="model_id" ref="model_training_course"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+
+        <record id="rule_hr_employee_completed_training_user_read_own" model="ir.rule">
+            <field name="name">Completed Training: Pengusul (User Biasa) - Read Own</field>
+            <field name="model_id" ref="model_hr_employee_completed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+        </record>
+        <record id="rule_hr_employee_completed_training_officer_manager_read_all" model="ir.rule">
+            <field name="name">Completed Training: Officer/Manager SDM - Read All</field>
+            <field name="model_id" ref="model_hr_employee_completed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+        <record id="rule_hr_employee_completed_training_manager_all" model="ir.rule">
+            <field name="name">Completed Training: Manager SDM - All Operations Access</field>
+            <field name="model_id" ref="model_hr_employee_completed_training"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+
+        <record id="rule_training_evaluation_user_own_draft_actions" model="ir.rule">
+            <field name="name">Training Evaluation: Pengusul (User Biasa) - Own Draft (Write/Create)</field>
+            <field name="model_id" ref="model_training_evaluation"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">['&amp;', ('status','=','draft'), '|', ('employee_id.user_id','=',user.id), ('supervisor_id.user_id','=',user.id)]</field>
+        </record>
+        <record id="rule_training_evaluation_user_read_own" model="ir.rule">
+            <field name="name">Training Evaluation: Pengusul (User Biasa) - Read Own</field>
+            <field name="model_id" ref="model_training_evaluation"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">['|',('employee_id.user_id','=',user.id),('supervisor_id.user_id','=',user.id)]</field>
+        </record>
+        <record id="rule_training_evaluation_officer_manager_read_all" model="ir.rule">
+            <field name="name">Training Evaluation: Officer/Manager SDM - Read All</field>
+            <field name="model_id" ref="model_training_evaluation"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_officer'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+        <record id="rule_training_evaluation_manager_all" model="ir.rule">
+            <field name="name">Training Evaluation: Manager SDM - All Operations Access</field>
+            <field name="model_id" ref="model_training_evaluation"/>
+            <field name="groups" eval="[(4, ref('agp_training_management.group_agp_training_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+    </data>
+</odoo>

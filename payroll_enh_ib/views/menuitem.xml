@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="menu_anggaran_spp_dinas" name="Surat Permintaan Pembayaran" parent="hr_payroll_community.menu_hr_payroll_community_root"
+              action="report_multi_branch.action_view_spp" sequence="98"/>
+</odoo>

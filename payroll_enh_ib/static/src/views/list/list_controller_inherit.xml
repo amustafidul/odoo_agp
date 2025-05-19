@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="payroll_enh_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn btn-primary o_list_button" t-on-click="onClickMassCreatePayslips" t-if="model.root.resModel === 'hr.payslip'">
+                NEW
+            </button>
+        </xpath>
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="attributes">
+            <attribute name="t-if">model.root.resModel !== 'hr.payslip'</attribute>
+        </xpath>
+    </t>
+
+</templates>

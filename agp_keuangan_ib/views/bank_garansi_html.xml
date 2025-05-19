@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<odoo>
+    
+
+        <record id="paperformat_bank_garansi" model="report.paperformat">
+            <field name="name">Bank Garansi</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <report
+            id="action_report_bank_garansi_html"
+            model="account.keuangan.bank.garansi"
+            string="Bank Garansi Report"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_bank_garansi_html"
+            file="agp_keuangan_ib.report_bank_garansi_html"
+            
+        />
+
+        <template id="report_bank_garansi_html">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                   <!-- <style>
+                        .o_report_toolbar {
+                            display: none !important;
+                        }
+                    </style> -->
+                    <div class="page">
+                       <h2 style="text-align: center; color: black;">
+                            <t>
+                                BANK GARANSI
+                            </t>
+                        </h2>
+                        
+                        <table class="table table-bordered" style="color: black; border: 1px solid black;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">NO</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">UNIT</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">PEMBERI KERJA</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">PEKERJAAN</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">NOMOR BANK GARANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">TANGGAL TERBIT BANK GARANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">TIPE BANK GARANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">JAMINAN BANK GARANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">MASA BERLAKU BANK GARANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">JENIS BANK GARANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">BANK</th>
+                                    <th colspan="2" style="background-color: #f90; color: black; text-align: center;">ASURANSI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">DANA KEMBALI</th>
+                                    <th rowspan="2" style="background-color: #f90; color: black; text-align: center;">KETERANGAN</th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NAMA ASURANSI</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">BIAYA</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <t t-set="sum_jaminan" t-value="0"/>
+                                <t t-set="sum_biaya" t-value="0"/>
+                                <t t-set="sum_dana_kembali" t-value="0"/>
+
+                                <t t-foreach="docs" t-as="o">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <t t-set="sum_jaminan" t-value="sum_jaminan + (o.nominal_jaminan or 0)"/>
+                                    <t t-set="sum_biaya" t-value="sum_biaya + (o.biaya_asuransi or 0)"/>
+                                    <t t-set="sum_dana_kembali" t-value="sum_dana_kembali + (o.dana_kembali or 0)"/>
+
+                                    <tr style="color: black;">
+                                        <td class="text-center"><span t-esc="no"/></td>
+                                        <td><t t-esc="', '.join(o.sub_branch_ids.mapped('name')) or ''"/></td>
+                                        <td><t t-esc="o.pemberi_kerja or ''"/></td>
+                                        <td><t t-esc="o.pekerjaan or ''"/></td>
+                                        <td><t t-esc="o.name or ''"/></td>
+                                        <td><t t-esc="o.tanggal_bank_garansi.strftime('%d %b %Y').upper() if o.tanggal_bank_garansi else ''"/></td>
+                                        <td><t t-esc="o.tipe_bank_garansi_id.name or ''"/></td>
+                                        <td><t t-esc="'{:,.0f}'.format(o.nominal_jaminan)"/></td>
+                                        <td>
+                                            <t t-if="o.mulai_garansi and o.akhir_garansi">
+                                                <t t-esc="o.mulai_garansi.strftime('%d %B %Y').upper()"/> - 
+                                                <t t-esc="o.akhir_garansi.strftime('%d %B %Y').upper()"/>
+                                            </t>
+                                        </td>
+                                        <td><t t-esc="o.jenis_bank_garansi_id.name if o.jenis_bank_garansi_id else ''"/></td>
+                                        <td><t t-esc="o.bank_cabang or ''"/></td>
+                                        <td><t t-esc="o.nama_asuransi or ''"/></td>
+                                        <td><t t-esc="'{:,.0f}'.format(o.biaya_asuransi)"/></td>
+                                        <td><t t-esc="'{:,.0f}'.format(o.dana_kembali)"/></td>
+                                        <td><t t-esc="o.keterangan or ''"/></td>
+                                    </tr>
+                                </t>
+
+                                <!-- Baris Ringkasan Total -->
+                                <tr style="font-weight: bold; background-color:rgb(4, 148, 4); color: black;">
+                                    <td colspan="7" class="text-center">TOTAL</td>
+                                    <td><t t-esc="'{:,.0f}'.format(sum_jaminan)"/></td>
+                                    <td colspan="4"></td>
+                                    <td><t t-esc="'{:,.0f}'.format(sum_biaya)"/></td>
+                                    <td><t t-esc="'{:,.0f}'.format(sum_dana_kembali)"/></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        
+</odoo>

@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+
+        <!-- Form view for Sinkingfund Export Wizard -->
+        <record id="view_shl_export_wizard" model="ir.ui.view">
+            <field name="name">shl.export.wizard.form</field>
+            <field name="model">shl.export.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Export Shareholder Loan">
+                    <group>
+                        <!-- Field untuk memilih tipe transaksi -->
+                        <field name="filter_option" string="Option"/>
+                    </group>
+                    <footer>
+                        <button string="View" type="object" name="action_preview" class="btn-primary"/>
+                        <button string="Export to Excel" type="object" name="action_export" class="btn-primary"/>
+                        <button string="Export to PDF" type="object" name="action_print_pdf" class="btn-primary"/>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_open_export_shl_wizard" model="ir.actions.act_window">
+            <field name="name">Export</field>
+            <field name="res_model">shl.export.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

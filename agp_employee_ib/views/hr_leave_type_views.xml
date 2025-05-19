@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.actions.act_window" id="hr_holidays.open_view_holiday_status">
+        <field name="name">Leave Types</field>
+    </record>
+
+    <record id="edit_holiday_status_form_inherit_ib" model="ir.ui.view">
+        <field name="name">edit.holiday.status.form.inherit.ib</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='leave_validation']" position="attributes">
+                <attribute name="string">Leave Requests</attribute>
+            </xpath>
+            <xpath expr="//field[@name='responsible_id']" position="attributes">
+                <attribute name="string">Responsible Leave Officer</attribute>
+            </xpath>
+            <xpath expr="//field[@name='request_unit']" position="attributes">
+                <attribute name="string">Take Leave in</attribute>
+            </xpath>
+            <xpath expr="//field[@name='time_type']" position="attributes">
+                <attribute name="string">Kind of Leave</attribute>
+            </xpath>
+            <xpath expr="//group[@name='allocation_validation']" position="after">
+                <group name="type" string="Type">
+                    <field name="sick_time_off" string="Sick Leave"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

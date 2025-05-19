@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <data noupdate="1">
+            <!-- Sequence Data -->
+            <record id="seq_asuransi" model="ir.sequence">
+                <field name="name">Keuangan Asuransi</field>
+                <field name="code">sequence.keuangan.asuransi</field>
+                <field name="padding">4</field>
+                <field name="number_next">1</field>
+                <field name="number_increment">1</field>
+            </record>
+        </data>
+
+        <!-- Action untuk Invoice -->
+        <record id="action_asuransi" model="ir.actions.act_window">
+            <field name="name">Asuransi</field>
+            <field name="res_model">account.keuangan.asuransi</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a asuransi
+                </p><p>
+                    Create asuransi, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+        <!-- Form View untuk Invoice -->
+        <record id="view_asuransi_form" model="ir.ui.view">
+            <field name="name">asuransi.form</field>
+            <field name="model">account.keuangan.asuransi</field>
+            <field name="arch" type="xml">
+                <form string="Asuransi">
+                    <header>
+                        <!-- <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/> -->
+                        <!-- <button name="action_print" type="object" string="Preview" states="posted" class="btn-secondary"/> -->
+                        <button name="action_print" type="object" string="Preview" states="draft" class="btn-secondary"/>
+                        <!-- <field name="state" widget="statusbar" statusbar_visible="draft,posted"/> -->
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <!-- Menggunakan span untuk teks statis "Invoice" -->
+                            <span class="o_form_label">Asuransi</span>
+
+                            <h1>
+                                <!-- Menggunakan field name untuk menampilkan nilai dari field 'name' di model -->
+                                <field name="name"  placeholder="Draft"/>
+                                <!-- <span attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'draft'), ('name', '!=', '/'), ('posted_before', '=', True), ('quick_edit_mode', '=', True)]}">Draft</span> -->
+                            </h1>
+                        </div>
+                        <br></br>
+                        
+                        <group>
+                            <group>
+                                <field name="no_polis"/>
+                                <field name="penerbit_polis"/>
+                                <field name="pialang"/>
+                                <field name="asset_terdaftar"/>
+                                <field name="deskripsi_polis"/>
+                                <field name="biaya_perpanjangan"/>
+                            </group>
+                            <group>
+                                <field name="tanggal_mulai"/>
+                                <field name="tanggal_berakhir"/>
+                                <field name="cakupan"/>
+                                <field name="currency_id"/>
+                                <field name="keterangan"/>
+                            </group>
+                        </group>
+                   </sheet>
+                   <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View untuk Invoice -->
+        <record id="view_asuransi_tree" model="ir.ui.view">
+            <field name="name">invoice.asuransi.tree</field>
+            <field name="model">account.keuangan.asuransi</field>
+            <field name="arch" type="xml">
+                <tree string="Asuransi">
+                    <field name="no_polis" optional="show"/>
+                    <field name="penerbit_polis" optional="show"/>
+                    <field name="pialang" optional="show"/>
+                    <field name="asset_terdaftar" optional="show"/>
+                    <field name="deskripsi_polis" optional="show"/>
+                    <field name="tanggal_mulai" optional="show"/>
+                    <field name="tanggal_berakhir" optional="show"/>
+                    <field name="biaya_perpanjangan" optional="show"/>
+                    <field name="keterangan" optional="hide"/>
+                    <field name="cakupan" optional="hide"/>
+                    <field name="currency_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="menu_approval_workflow_settings" name="Approval Workflows"
+        parent="base.menu_administration" action="action_approval_workflow"
+        sequence="1"/>
+</odoo>

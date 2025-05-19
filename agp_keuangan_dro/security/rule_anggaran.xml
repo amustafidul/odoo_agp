@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="anggaran_rule_rkap_per_cabang" model="ir.rule">
+            <field name="name">Anggaran - RKAP Per Cabang</field>
+            <field name="model_id" ref="model_account_keuangan_rkap"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[('branch_id', 'in', user.branch_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_rkap_header'))]"/>
+        </record>
+
+        <record id="anggaran_rule_kkhc_per_cabang" model="ir.rule">
+            <field name="name">Anggaran - KKHC Per Cabang</field>
+            <field name="model_id" ref="model_account_keuangan_kkhc"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[('branch_id', 'in', user.branch_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_kkhc_header'))]"/>
+        </record>
+
+        <record id="anggaran_rule_kkhc_bod" model="ir.rule">
+            <field name="name">Anggaran - KKHC BOD Access</field>
+            <field name="model_id" ref="model_account_keuangan_kkhc"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_board_of_director'))]"/>
+        </record>
+
+        <!-- <record id="anggaran_rule_rkap_per_cabang" model="ir.rule">
+            <field name="name">Anggaran - SPA Per Cabang</field>
+            <field name="model_id" ref="model_account_keuangan_kkhc"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[('branch_id', 'in', user.branch_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('base.group_kkhc_header'))]"/>
+        </record> -->
+
+    </data>
+</odoo>

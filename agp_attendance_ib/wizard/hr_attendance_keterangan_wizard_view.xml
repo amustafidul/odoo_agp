@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_hr_attendance_keterangan_wizard_form" model="ir.ui.view">
+            <field name="name">hr.attendance.keterangan.wizard.form</field>
+            <field name="model">hr.attendance.keterangan.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Keterangan Check In">
+                    <group>
+                        <field name="employee_id" invisible="1"/>
+                        <field name="keterangan" placeholder="Tuliskan keterangan Anda di sini..." required="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm_attendance_with_keterangan" string="Lanjutkan Check In" type="object" class="btn-primary"/>
+                        <button string="Batal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_hr_attendance_keterangan_wizard_act" model="ir.actions.act_window">
+            <field name="name">Keterangan Check In</field>
+            <field name="res_model">hr.attendance.keterangan.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field> </record>
+    </data>
+</odoo>

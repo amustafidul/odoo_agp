@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_users_form_inherit_agp_approval" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.agp.approval</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="agp_approval_page" string="Approval Workflow AGP">
+                    <group>
+                        <field name="level" string="Role Terkait"/>
+                        <field name="bod_level" attrs="{'invisible': [('level', '!=', 'bod')]}" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

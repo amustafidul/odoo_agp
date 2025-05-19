@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <record id="view_asuransi_karyawan_tree" model="ir.ui.view">
+    <field name="name">asuransi.karyawan.tree</field>
+    <field name="model">asuransi.karyawan</field>
+    <field name="arch" type="xml">
+      <tree string="Asuransi Karyawan">
+        <field name="name"/>
+        <field name="nomor_polis"/>
+        <field name="periode_polis"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_asuransi_karyawan_form" model="ir.ui.view">
+    <field name="name">asuransi.karyawan.form</field>
+    <field name="model">asuransi.karyawan</field>
+    <field name="arch" type="xml">
+      <form string="Asuransi Karyawan">
+        <header>
+          <button name="action_confirm" type="object" string="Konfirmasi" states="draft"/>
+          <button name="action_expire" type="object" string="Expired" states="aktif"/>
+          <button name="action_set_to_draft" type="object" string="Reset" states="expired"/>
+          <field name="state" readonly="1" widget="statusbar" statusbar_visible="draft,aktif,expired"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" readonly="1"/>
+            </h1>
+          </div>
+          <group>
+            <field name="nomor_polis" placeholder="eg: 8190100001"/>
+            <field name="periode_polis" placeholder="eg: 01/01/2025"/>
+            <field name="attachment_file"/>
+          </group>
+          <notebook>
+            <page string="Peserta">
+              <field name="line_peserta_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="employee_id"/>
+                  <field name="date"/>
+                  <field name="email_from"/>
+                  <field name="nomor_sertifikat"/>
+                  <field name="entity"/>
+                  <field name="cabang"/>
+                  <field name="nama_jabatan"/>
+                  <field name="jenis_kelamin"/>
+                  <field name="tanggal_lahir"/>
+                  <field name="usia"/>
+                  <field name="tanggal_efektif"/>
+                  <field name="tanggal_berakhir"/>
+                </tree>
+                <form string="Peserta">
+                  <group>
+                    <field name="employee_id"/>
+                    <field name="date"/>
+                    <field name="email_from"/>
+                    <field name="nomor_sertifikat"/>
+                    <field name="entity"/>
+                    <field name="cabang"/>
+                    <field name="nama_jabatan"/>
+                    <field name="jenis_kelamin"/>
+                    <field name="tanggal_lahir"/>
+                    <field name="usia"/>
+                    <field name="tanggal_efektif"/>
+                    <field name="tanggal_berakhir"/>
+                  </group>
+                </form>
+              </field>
+            </page>
+            <page string="Invoice">
+              <field name="line_invoice_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="name"/>
+                  <field name="invoice_date"/>
+                  <field name="invoice_id"/>
+                  <field name="keterangan"/>
+                  <field name="currency_id" invisible="1"/>
+                  <field name="biaya" widget="monetary"/>
+                </tree>
+                <form string="Invoice">
+                  <group>
+                    <field name="name"/>
+                    <field name="invoice_date"/>
+                    <field name="invoice_id"/>
+                    <field name="keterangan"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="biaya" widget="monetary"/>
+                  </group>
+                </form>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers" options="{'hide_label': True}"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_asuransi_karyawan" model="ir.actions.act_window">
+    <field name="name">Asuransi Karyawan</field>
+    <field name="res_model">asuransi.karyawan</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="view_asuransi_direksi_tree" model="ir.ui.view">
+    <field name="name">asuransi.direksi.tree</field>
+    <field name="model">asuransi.direksi</field>
+    <field name="arch" type="xml">
+      <tree string="Asuransi Direksi">
+        <field name="name"/>
+        <field name="nomor_polis"/>
+        <field name="periode_polis"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_asuransi_direksi_form" model="ir.ui.view">
+    <field name="name">asuransi.direksi.form</field>
+    <field name="model">asuransi.direksi</field>
+    <field name="arch" type="xml">
+      <form string="Asuransi Direksi">
+        <header>
+          <button name="action_confirm" type="object" string="Konfirmasi" states="draft"/>
+          <button name="action_expire" type="object" string="Expired" states="aktif"/>
+          <button name="action_set_to_draft" type="object" string="Reset" states="expired"/>
+          <field name="state" readonly="1" widget="statusbar" statusbar_visible="draft,aktif,expired"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" readonly="1"/>
+            </h1>
+          </div>
+          <group>
+            <field name="nomor_polis" placeholder="eg: 8190100001"/>
+            <field name="periode_polis" placeholder="eg: 01/01/2025"/>
+            <field name="attachment_file"/>
+          </group>
+          <notebook>
+            <page string="Peserta">
+              <field name="line_peserta_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="employee_id"/>
+                  <field name="date"/>
+                  <field name="email_from"/>
+                  <field name="nomor_sertifikat"/>
+                  <field name="entity"/>
+                  <field name="cabang"/>
+                  <field name="nama_jabatan"/>
+                  <field name="jenis_kelamin"/>
+                  <field name="tanggal_lahir"/>
+                  <field name="usia"/>
+                  <field name="tanggal_efektif"/>
+                  <field name="tanggal_berakhir"/>
+                </tree>
+                <form string="Peserta">
+                  <group>
+                    <field name="employee_id"/>
+                    <field name="date"/>
+                    <field name="email_from"/>
+                    <field name="nomor_sertifikat"/>
+                    <field name="entity"/>
+                    <field name="cabang"/>
+                    <field name="nama_jabatan"/>
+                    <field name="jenis_kelamin"/>
+                    <field name="tanggal_lahir"/>
+                    <field name="usia"/>
+                    <field name="tanggal_efektif"/>
+                    <field name="tanggal_berakhir"/>
+                  </group>
+                </form>
+              </field>
+            </page>
+            <page string="Invoice">
+              <field name="line_invoice_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="name"/>
+                  <field name="invoice_date"/>
+                  <field name="invoice_id"/>
+                  <field name="keterangan"/>
+                  <field name="currency_id" invisible="1"/>
+                  <field name="biaya" widget="monetary"/>
+                </tree>
+                <form string="Invoice">
+                  <group>
+                    <field name="name"/>
+                    <field name="invoice_date"/>
+                    <field name="invoice_id"/>
+                    <field name="keterangan"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="biaya" widget="monetary"/>
+                  </group>
+                </form>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers" options="{'hide_label': True}"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_asuransi_direksi" model="ir.actions.act_window">
+    <field name="name">Asuransi Direksi</field>
+    <field name="res_model">asuransi.direksi</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_asuransi_root" name="Asuransi" parent="hr.menu_hr_root" sequence="94"/>
+  <menuitem id="menu_asuransi_karyawan" name="Asuransi Karyawan" parent="menu_asuransi_root" action="action_asuransi_karyawan" sequence="1"/>
+  <menuitem id="menu_asuransi_direksi" name="Asuransi Direksi" parent="menu_asuransi_root" action="action_asuransi_direksi" sequence="2"/>
+</odoo>

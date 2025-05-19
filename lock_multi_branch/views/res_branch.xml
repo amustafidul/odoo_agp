@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_view_branch_form">
+            <field name="name">res.branch.form</field>
+            <field name="model">res.branch</field>
+            <field name="inherit_id" ref="base_multi_branch.view_branch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="period_lock_date"/>
+                    <field name="fiscalyear_lock_date"/>
+                    <field name="tax_lock_date"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

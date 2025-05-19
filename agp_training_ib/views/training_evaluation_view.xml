@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_training_evaluation_tree" model="ir.ui.view">
+        <field name="name">training.evaluation.tree</field>
+        <field name="model">training.evaluation</field>
+        <field name="arch" type="xml">
+            <tree string="Evaluasi" create="0" edit="1" delete="0">
+                <field name="employee_id"/>
+                <field name="employee_status" invisible="1"/>
+                <field name="job_position" invisible="1"/>
+                <field name="branch_id" invisible="1"/>
+                <field name="training_date_from" invisible="1"/>
+                <field name="training_name"/>
+                <field name="training_organizer"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_training_evaluation_form" model="ir.ui.view">
+        <field name="name">training.evaluation.form</field>
+        <field name="model">training.evaluation</field>
+        <field name="arch" type="xml">
+            <form string="Evaluasi" create="0" edit="1" delete="0">
+                <header>
+                    <button name="action_submit_evaluation" string="Confirm" type="object" class="btn-primary" attrs="{'invisible': [('status','!=','draft')]}"/>
+                    <button name="action_set_to_draft_evaluation" string="Mark as Draft" type="object" attrs="{'invisible': [('status','!=','posted')]}"/>
+                    <field name="status" string="Status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <div class="stars">
+                            <i class="fa fa-star" attrs="{'invisible': [('training_result','not in',['Berhasil','Perlu Evaluasi Ulang','Gagal'])]}"/>
+                            <i class="fa fa-star" attrs="{'invisible': [('training_result','not in',['Berhasil','Perlu Evaluasi Ulang'])]}"/>
+                            <i class="fa fa-star" attrs="{'invisible': [('training_result','not in',['Berhasil','Perlu Evaluasi Ulang'])]}"/>
+                            <i class="fa fa-star" attrs="{'invisible': [('training_result','!=','Berhasil')]}"/>
+                            <i class="fa fa-star" attrs="{'invisible': [('training_result','!=','Berhasil')]}"/>
+                        </div>
+                    </h1>
+                    <group>
+                    </group>
+                    <group>
+                    </group>
+                    <group>
+                    </group>
+                    <group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="employee_id" attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="course_id" attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="employee_status" attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="job_position" invisible="1"/>
+                            <field name="is_organik_pkwt_emp" invisible="1"/>
+                            <field name="is_tad_emp" invisible="1"/>
+                            <field name="keterangan_jabatan_id" attrs="{'invisible': [('is_organik_pkwt_emp','=',False)], 'readonly': [('status','!=','draft')]}"/>
+                            <field name="fungsi_penugasan_id" attrs="{'invisible': [('is_tad_emp','=',False)], 'readonly': [('status','!=','draft')]}"/>
+                            <field name="branch_id" attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="training_date_from" string="Tanggal Mulai" attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="training_date_to" string="Tanggal Selesai" attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="training_name" invisible="1"/>
+                            <field name="training_organizer" attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="supervisor_id" attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="additional_file" widget="binary" invisible="1"/>
+                            <field name="additional_file_ids" widget="many2many_binary" nolabel="1" attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Indikator Penilaian Training">
+                            <field name="evaluation_line_ids" attrs="{'readonly': [('status','!=','draft')]}">
+                                <tree editable="bottom" delete="0" edit="1" create="0">
+                                    <field name="indicator"/>
+                                    <field name="score" string="Penilaian" widget="radio" options="{'horizontal': true}" width="420px"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right" col="2">
+                        <label string="Total Nilai" for="total_score" colspan="1"/>
+                        <field name="total_score" colspan="1" nolabel="1"/>
+                        <label string="Hasil Training" for="training_result" colspan="1"/>
+                        <field name="training_result" colspan="1" nolabel="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="training_evaluation_search_view" model="ir.ui.view">
+        <field name="name">training.evaluation.search.view</field>
+        <field name="model">training.evaluation</field>
+        <field name="arch" type="xml">
+            <search string="Search Evaluation">
+                <filter name="group_course_id" string="Training" context="{'group_by':'course_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_training_evaluation" model="ir.actions.act_window">
+        <field name="name">Evaluasi</field>
+        <field name="res_model">training.evaluation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_course_id': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Penilaian evaluasi akan muncul setelah<br/>3 bulan masa training
+            </p>
+        </field>
+    </record>
+</odoo>

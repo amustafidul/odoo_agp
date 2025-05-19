@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="financial_param_tree">
+            <field name="name">financial.param.tree</field>
+            <field name="model">financial.param</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record model="ir.ui.view" id="financial_param_form">
+            <field name="name">financial.param.form</field>
+            <field name="model">financial.param</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="company_id"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Line">
+                                <field name="sub_param_ids">
+                                    <tree>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="name_eng"/>
+                                        <field name="code"/>
+                                        <field name="type"/>
+                                        <field name="formula" attrs="{'required': [('type', '=', 'formula')]}"/>
+                                        <field name="account_ids" widget="many2many_tags" attrs="{'required': [('type', '=', 'account')]}" invisible="1"/>
+                                        <field name="level"/>
+                                        <field name="bold"/>
+                                        <field name="invisible"/>
+                                        <field name="blank"/>
+                                        <field name="balance1" invisible="1"/>
+                                        <field name="balance2" invisible="1"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="name"/>
+                                                <field name="name_eng"/>
+                                                <field name="code"/>
+                                            </group>
+                                            <group>
+                                                <field name="type"/>
+                                                <field name="formula" attrs="{'required': [('type', '=', 'formula')]}"/>
+                                                <field name="account_ids" widget="many2many_tags" attrs="{'required': [('type', '=', 'account')]}"/>
+                                                <field name="level"/>
+                                                <field name="bold"/>
+                                                <field name="invisible"/>
+                                                <field name="blank"/>
+                                                <field name="balance1" invisible="1"/>
+                                                <field name="balance2" invisible="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="financial_param_action">
+            <field name="name">Financial Parameter</field>
+            <field name="res_model">financial.param</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+        <!-- List View -->
+        <record model="ir.ui.view" id="financial_param_line_tree">
+            <field name="name">financial.param.line.tree</field>
+            <field name="model">financial.param.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom">
+                    <field name="param_id"/>
+                    <field name="name"/>
+                    <field name="name_eng"/>
+                    <field name="code"/>
+                    <field name="type"/>
+                    <field name="formula"/>
+                    <field name="account_ids" widget="many2many_tags"/>
+                    <field name="level"/>
+                    <field name="bold"/>
+                    <field name="invisible"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="financial_param_line_action">
+            <field name="name">Sub Parameter</field>
+            <field name="res_model">financial.param.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_financial_param" name="Financial Parameter" parent="account.menu_finance_configuration" groups="report_multi_branch.group_financial_param_admin" sequence="1"/>
+
+        <menuitem id="submenu_financial_param" name="Parameter" parent="menu_financial_param" action="financial_param_action" groups="report_multi_branch.group_financial_param_admin" sequence="1"/>
+        <menuitem id="submenu_financial_param_line" name="Sub Parameter" parent="menu_financial_param" action="financial_param_line_action" groups="report_multi_branch.group_financial_param_admin" sequence="2" />
+
+    </data>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Nodin Search View with Auto-Search -->
+    <record id="account_keuangan_nota_dinas_search_view" model="ir.ui.view">
+        <field name="name">account.keuangan.nota.dinas.view.search</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="arch" type="xml">
+            <search string="Search Nota Dinas" auto_search="1">
+                <field name="name"/>
+                <field name="periode_kkhc"/>
+                <field name="tipe_nodin"/>
+                <filter name="group_by_tipe_nodin" string="Group by Tipe" domain="[]" context="{'group_by': 'tipe_nodin'}"/>
+                <filter name="group_by_periode_kkhc" string="Group by Periode KKHC" domain="[]" context="{'group_by': 'periode_kkhc'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Nodin Search View with Auto-Search -->
+    <record id="account_keuangan_nota_dinas_bod_search_view" model="ir.ui.view">
+        <field name="name">account.keuangan.nota.dinas.bod.view.search</field>
+        <field name="model">account.keuangan.nota.dinas.bod</field>
+        <field name="arch" type="xml">
+            <search string="Search Nota Dinas BoD" auto_search="1">
+                <field name="name"/>
+                <field name="periode_kkhc"/>
+                <field name="tipe_nodin"/>
+                <filter name="group_by_tipe_nodin" string="Group by Tipe" domain="[]" context="{'group_by': 'tipe_nodin'}"/>
+                <filter name="group_by_periode_kkhc" string="Group by Periode KKHC" domain="[]" context="{'group_by': 'periode_kkhc'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Monitoring KKHC Search View with Auto-Search -->
+    <record id="search_monitor_kkhc_nodin" model="ir.ui.view">
+        <field name="name">account.keuangan.monitor.kkhc.line.search</field>
+        <field name="model">account.keuangan.monitor.kkhc.line</field>
+        <field name="arch" type="xml">
+            <search string="Cari item monitoring KKHC" auto_search="1">
+                <field name="is_rejected"/>
+                <filter name="group_by_active" string="Sudah Dibayar oleh Divisi Keuangan" domain="[]" context="{'group_by': 'active'}"/>
+                <filter name="group_by_periode_kkhc_start" string="Periode KKHC" domain="[]" context="{'group_by': 'periode_kkhc_start'}"/>
+                <filter name="filter_is_rejected" string="Di-reject oleh Pusat" domain="[('is_rejected', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

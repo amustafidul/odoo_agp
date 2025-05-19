@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="agp_report_rkap_cabang_new" model="ir.actions.report">
+        <field name="name">RKAP Cabang</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.rkap</field>
+        <field name="report_name">py3o_account_keuangan_rkap_cabang</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/non_invoice/doc_rkap_cabang_new.odt</field>
+        <field name="print_report_name">'Laporan_RKAP_Cabang_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_rkap" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="agp_report_kkhc_cabang" model="ir.actions.report">
+        <field name="name">KKHC Cabang</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.kkhc</field>
+        <field name="report_name">py3o_account_keuangan_kkhc_cabang</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/non_invoice/doc_kkhc_cabang.odt</field>
+        <field name="print_report_name">'Laporan_KKHC_Cabang_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_kkhc" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="report_qweb_paperformat_agp" model="report.paperformat">
+        <field name="name">F4 Landscape</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">380</field>
+        <field name="page_width">260</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_rkap_konsolidasi" model="ir.actions.report">
+        <field name="name">RKAP Konsolidasi</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">rkap.konsolidasi.wizard</field>
+        <field name="report_name">rkap_konsolidasi_lembar_kendali_cabang</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/non_invoice/rkap_konsolidasi_lembar_kendali.odt</field>
+        <field name="binding_model_id" ref="agp_report_extended.model_rkap_konsolidasi_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+        <!-- <field name="name">RKAP Konsolidasi</field>
+        <field name="model">account.keuangan.rkap</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">agp_report_extended.report_konsolidasi_template</field>
+        <field name="report_file">agp_report_extended.report_konsolidasi_template</field>
+        <field name="print_report_name">'RKAP Konsolidasi - %s' % (object.create_date)</field>
+        <field name="paperformat_id" ref="agp_report_extended.report_qweb_paperformat_agp"/>
+        <field name="binding_model_id" ref="agp_report_extended.model_account_keuangan_rkap"/>
+        <field name="binding_type">report</field>
+    </record> -->
+
+    <record id="agp_report_bank_harian_saldo" model="ir.actions.report">
+        <field name="name">Saldo Bank Harian</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.bank.harian</field>
+        <field name="report_name">py3o_account_keuangan_bank_harian</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/non_invoice/2_doc_sbh.odt</field>
+        <field name="print_report_name">'Laporan_Saldo_Bank_Harian_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_bank_harian" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="agp_report_rekap_cico" model="ir.actions.report">
+        <field name="name">Rekapitulasi Pelunasan dan Dropping Dana</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.rekap.pelunasan</field>
+        <field name="report_name">py3o_account_keuangan_rekap_pelunasan</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/non_invoice/doc_rekap_cico.odt</field>
+        <field name="print_report_name">'Laporan_Rekapitulasi_CICO_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_rekap_pelunasan" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Nota Dinas Advanced Reports -->
+    <!-- 1. Usaha Tahap 1 Full -->
+    <record id="report_nodin_satu_usaha_full" model="ir.actions.report">
+        <field name="name">Nota Dinas - Usaha (Full Approved)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="report_name">py3o_account_keuangan_nota_dinas_usaha_full_approved</field>
+        <field name="report_type">py3o</field>  
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/nota_dinas/1_doc_nodin_usaha_tahap_satu_full.odt</field>
+        <field name="print_report_name">'Laporan_Nota_Dinas_Usaha_Tahap_Satu_(Approved)_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 2. Usaha Tahap 1 Reject -->
+    <record id="report_nodin_satu_usaha_reject" model="ir.actions.report">
+        <field name="name">Nota Dinas - Usaha (With Rejected)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="report_name">py3o_account_keuangan_nota_dinas_usaha_with_rejected</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/nota_dinas/2_doc_nodin_usaha_tahap_satu_reject.odt</field>
+        <field name="print_report_name">'Laporan_Nota_Dinas_Usaha_Tahap_Satu_(Rejected)_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 3. Usaha Tahap 2 Full -->
+    <record id="report_nodin_dua_usaha_full" model="ir.actions.report">
+        <field name="name">Nota Dinas Tahap Dua - Usaha (Full Approved)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.nota.dinas.bod</field>
+        <field name="report_name">py3o_account_keuangan_nota_dinas_bod_usaha_full_approved</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/nota_dinas/3_doc_nodin_usaha_tahap_dua_full.odt</field>
+        <field name="print_report_name">'Laporan_Nota_Dinas_Usaha_BOD_(Approved)_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas_bod" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 4. Usaha Tahap 2 Reject -->
+    <record id="report_nodin_dua_usaha_reject" model="ir.actions.report">
+        <field name="name">Nota Dinas Tahap Dua - Usaha (With Rejected)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.nota.dinas.bod</field>
+        <field name="report_name">py3o_account_keuangan_nota_dinas_bod_usaha_with_rejected</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/nota_dinas/4_doc_nodin_usaha_tahap_dua_reject.odt</field>
+        <field name="print_report_name">'Laporan_Nota_Dinas_Usaha_BOD_(Rejected)_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas_bod" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 5. Umum Full -->
+    <record id="report_nodin_satu_umum_full" model="ir.actions.report">
+        <field name="name">Nota Dinas - Umum (Full Approved)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="report_name">py3o_account_keuangan_nota_dinas_umum_full_approved</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/nota_dinas/5_doc_nodin_umum_full.odt</field>
+        <field name="print_report_name">'Laporan_Nota_Dinas_Umum_(Approved)_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 6. Umum Reject -->
+    <record id="report_nodin_satu_umum_reject" model="ir.actions.report">
+        <field name="name">Nota Dinas - Umum (With Rejected)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="report_name">py3o_account_keuangan_nota_dinas_umum_with_rejected</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">agp_report_extended</field>
+        <field name="py3o_template_fallback">report/nota_dinas/6_doc_nodin_umum_reject.odt</field>
+        <field name="print_report_name">'Laporan_Nota_Dinas_Umum_(Rejected)_' + object.name.replace(' ', '_')</field>
+        <field name="binding_model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas" />
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

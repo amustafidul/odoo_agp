@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_kwitansi" model="report.paperformat">
+            <field name="name">Kwitansi Paper Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">custom</field>
+            
+            <field name="orientation">Portrait</field>
+            
+            <field name="dpi">90</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">5</field>
+        </record>
+
+
+        <!-- Define the report -->
+        <report
+            id="report_kwitansi_pdf"
+            string="Kwitansi"
+            model="account.keuangan.invoice"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.kwitansi"
+            file="agp_keuangan_ib.kwitansi"
+            paperformat="paperformat_proforma"
+            attachment_use="False"/>
+
+        <template id="agp_keuangan_ib.kwitansi">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <!-- Kwitansi Header -->
+                            <div class="text-center">
+                                <h2 style="color: black; text-decoration: underline; font-size: 24px;">KWITANSI</h2>
+                            </div>
+                            <div class="text-center" style="margin-bottom: 20px;">
+                                <h6 style="color: black;">Nomor : <t t-esc="doc.nomor_referensi"/></h6>
+                            </div>
+                            
+                            <div style="margin-top: 60px;">
+                                <!-- Left-aligned labels with values on the right -->
+                                <table style="width: 100%; font-size: 14px;">
+                                    <tr>
+                                        <td style="font-weight: bold; padding-bottom: 5px;">Sudah Diterima Dari </td>
+                                        <td style="padding-bottom: 5px;">:</td>
+                                        <td style="padding-bottom: 5px;"><t t-esc="doc.ditujukan_kepada.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding-bottom: 5px;">Banyaknya Uang</td>
+                                        <td style="padding-bottom: 5px;">:</td>
+                                        <td style="padding-bottom: 5px;"><t t-esc="doc.total_terbilang"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding-bottom: 5px;">Untuk Pembayaran</td>
+                                        <td style="padding-bottom: 5px;">:</td>
+                                        <td style="padding-bottom: 5px;"><t t-esc="doc.informasi_pembayaran"/></td>
+                                    </tr>
+
+                                    <tr style="height: 30px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td style="font-weight: bold; padding-bottom: 5px; text-align: right;">Jumlah</td>
+                                        <td style="padding-bottom: 5px;">:</td>
+                                        <td style="padding-bottom: 5px; text-align: left;">
+                                            Rp. <t t-esc="doc.total_sesudah_pajak" t-options="{'widget': 'float', 'precision': 0}"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr style="height: 40px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+                                </table>
+
+                                <!-- Menampilkan tanggal saat ini -->
+                                <p style="text-align: right; font-weight: bold; margin-bottom: 10px; width: 73%;">
+                                    <t t-esc="doc.tempat or 'Tempat Tidak Tersedia'"/> 
+                                    , 
+                                    <t t-esc="doc.formatted_date"/>                                
+                                </p>
+
+                                <table class="table-bordered;bottom:0px;position: absolute;">
+                                    <colgroup>
+                                        <col style="width: 15%;"/>
+                                        <col style="width: 15%;"/>
+                                    </colgroup>
+                                    <tr>
+                                        <td style="text-align: justify; padding: 5px; border: 1px solid #000;">
+                                            Untuk pembayaran yang dilakukan dengan Cek/Giro, 
+                                            maka kwitansi ini belum sah sebelum Cek/Giro tersebut
+                                            dapat di clearingkan / ditunaikan<br/><br/>
+                                        </td>
+                                        <td style="width: 30%; text-align: center; vertical-align: bottom; padding: 5px;">
+                                            <strong><t t-esc="doc.jabatan or 'Jabatan'"/></strong><br/><br/><br/><br/><br/>
+                                            ___________________________<br/>
+                                            <t t-esc="doc.ttd or 'Nama Lengkap'"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br></br>
+                                <br></br>
+                                <!-- <div style="text-align: right; margin-top: 20px;">
+                                    <table style="display: inline-block; border-collapse: collapse; width: 30%;">
+                                        <colgroup>
+                                            <col style="width: 100%;"/>
+                                        </colgroup>
+                                        <tr>
+                                            <td style="text-align: center; padding: 30px;">
+                                                <t t-esc="doc.jabatan" /><br/><br/><br/><br/><br/><br/><br/>
+                                                <strong><t t-esc="doc.ttd" /></strong><br/>
+                                                <br/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div> -->
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

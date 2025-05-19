@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<odoo>
+    
+
+        <record id="paperformat_deposito" model="report.paperformat">
+            <field name="name">Deposito</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <report
+            id="action_report_deposito_html"
+            model="account.keuangan.deposito"
+            string="Deposito Preview"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_deposito_html"
+            file="agp_keuangan_ib.report_deposito_html"
+            
+        />
+
+        <template id="report_deposito_html">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align: center; color: black;">
+                            <t>
+                                DEPOSITO
+                            </t>
+                        </h2>
+
+                        
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO. DEPOSITO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO. REKENING</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO. BILLYET</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">PERIODE PRODUK</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TANGGAL DEPOSITO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TANGGAL JATUH TEMPO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">JANGKA WAKTU (BULAN)</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TANGGAL PENCAIRAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TIPE PRODUK</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">STATUS TERGADAI</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NAMA BANK GARANSI</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO. GADAI</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NAMA CABANG</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">BANK CABANG PEMBUKA</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">SALDO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">PRESENTASE BUNGA (%)</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">STATUS PENCAIRAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">KETERANGAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <t t-foreach="docs" t-as="o">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <tr style="color: black;">
+                                        <td class="text-center"><span t-esc="no"/></td>
+                                        <td><t t-esc="o.name or ''"/></td>
+                                        <td><t t-esc="o.no_rek or ''"/></td>
+                                        <td><t t-esc="o.billyet or ''"/></td>
+                                        <td><t t-esc="o.periode_produk_id.name or ''"/></td>
+                                        <td><t t-esc="o.tanggal_deposito.strftime('%d %B %Y').upper() if o.tanggal_deposito else ''"/></td>
+                                        <td><t t-esc="o.tanggal_jatuh_tempo.strftime('%d %B %Y').upper() if o.tanggal_jatuh_tempo else ''"/></td>
+                                        <td><t t-esc="o.jangka_waktu or ''"/></td>
+                                        <td><t t-esc="o.tanggal_pencairan.strftime('%d %B %Y').upper() if o.tanggal_pencairan else ''"/></td>
+                                        <td><t t-esc="o.tipe_produk_display or ''"/></td>
+                                        <td><t t-esc="o.status_tergadai_display or ''"/></td>
+                                        <td><t t-esc="o.nama_bank_garansi.name or ''"/></td>
+                                        <td><t t-esc="o.no_gadai or ''"/></td>
+                                        <td><t t-esc="o.branch_id.name or ''"/></td>
+                                        <td><t t-esc="o.bank_pembuka or ''"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.saldo)"/></td>
+                                        <td><t t-esc="o.presentase_bunga or ''"/></td>
+                                        <td><t t-esc="o.status_pencairan_display or ''"/></td>
+                                        <td><t t-esc="o.keterangan or ''"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+
+                            <tfoot>
+                                <tr style="font-weight: bold; background-color:rgb(4, 148, 4); color: black;">
+                                    <td colspan="15" class="text-right">TOTAL SALDO</td>
+                                    <td style="text-align: right; color: black;" colspan="1" >
+                                        <t t-esc="'{:,.0f}'.format(sum([o.saldo for o in docs]))"/>
+                                    </td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        
+</odoo>

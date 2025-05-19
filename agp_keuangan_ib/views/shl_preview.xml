@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<odoo>
+    
+
+        <record id="paperformat_shl" model="report.paperformat">
+            <field name="name">Shareholder Loan</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <report
+            id="action_report_shl_preview"
+            model="account.keuangan.shl"
+            string="Shareholder Loan Preview"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_shl_html"
+            file="agp_keuangan_ib.report_shl_html"
+            
+        />
+
+        <template id="report_shl_html">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align: center; color: black;">
+                             <t>
+                                SHAREHOLDER LOAN
+                            </t>
+                        </h2>
+                        
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMOR SHAREHOLDER</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TUJUAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMOR SURAT PERJANJIAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TANGGAL PERJANJIAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMOR ADDENDUM</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMINAL PERJANJIAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMINAL DIPINJAMKAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMINAL PENGEMBALIAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMINAL BELUM DIPINJAMKAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMINAL KEKURANGAN PEMBAYARAN ANGSURAN SHL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <t t-set="total_nominal_perjanjian" t-value="0"/>
+                                <t t-set="total_nominal_dipinjamkan" t-value="0"/>
+                                <t t-set="total_nominal_pengembalian" t-value="0"/>
+                                <t t-set="total_nominal_belum_dipinjamkan" t-value="0"/>
+                                <t t-set="total_nominal_kekurangan_pembayaran_shl" t-value="0"/>
+
+                                <t t-foreach="docs" t-as="o">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <t t-set="total_nominal_perjanjian" t-value="total_nominal_perjanjian + (o.nominal_perjanjian or 0)"/>
+                                    <t t-set="total_nominal_dipinjamkan" t-value="total_nominal_dipinjamkan + (o.nominal_dipinjamkan or 0)"/>
+                                    <t t-set="total_nominal_pengembalian" t-value="total_nominal_pengembalian + (o.nominal_pengembalian or 0)"/>
+                                    <t t-set="total_nominal_belum_dipinjamkan" t-value="total_nominal_belum_dipinjamkan + (o.nominal_belum_dipinjamkan or 0)"/>
+                                    <t t-set="total_nominal_kekurangan_pembayaran_shl" t-value="total_nominal_kekurangan_pembayaran_shl + (o.nominal_kekurangan_pembayaran_shl or 0)"/>
+
+                                    <tr style="color: black;">
+                                        <td class="text-center"><span t-esc="no"/></td>
+                                        <td><t t-esc="o.name or ''"/></td>
+                                        <td><t t-esc="o.tujuan or ''"/></td>
+                                        <td><t t-esc="o.nomor_perjanjian_id.name or ''"/></td>
+                                        <td>
+                                            <t t-esc="o.tanggal_perjanjian.strftime('%d %B %Y').upper() if o.tanggal_perjanjian else ''"/>
+                                        </td>                              
+                                        <td>
+                                            <t t-if="o.nomor_addendum">
+                                                <t t-foreach="o.nomor_addendum" t-as="addendum">
+                                                    <t t-esc="addendum.no_adddendum"/><br/>
+                                                </t>
+                                            </t>
+                                        </td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.nominal_perjanjian)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.nominal_dipinjamkan)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.nominal_pengembalian)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.nominal_belum_dipinjamkan)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.nominal_kekurangan_pembayaran_shl)"/></td>
+                                    </tr>
+                                </t>
+
+                                <!-- Baris Total Summary -->
+                                <tr style="font-weight: bold; background-color:rgb(4, 148, 4); color: black;">
+                                    <td colspan="6" class="text-center">TOTAL</td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(total_nominal_perjanjian)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(total_nominal_dipinjamkan)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(total_nominal_pengembalian)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(total_nominal_belum_dipinjamkan)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(total_nominal_kekurangan_pembayaran_shl)"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        
+</odoo>

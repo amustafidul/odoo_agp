@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_report_overtime_wizard" model="ir.ui.view">
+        <field name="name">report.overtime.wizard.form</field>
+        <field name="model">report.overtime.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Overtime Report">
+                <group>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="select_all_employees"/>
+                    <field name="employee_ids" domain="[('active', '=', True)]"
+                           attrs="{'invisible': [('select_all_employees', '=', True)],
+                                    'required': [('select_all_employees', '=', False)]}"
+                           widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button string="Generate Report" type="object" name="action_generate_report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_report_overtime" model="ir.actions.report">
+        <field name="name">Overtime Report</field>
+        <field name="model">report.overtime.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">agp_report_ib.report_overtime_xlsx</field>
+        <field name="report_file">agp_report_ib.report_overtime_xlsx</field>
+    </record>
+
+    <record id="action_report_overtime_wizard" model="ir.actions.act_window">
+        <field name="name">Overtime Report</field>
+        <field name="res_model">report.overtime.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_report_overtime_wizard" name="Overtime Report" action="action_report_overtime_wizard"
+              parent="agp_hr_leave_lembur_ib.menu_hr_lembur_root" sequence="3"/>
+</odoo>

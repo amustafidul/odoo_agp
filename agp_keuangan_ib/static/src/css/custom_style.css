@@ -1,0 +1,14 @@
+.o_field_badge.o_field_widget[title="Not Paid"] {
+    background-color: #dc3545 !important; /* Merah */
+    color: white !important;
+}
+
+.o_field_badge.o_field_widget[title="Partial Paid"] {
+    background-color: #ffc107 !important; /* Kuning */
+    color: black !important;
+}
+
+.o_field_badge.o_field_widget[title="Paid"] {
+    background-color: #28a745 !important; /* Hijau */
+    color: white !important;
+}

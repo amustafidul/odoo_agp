@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_kkhc_line_kadiv_form" model="ir.ui.view">
+        <field name="name">account.keuangan.kkhc.line.wizard.form</field>
+        <field name="model">account.keuangan.kkhc.line.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Item KKHC">
+                <group>
+                    <!-- <field name="kkhc_line_ids" widget="many2many_tags" readonly="1" /> -->
+                    <field name="kkhc_line_ids" readonly="1" />
+                </group>
+                <footer>
+                    <button string="Approve" type="object" name="action_approve_item_kkhc_kepala_divisi" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

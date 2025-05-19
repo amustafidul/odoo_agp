@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<odoo>
+    
+
+        <record id="paperformat_np" model="report.paperformat">
+            <field name="name">National Pooling</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <report
+            id="action_report_np_preview"
+            model="account.keuangan.np"
+            string="National Pooling Preview"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_np_html"
+            file="agp_keuangan_ib.report_np_html"
+            
+        />
+
+        <template id="report_np_html">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align: center; color: black;">
+                             <t>
+                                NATIONAL POOLING
+                            </t>
+                        </h2>
+                        
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">NOMOR NATIONAL POOLING</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">URAIAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">BANK</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">REKENING</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">MATURITY DATE</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TOTAL PENERIMAAN / PENGELUARAN SINKING FUND</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TOTAL PEMBUATAN / PENCAIRAN DEPOSITO</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TOTAL PENDAPATAN</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TOTAL PENDAPATAN DAN BIAYA ADMINISTRASI BANK</th>
+                                    <th style="background-color: #f90; color: black; text-align: center;">TOTAL SALDO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <t t-set="summary_total_sinking_fund" t-value="0"/>
+                                <t t-set="summary_total_deposito" t-value="0"/>
+                                <t t-set="summary_total_pendapatan" t-value="0"/>
+                                <t t-set="summary_total_biaya_admin" t-value="0"/>
+                                <t t-set="summary_total_saldo" t-value="0"/>
+
+                                <t t-foreach="docs" t-as="o">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <t t-set="summary_total_sinking_fund" t-value="summary_total_sinking_fund + (o.total_sinking_fund or 0)"/>
+                                    <t t-set="summary_total_deposito" t-value="summary_total_deposito + (o.total_deposito or 0)"/>
+                                    <t t-set="summary_total_pendapatan" t-value="summary_total_pendapatan + (o.total_pendapatan or 0)"/>
+                                    <t t-set="summary_total_biaya_admin" t-value="summary_total_biaya_admin + (o.total_biaya_admin or 0)"/>
+                                    <t t-set="summary_total_saldo" t-value="summary_total_saldo + (o.total_saldo or 0)"/>
+
+                                    <tr style="color: black;">
+                                        <td class="text-center"><span t-esc="no"/></td>
+                                        <td><t t-esc="o.name or ''"/></td>
+                                        <td><t t-esc="o.uraian_pooling or ''"/></td>
+                                        <td><t t-esc="o.bank or ''"/></td>
+                                        <td><t t-esc="o.rekening or ''"/></td>
+                                        <td>
+                                            <t t-esc="o.maturity_date.strftime('%d %B %Y').upper() if o.maturity_date else ''"/>
+                                        </td>                              
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.total_sinking_fund)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.total_deposito)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.total_pendapatan)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.total_biaya_admin)"/></td>
+                                        <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(o.total_saldo)"/></td>
+                                    </tr>
+                                </t>
+
+                                <!-- Baris Total Summary -->
+                                <tr style="font-weight: bold; background-color:rgb(4, 148, 4); color: black;">
+                                    <td colspan="6" class="text-center">TOTAL</td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(summary_total_sinking_fund)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(summary_total_deposito)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(summary_total_pendapatan)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(summary_total_biaya_admin)"/></td>
+                                    <td style="text-align: right;"><t t-esc="'{:,.0f}'.format(summary_total_saldo)"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        
+</odoo>

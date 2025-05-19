@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_hutang_piutang" model="report.paperformat">
+        <field name="name">Kartu Hutang/Piutang A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_hutang_piutang" model="ir.actions.report">
+        <field name="name">Kartu Hutang/Piutang</field>
+        <field name="model">hutang.piutang.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_hutang_piutang</field>
+        <field name="report_file">report_multi_branch.report_hutang_piutang</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_hutang_piutang"/>
+    </record>
+
+    <template id="report_hutang_piutang">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <style>
+                            .laporan-item tr th {
+                                font-size: 12px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                border: 1px solid white;
+                                vertical-align: middle;
+                                background-color: #FF3300;
+                                color: white;
+                            }
+
+                            .laporan-item tr td {
+                                font-size: 12px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                border: 1px solid white;
+                            }
+
+                            .footer {
+                                font-size: 12px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                border: 1px solid white;
+                                background-color: #2F75B5;
+                                color: white;
+                            }
+                        </style>
+
+                        <!-- <img t-att-src="'/report_multi_branch/static/images/logo.jpg'" alt="Image"/>
+                        <h6>
+                            <b>PT ADHI GUNA PUTERA</b>
+                        </h6>
+                        <h6>
+                            <b>
+                                <t t-if="jenis_kartu == 'hutang'">LISTING ACCOUNT PAYABLE / HUTANG USAHA JETTY MANAJEMEN</t>
+                                <t t-if="jenis_kartu == 'piutang'">LISTING ACCOUNT RECEIVABLE / PIUTANG JETTY MANAJEMEN</t>
+                            </b>
+                        </h6>
+                        <h6>
+                            <b>2101105</b>
+                        </h6>
+                        <h5 style="text-align: center">
+                            <b>
+                                <t t-if="jenis_kartu == 'hutang'">AGING HUTANG USAHA JETTY MANAJEMEN</t>
+                                <t t-if="jenis_kartu == 'piutang'">AGING PIUTANG JETTY MANAJEMEN</t>
+                            </b>
+                        </h5> -->
+                        <h5 style="text-align: center">
+                            <b>
+                                <t t-if="jenis_kartu == 'hutang'">LISTING ACCOUNT PAYABLE / HUTANG USAHA</t>
+                                <t t-if="jenis_kartu == 'piutang'">LISTING ACCOUNT RECEIVABLE / PIUTANG</t>
+                                <t t-esc="jenis_kegiatan" />
+                            </b>
+                        </h5>
+                        <h5 style="text-align: center">
+                            <b>PER, <span t-esc="periode"/>
+                            </b>
+                        </h5>
+
+                        <table class="laporan-item" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <!-- <th rowspan="2">NO</th>
+                                    <th rowspan="2">
+                                        <t t-if="jenis_kartu == 'hutang'">KODE KREDITUR</t>
+                                        <t t-if="jenis_kartu == 'piutang'">KODE DEBITUR</t>
+                                    </th>
+                                    <th rowspan="2">
+                                        <t t-if="jenis_kartu == 'hutang'">NAMA KREDITUR</t>
+                                        <t t-if="jenis_kartu == 'piutang'">NAMA DEBITUR</t>
+                                    </th>
+                                    <th>SALDO</th>
+                                    <th colspan="5">AGING</th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>
+                                        <span t-esc="periode"/>
+                                    </th> -->
+                                    <th>CABANG</th>
+                                    <th>
+                                        <t t-if="jenis_kartu == 'hutang'">NAMA KREDITUR</t>
+                                        <t t-if="jenis_kartu == 'piutang'">NAMA DEBITUR</t>
+                                    </th>
+                                    <th>NO INVOICE</th>
+                                    <th>NO TRANSAKSI</th>
+                                    <th>TANGGAL</th>
+                                    <t t-if="jenis_kartu == 'hutang'">
+                                        <th>JUMLAH HUTANG</th>
+                                        <th>PEMBAYARAN</th>
+                                        <th>NO TRANSAKSI</th>
+                                        <th>TANGGAL</th>
+                                        <th>SISA HUTANG</th>
+                                    </t>
+                                    <t t-if="jenis_kartu == 'piutang'">
+                                        <th>PIUTANG NETTO</th>
+                                        <th>PIUTANG RAGU2 TAHUN LALU</th>
+                                        <th>PIUTANG RAGU2 TAHUN 2016</th>
+                                        <th>PIUTANG BRUTO</th>
+                                        <th>NO TRANSAKSI</th>
+                                        <th>PELUNASAN</th>
+                                        <th>TANGGAL</th>
+                                        <th>SISA PIUTANG</th>
+                                    </t>
+                                    <th>UP</th>
+                                    <th>KETERANGAN</th>
+                                    <th>0-6 BULAN</th>
+                                    <th>7-12 BULAN</th>
+                                    <th>13-24 BULAN</th>
+                                    <th>25-36 BULAN</th>
+                                    <th>&gt; 36 BULAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <t t-set="no" t-value="0"/>
+                                <tr t-foreach="lines" t-as="line">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <td class="text-center">
+                                        <span t-esc="no"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line['code']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['name']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(line['total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(line['total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(line['total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(line['total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(line['total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.2f}'.format(line['total5'])"/>
+                                    </td>
+                                </tr> -->
+                                <tr t-foreach="lines" t-as="line">
+                                    <td>
+                                        <span t-esc="line['branch']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['partner']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['name']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['transaction']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['date']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['amount_total'])"/>
+                                    </td>
+                                    <t t-if="jenis_kartu == 'hutang'">
+                                        <td align="right">
+                                            <span t-esc="'{0:,.0f}'.format(line['payment_amount'])"/>
+                                            <!-- <span t-esc="line['payment_amount']"/> -->
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['payment_name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['payment_date']"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="jenis_kartu == 'piutang'">
+                                        <td>
+                                            <span t-esc="0"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="0"/>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.0f}'.format(line['amount_total'])"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['payment_name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['payment_amount']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['payment_date']"/>
+                                        </td>
+                                    </t>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['residual'])"/>
+                                        <!-- <span t-esc="line['residual']"/> -->
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['narration']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total5'])"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="footer">
+                                <tr>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="''"/>
+                                    </td>
+                                    <t t-if="jenis_kartu == 'piutang'">
+                                        <td>
+                                            <span t-esc="''"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="''"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="''"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

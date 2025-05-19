@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <record id="cashflow_mb0" model="account.financial.report">
+            <field name="name">Cashflow Multi Branch</field>
+            <field name="type">sum</field>
+        </record>
+        <record model="financial.param" id="data_cashflow_financial_param">
+            <field name="name">Cashflow</field>
+        </record>
+    </data>
+
+    <record id="cashflow_mb_view" model="ir.ui.view">
+        <field name="name">Cashflow</field>
+        <field name="model">cashflow.mb.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="4">
+                    <field name="account_report_id" invisible="1"/>
+                    <field name="financial_param_id" invisible="1"/>
+                    <field name="periode"/>
+                </group>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="check_report_cashflow" string="Print" type="object" default_focus="1" class="oe_highlight" data-hotkey="q"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cashflow_mb" model="ir.actions.act_window">
+        <field name="name">Cashflow</field>
+        <field name="res_model">cashflow.mb.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="cashflow_mb_view"/>
+        <field name="target">new</field>
+        <field name="context" eval="{
+            'default_account_report_id':ref('report_multi_branch.cashflow_mb0'),
+            'default_financial_param_id':ref('report_multi_branch.data_cashflow_financial_param'),
+        }"/>
+    </record>
+
+    <menuitem id="menu_cashflow_mb" name="Cashflow" sequence="21" action="action_cashflow_mb" parent="accounting_pdf_reports.menu_finance_legal_statement" groups="account.group_account_manager"/>
+
+</odoo>

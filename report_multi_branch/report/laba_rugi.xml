@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_laba_rugi_mb" model="report.paperformat">
+        <field name="name">Laba Rugi Multi Branch A3</field>
+        <field name="default" eval="True" />
+        <field name="format">A3</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_laba_rugi_mb" model="ir.actions.report">
+        <field name="name">Laba Rugi Multi Branch</field>
+        <field name="model">account.financial.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">report_multi_branch.report_laba_rugi_mb</field>
+        <field name="report_file">report_multi_branch.report_laba_rugi_mb</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_laba_rugi_mb" />
+    </record>
+
+    <template id="report_laba_rugi_mb">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <t t-if="o and 'company_id' in o">
+                            <t t-set="company" t-value="o.company_id.sudo()" />
+                        </t>
+                        <t t-if="not o or not 'company_id' in o">
+                            <t t-set="company" t-value="res_company" />
+                        </t>
+
+                        <h4>
+                            <b>LABA RUGI DETAIL</b>
+                        </h4>
+                        <div style="margin-top: -10px" t-esc="company.name" />
+                        <div>
+                            <span>Periode : </span>
+                            <span t-esc="periode"/>
+                        </div>
+                        <br />
+
+                        <style>
+                            .laporan-item tr th {
+                                font-size: 10px;
+                                font-family: Arial, Helvetica, sans-serif text-align: center;
+                                border: 1px solid black;
+                                vertical-align: middle;
+                            }
+
+                            .laporan-item tr td {
+                                font-size: 10px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                border: hidden;
+                            }
+                        </style>
+                        <table class="table table-sm table-reports table-condensed laporan-item" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>KODE &amp; NAMA PERKIRAAN</th>
+                                    <th>KONSOLIDASI</th>
+                                    <th>PUSAT</th>
+                                    <!-- LOOPING HEAD BRANCH -->
+                                    <t t-foreach="branchs" t-as="branch">
+                                        <th>
+                                            <span t-field="branch.name" />
+                                        </th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="account_lines" t-as="account">
+                                    <t t-if="account['level'] != 0">
+                                        <t t-if="account['type'] in ('head','total')">
+                                            <t t-set="style" t-value="'font-weight: bold;'"/>
+                                        </t>
+                                        <t t-if="account['type'] == 'subline'">
+                                            <t t-set="style" t-value="'font-weight: normal;'"/>
+                                        </t>
+
+                                        <!-- NAME ACCOUNT KONSOLIDASI -->
+                                        <td>
+                                            <span style="color: white;" t-esc="'...' * int(account.get('level', 0))"/>
+                                            <span t-att-style="style" t-esc="account['name']"/>
+                                        </td>
+
+                                        <!-- BALANCE ACCOUNT KONSOLIDASI -->
+                                        <t t-if="account['type'] == 'head'">
+                                            <td class="text-end"></td>
+                                        </t>
+                                        <t t-if="account['type'] in ('subline','total')">
+                                            <td align="right">
+                                                <span t-att-style="style" t-esc="'{0:,.0f}'.format(account.get('balance'))"/>
+                                            </td>
+                                        </t>
+
+                                        <!-- PUSAT -->
+                                        <t t-set="value_pusat" t-value="model.get_value_pusat(account['account_id'], account['report'])" />
+                                        <t t-if="account['type'] == 'head'">
+                                            <td class="text-end"></td>
+                                        </t>
+                                        <t t-if="account['type'] in ('subline','total')">
+                                            <td align="right">
+                                                <span t-att-style="style" t-esc="'{0:,.0f}'.format(value_pusat.get('balance'))"/>
+                                            </td>
+                                        </t>
+
+                                        <!-- LOOPING BALANCE BRANCH -->
+                                        <t t-foreach="branchs" t-as="branch">
+                                            <t t-set="value_multi_branch" t-value="model.get_value_multi_branch(account['account_id'], account['report'], branch.id)" />
+                                            <t t-if="account['type'] == 'head'">
+                                                <td class="text-end"></td>
+                                            </t>
+                                            <t t-if="account['type'] in ('subline','total')">
+                                                <td align="right">
+                                                    <span t-att-style="style" t-esc="'{0:,.0f}'.format(value_multi_branch.get('balance'))"/>
+                                                </td>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

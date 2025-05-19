@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ir_cron_assign_maker_groups" model="ir.cron">
+            <field name="name">[Manual] Assign Maker Users to Group - Workflow Engine</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_maker_groups()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

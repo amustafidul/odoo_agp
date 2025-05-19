@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_training_course_kanban" model="ir.ui.view">
+        <field name="name">training.course.kanban</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status">
+                <field name="name"/>
+                <field name="lingkup_diklat"/>
+                <field name="branch_id"/>
+                <field name="cost"/>
+                <field name="currency_id"/>
+                <field name="training_date_from"/>
+                <field name="training_date_to"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_card"
+                             style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                            <!-- Hover Effect -->
+                            <t t-onmouseover="this.style.transform='scale(1.02)'"
+                               t-onmouseout="this.style.transform='scale(1)'"></t>
+
+                            <!-- Status Badge -->
+                            <div t-attf-class="badge badge-pill badge-#{record.status.raw_value} mb-2 text-capitalize"
+                                 style="padding: 0.4rem 0.8rem; font-size: 12px; border-radius: 50px; background-color: #{record.status.raw_value == 'draft' ? '#ffc107' : record.status.raw_value == 'on_review' ? '#17a2b8' : record.status.raw_value == 'approved' ? '#28a745' : '#dc3545'}; color: white;">
+                                <t t-esc="record.status.value"/>
+                            </div>
+
+                            <div class="o_kanban_record_bottom">
+                                <br/>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="oe_kanban_content">
+                                <!-- Nama Diklat -->
+                                <h3 class="text-primary mb-2" style="font-size: 16px; font-weight: bold; text-align: center;">
+                                    <t t-esc="record.name.value"/>
+                                </h3>
+                                <br/>
+                                <!-- Lingkup Diklat -->
+                                <div class="mb-2" style="display: flex; align-items: center;">
+                                    <i class="fa fa-refresh" style="margin-right: 8px;"/>
+                                    <strong style="margin-right: 5px;">Lingkup Diklat :</strong>
+                                    <t t-esc="record.lingkup_diklat.value or '-'"/>
+                                </div>
+
+                                <!-- Cabang -->
+                                <div class="mb-2" style="display: flex; align-items: center;">
+                                    <i class="fa fa-building" style="margin-right: 8px;"/>
+                                    <strong style="margin-right: 5px;">Cabang :</strong>
+                                    <t t-esc="record.branch_id.value or '-'"/>
+                                </div>
+
+                                <!-- Biaya -->
+                                <div class="mb-2" style="display: flex; align-items: center;">
+                                    <i class="fa fa-money" style="margin-right: 8px;"/>
+                                    <strong style="margin-right: 5px;">Biaya :</strong>
+                                    <t t-if="record.cost.value">
+                                        <t t-esc="record.currency_id.symbol or ''"/> <t t-esc="record.cost.value"/>
+                                    </t>
+                                    <t t-else="">-</t>
+                                </div>
+
+                                <!-- Pelaksanaan -->
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fa fa-calendar-check-o" style="margin-right: 8px;"/>
+                                    <strong style="margin-right: 5px;">Pelaksanaan :</strong>
+                                    <t t-if="record.training_date_from.value and record.training_date_to.value">
+                                        <t t-esc="record.training_date_from.value"/> - <t t-esc="record.training_date_to.value"/>
+                                    </t>
+                                    <t t-else="">Tanggal belum ditentukan</t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+
+                <!-- Status Widget -->
+                <field name="status" widget="kanban_status"
+                       options="{'selection': [('draft', 'Draft'), ('on_review', 'On Review'), ('approved', 'Approved'), ('rejected', 'Rejected')]}"/>
+
+                <!-- Quick Create -->
+                <templates>
+                    <t t-name="kanban-box-quick-create">
+                        <div class="o_kanban_quick_add" style="text-align: center; padding: 10px;">
+                            <input type="text" t-att-placeholder="'Create new Training Course'" class="o_kanban_quick_input"
+                                   style="width: 100%; padding: 5px; border-radius: 5px; border: 1px solid #ccc;"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_training_course_tree" model="ir.ui.view">
+        <field name="name">training.course.tree</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <tree string="Training Needs Analysis" decoration-info="status == 'draft'"
+                  decoration-warning="status == 'on_review'"
+                  decoration-success="status == 'approved'"
+                  decoration-danger="status == 'rejected'">
+                <header>
+                    <button name="action_generate_sample_data" type="object" string="Generate Sample Data" class="btn-primary" invisible="1"/>
+                </header>
+                <field name="name" string="Nama Diklat/ Workshop/ Sertifikasi"/>
+                <field name="lingkup_diklat" string="Lingkup Diklat" invisible="1"/>
+                <field name="participant_id" string="Nama Peserta" invisible="1"/>
+                <field name="participant_ids" widget="many2many_tags" string="Nama Peserta" invisible="1"/>
+                <field name="employee_ids" widget="many2many_tags" string="Nama Peserta"/>
+                <field name="company_id" invisible="1"/>
+                <field name="branch_id" string="Cabang"/>
+                <field name="training_date_from" string="Tanggal Mulai"/>
+                <field name="training_date_to" string="Tanggal Selesai"/>
+                <field name="cost" string="Biaya" sum="Total"/>
+                <field name="organizer" string="Penyelenggara"/>
+                <field name="status" string="Status" widget="badge"
+                       decoration-info="status == 'draft'"
+                       decoration-warning="status == 'on_review'"
+                       decoration-success="status == 'approved'"
+                       decoration-danger="status == 'rejected'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_training_course_form" model="ir.ui.view">
+        <field name="name">training.course.form</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <form string="Training Needs Analysis">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" attrs="{'invisible': [('status','!=','draft')]}"/>
+                    <button name="action_set_to_draft" string="Set to Draft" type="object" class="btn-primary" attrs="{'invisible': [('status','!=','approved')]}"/>
+                    <field name="status" string="Status" widget="statusbar" statusbar_visible="draft, approved" options="{'clickable': 'true'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_evaluations"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks"
+                                attrs="{'invisible': [('evaluation_count', '=', 0)]}">
+                            <field name="evaluation_count" widget="statinfo" string="Evaluations"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" string="Nama Diklat/ Workshop/ Sertifikasi" placeholder="Masukkan nama diklat, workshop, atau sertifikasi..." style="width: 750px;"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Informasi Diklat">
+                            <field name="lingkup_diklat" string="Lingkup Diklat" placeholder="Masukkan lingkup atau cakupan diklat..."
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="participant_id" string="Nama Peserta" invisible="1"/>
+                            <field name="participant_ids" widget="many2many_tags" string="Nama Peserta" placeholder="Pilih peserta ..." invisible="1"/>
+                            <field name="employee_ids" widget="many2many_tags" string="Nama Peserta" placeholder="Pilih peserta ..."
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="branch_id" string="Cabang"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </group>
+                        <group string="Detail Waktu &amp; Biaya">
+                            <field name="training_date_from" string="Tanggal Mulai"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="training_date_to" string="Tanggal Selesai"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="duration"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}" string="Biaya"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                            <field name="organizer" string="Penyelenggara"
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </group>
+                        <group string="Deskripsi">
+                            <field name="description" string="Description" widget="html" placeholder="Add a description..."
+                                   attrs="{'readonly': [('status','!=','draft')]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="training_course_search_view" model="ir.ui.view">
+        <field name="name">training.course.search.view</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <search string="Search Training">
+                <filter name="group_training_year" string="Tanggal Training" context="{'group_by':'training_year'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_training_course" model="ir.actions.act_window">
+        <field name="name">Training Needs Analysis</field>
+        <field name="res_model">training.course</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="view_training_course_kanban"/>
+        <field name="context">{'search_default_group_training_year': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your training needs here.</p>
+        </field>
+    </record>
+</odoo>

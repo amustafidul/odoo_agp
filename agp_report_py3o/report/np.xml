@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <odoo>
+        <record id="np_form_py3o" model="ir.actions.report">
+            <field name="name">National Pooling</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">account.keuangan.np</field>
+            <field name="report_name">np_form</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/np_form.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_np"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="np_py3o" model="ir.actions.report">
+            <field name="name">National Pooling PDF</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">np.export.wizard</field>
+            <field name="report_name">np</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/np.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_np_export_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+    </odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <report
+        id="action_report_attendance_absensi_pdf"
+        string="Laporan Kehadiran PDF"
+        model="attendance.report.wizard"
+        report_type="qweb-pdf"
+        file="agp_attendance_ib.attendance_absensi_report_pdf"
+        name="agp_attendance_ib.attendance_absensi_report_pdf"
+        print_report_name="'Laporan Kehadiran - %s' % (object.create_date.strftime('%d-%m-%Y'))"
+    />
+</odoo>

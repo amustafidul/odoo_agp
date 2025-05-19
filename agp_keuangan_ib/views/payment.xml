@@ -1,0 +1,104 @@
+<odoo>
+
+    <data noupdate="1">
+        <!-- Sequence Data -->
+        <record id="seq_payment" model="ir.sequence">
+            <field name="name">Payment</field>
+            <field name="code">sequence.keuangan.register.payment</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+
+
+    <record id="view_account_keuangan_register_payment_form" model="ir.ui.view">
+        <field name="name">account.keuangan.register.payment.form</field>
+        <field name="model">account.keuangan.register.payment</field>
+        <field name="arch" type="xml">
+            <form string="Register Payment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="payment_date"/>
+                            <field name="ditujukan_kepada"/>
+                            <field name="kode_anggaran"/>
+                            <field name="account_code_id"/>
+                            <field name="jenis_kegiatan_id"/>
+                            <field name="jenis_kegiatan_name"/>
+                            <field name="bank_account_id"/>
+                            <field name="invoice_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_sesudah_pajak"/>
+                            <field name="tax_ids" widget="many2many_tags"/>
+                            <field name="tax_amount"/>
+                            <field name="ppn_tidak_dibayar"/>
+                            <field name="admin_bank"/>
+                            <field name="denda"/>
+                            <field name="nominal_lain"/>
+                            <field name="total_nilai_pekerjaan"/>
+                            <field name="amount_paid"/>
+                            <field name="keterangan"/>
+                            <!-- <field name="amount_residual"/> -->
+                            <!-- <field name="amount_residual"/> -->
+                            <!-- <field name="payment_method"/> -->
+                        </group>
+                    </group>
+                    <!-- <footer>
+                        <button name="action_post" type="object" string="Post Payment" class="btn-primary"
+                                attrs="{'invisible': ['|', ('state', '=', 'posted'), ('state', '=', 'draft')]}"/>
+                        <button name="action_draft" type="object" string="Set to Draft" class="btn-secondary"
+                                attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-danger"/>
+                    </footer> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_register_payment_form" model="ir.actions.act_window">
+        <field name="name">Register Payment</field>
+        <field name="res_model">account.keuangan.register.payment</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_payment_tree" model="ir.ui.view">
+            <field name="name">payment.tree</field>
+            <field name="model">account.keuangan.register.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Payment">    
+                    <field name="name" width="15px"/>
+                    <field name="bank_account_id"/>
+                    <field name="invoice_id"/>
+                    <field name="payment_date"/>
+                    <field name="ditujukan_kepada"/>
+                    <field name="kode_anggaran"/>
+                    <field name="account_code_id"/>
+                    <field name="jenis_kegiatan_id"/>
+                    <field name="total_sesudah_pajak"/>
+                    <field name="nominal"/>
+                    <field name="pph_23"/>
+                    <field name="ppn_tidak_dibayar"/>
+                    <field name="admin_bank"/>
+                    <field name="denda"/>
+                    <field name="nominal_lain"/>
+                    <field name="keterangan"/>
+                    <field name="amount_paid"/>
+                    <!-- <field name="amount_residual"/> -->
+                    <!-- <field name="payment_method"/> -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_payment" model="ir.actions.act_window">
+            <field name="name">Payment</field>
+            <field name="res_model">account.keuangan.register.payment</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    <!-- <menuitem id="menu_register_payment" name="Register Payment" parent="account.menu_finance_entries" 
+              action="action_register_payment_form" sequence="10"/> -->
+</odoo>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_training_course_calendar" model="ir.ui.view">
+        <field name="name">training.course.calendar</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <calendar string="Kalender Pelaksanaan Training"
+                      date_start="actual_start_date"
+                      date_stop="actual_end_date"
+                      color="training_scope_id"
+                      event_open_popup="true"
+                      quick_add="false"
+                      mode="month">
+                <field name="name" string="Nama Training"/>
+                <field name="training_scope_id" string="Lingkup Diklat" filters="1" invisible="0"/>
+                <field name="branch_id" string="Cabang" filters="1" invisible="0"/>
+                <field name="state" string="Status" filters="1" invisible="0"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_training_course_form" model="ir.ui.view">
+        <field name="name">training.course.form</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <form string="Realisasi Training">
+                <header>
+                    <button name="action_register" string="Daftarkan" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"
+                            groups="hr.group_hr_user"/>
+                    <button name="action_mark_paid" string="Konfirmasi Bayar" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'registered')]}"
+                            groups="hr.group_hr_user"/>
+                    <button name="action_start_training" string="Mulai Training" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'paid')]}"
+                            groups="hr.group_hr_user"/>
+                    <button name="action_complete_training" string="Selesaikan Training" type="object"
+                            class="btn-success" attrs="{'invisible': [('state', '!=', 'ongoing')]}"
+                            groups="hr.group_hr_user"
+                            confirm="Pastikan semua data aktual training sudah terisi. Menyelesaikan training akan membuat histori dan evaluasi (jika ada). Lanjutkan?"/>
+                    <button name="action_cancel_training" string="Batalkan Training" type="object"
+                            class="oe_button_danger" attrs="{'invisible': [('state', 'in', ['completed', 'cancelled'])]}"
+                            groups="hr.group_hr_manager"
+                            confirm="Membatalkan training akan mengembalikan status Usulan TNA asal (jika ada) ke 'Approved'. Yakin?"/>
+                    <button name="action_reset_to_draft_realization" string="Reset ke Draft" type="object"
+                            attrs="{'invisible': [('state', 'not in', ['cancelled'])]}"
+                            groups="hr.group_hr_manager"
+                            confirm="Mengembalikan ke draft akan menghapus histori dan evaluasi yang mungkin sudah terbuat. Yakin?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,registered,paid,ongoing,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Nama Training/Diklat Final"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="originating_tna_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="training_scope_id"/>
+                            <field name="branch_id"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group>
+                            <field name="budgeted_cost"/>
+                            <field name="actual_cost"/>
+                            <field name="currency_id" readonly="1" force_save="1"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Pelaksanaan">
+                            <group>
+                                <group string="Jadwal">
+                                    <field name="actual_start_date"/>
+                                    <field name="actual_end_date"/>
+                                    <field name="actual_duration_days" readonly="1" force_save="1"/>
+                                    <field name="actual_duration_hours"/>
+                                </group>
+                                <group string="Lokasi &amp; Penyelenggara">
+                                    <field name="training_location_type"/>
+                                    <field name="training_location_detail" attrs="{'invisible': [('training_location_type', '=', False)]}"/>
+                                    <field name="organizer" string="Penyelenggara (Usulan/Referensi)"/>
+                                    <field name="final_organizer_vendor_id" string="Vendor Penyelenggara Final"/>
+                                </group>
+                            </group>
+                            <field name="description" placeholder="Deskripsi Final Training..."/>
+                        </page>
+                        <page string="Peserta Final">
+                            <field name="participant_line_ids"
+                                   context="{'default_course_id': active_id, 'default_currency_id': currency_id}">
+                                <tree editable="bottom"> <field name="sequence" widget="handle"/>
+                                    <field name="employee_id" required="1" options="{'no_create': True}"/>
+                                    <field name="estimated_cost_from_tna" readonly="1" optional="show"/>
+                                    <field name="actual_cost_participant" required="1" sum="Total Biaya Realisasi Peserta"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="attendance_status" optional="show"/>
+                                    <field name="notes" optional="show"/>
+                                </tree>
+                                <form> <group>
+                                        <field name="employee_id" required="1"/>
+                                        <field name="estimated_cost_from_tna" readonly="1"/>
+                                        <field name="actual_cost_participant" required="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="attendance_status"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" name="training_course_total_actual_cost">
+                                <field name="actual_cost" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1" force_save="1"/>
+                                <label for="actual_cost" string="Total Biaya Realisasi (Otomatis)"/>
+                            </group>
+                            <div style="clear:both;"/>
+                        </page>
+                        <page string="Sertifikat &amp; RKAP">
+                            <group>
+                                <group string="Sertifikat">
+                                    <field name="certificate_received"/>
+                                    <field name="certificate_number" attrs="{'invisible': [('certificate_received', '=', False)]}"/>
+                                    <field name="certificate_issue_date" attrs="{'invisible': [('certificate_received', '=', False)]}"/>
+                                    <field name="certificate_expiry_date" attrs="{'invisible': [('certificate_received', '=', False)]}"/>
+                                </group>
+                                <group string="RKAP">
+                                    <field name="rkap_link_notes" placeholder="Catatan keterkaitan dengan RKAP..."/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Evaluasi Training" name="page_evaluations"
+                              attrs="{'invisible': [('state', 'not in', ['ongoing', 'completed'])]}">
+                            <field name="evaluation_ids">
+                                <tree>
+                                    <field name="employee_id"/>
+                                    <field name="total_score_finish"/>
+                                    <field name="training_result"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_training_course_tree" model="ir.ui.view">
+        <field name="name">training.course.tree</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <tree string="Daftar Realisasi Training" decoration-info="state=='draft' or state=='registered'"
+                  decoration-warning="state=='paid' or state=='ongoing'"
+                  decoration-success="state=='completed'"
+                  decoration-danger="state=='cancelled'">
+                <field name="name"/>
+                <field name="training_scope_id" optional="show"/>
+                <field name="actual_start_date" optional="show"/>
+                <field name="actual_end_date"/>
+                <field name="branch_id" optional="hide"/>
+                <field name="actual_cost" sum="Total Biaya Realisasi"/>
+                <field name="evaluation_count" string="Jml Evaluasi" optional="show"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_training_course_search" model="ir.ui.view">
+        <field name="name">training.course.search</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <search string="Cari Realisasi Training">
+                <field name="name"/>
+                <field name="originating_tna_id"/>
+                <field name="training_scope_id"/>
+                <field name="branch_id"/>
+                <field name="department_id"/>
+                <field name="final_organizer_vendor_id"/>
+                <field name="state"/>
+                <filter string="Tahun Ini" name="current_year"
+                        domain="[('actual_start_date', '&gt;=', time.strftime('%%Y-01-01')), ('actual_start_date', '&lt;=', time.strftime('%%Y-12-31'))]"/>
+                <group expand="0" string="Kelompokkan Berdasarkan...">
+                    <filter string="Status" name="group_by_state" context="{'group_by':'state'}"/>
+                    <filter string="Lingkup Diklat" name="group_by_scope" context="{'group_by':'training_scope_id'}"/>
+                    <filter string="Bulan Mulai" name="group_by_start_month" context="{'group_by':'actual_start_date:month'}"/>
+                    <filter string="Cabang" name="group_by_branch" context="{'group_by':'branch_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_training_course_all" model="ir.actions.act_window">
+        <field name="name">Semua Pelaksanaan Training</field>
+        <field name="res_model">training.course</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_training_course_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_training_course_form')}),
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_training_course_calendar')})]" />
+        <field name="search_view_id" ref="view_training_course_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Belum ada data pelaksanaan training. Buat dari Usulan TNA yang disetujui atau buat baru.
+            </p>
+        </field>
+    </record>
+</odoo>

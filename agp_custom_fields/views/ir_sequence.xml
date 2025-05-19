@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+
+        <!-- Tampilan baru atau modifikasi tampilan ir.sequence -->
+        <record id="view_inherited_sequence_form" model="ir.ui.view">
+            <field name="name">ir.sequence.form.inherited</field>
+            <field name="model">ir.sequence</field>
+            <field name="inherit_id" ref="base.sequence_view"/>
+            <field name="arch" type="xml">
+                <!-- Modifikasi atau penambahan komponen dalam tampilan -->
+                <xpath expr="//group[@string='Legend (for prefix, suffix)']" position="inside">
+                    <group>
+                        <!-- <field name="branch_code" invisible="1"/> -->
+                        <span colspan="2">Branch Code: %(branch_code)s</span>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

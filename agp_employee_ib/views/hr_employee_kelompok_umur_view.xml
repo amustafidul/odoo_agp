@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="hr_employee_kelompok_umur_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.kelompok.umur.view.tree</field>
+        <field name="model">hr.employee.kelompok.umur</field>
+        <field name="arch" type="xml">
+            <tree string="Kelompok Umur">
+                <field name="name"/>
+                <field name="min_age"/>
+                <field name="max_age"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_employee_kelompok_umur_form_view" model="ir.ui.view">
+        <field name="name">hr.employee.kelompok.umur.view.form</field>
+        <field name="model">hr.employee.kelompok.umur</field>
+        <field name="arch" type="xml">
+            <form string="Kelompok Umur">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_employees" type="object" string="Employees"
+                            class="oe_stat_button">
+                            <field name="employee_count" widget="statinfo" icon="fa-users"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="min_age"/>
+                            <field name="max_age"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_kelompok_umur_action" model="ir.actions.act_window">
+        <field name="name">Kelompok Umur</field>
+        <field name="res_model">hr.employee.kelompok.umur</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat master data kelompok umur baru
+            </p>
+        </field>
+    </record>
+</odoo>

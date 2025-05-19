@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="view_action_view_tree_financial_data" model="ir.ui.view">
+            <field name="name">Financial Data Tree View</field>
+            <field name="model">financial.data</field>
+            <field name="arch" type="xml">
+                <tree string="Financial Data">
+                    <field name="date"/>
+                    <field name="total_balance"/>
+                    <field name="source_2"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_view_tree_financial_data" model="ir.actions.act_window">
+            <field name="name">View Tree Financial Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">financial.data</field>
+            <field name="view_mode">tree</field>
+            <field name="target">current</field>
+            <!-- Tambahkan view_id untuk menunjukkan tampilan mana yang harus ditampilkan -->
+            <field name="view_id" ref="view_action_view_tree_financial_data"/>
+        </record>
+    </data>
+</odoo>

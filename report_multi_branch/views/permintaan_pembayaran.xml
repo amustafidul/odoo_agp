@@ -1,0 +1,498 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_spp" model="report.paperformat">
+            <field name="name">SPP Paper Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">16</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="dpi">90</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">13</field>
+            <!-- <field name="report_ids" eval="[(6, 0, [ref('report_spp_pdf')])]"/> -->
+        </record>
+
+        <!-- Define the report -->
+        <report
+            id="report_spp_pdf"
+            string="Surat Permintaan Pembayaran"
+            model="report.report_multi_branch.spp"
+            report_type="qweb-html"
+            name="report_multi_branch.report_spp"
+            file="report_multi_branch.report_spp"
+            paperformat="paperformat_spp"
+            attachment_use="False"/>
+
+        <!-- Define the template for the report -->
+        <template id="report_multi_branch.report_spp">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                @page {
+                                    size: A4;
+                                    margin: 20mm;
+                                }
+                                .custom-checkbox {
+                                    width: 20px; /* Lebar kotak centang */
+                                    height: 20px; /* Tinggi kotak centang */
+                                }
+                                .custom-checkbox input[type="checkbox"] {
+                                    transform: scale(2); /* Memperbesar kotak centang */
+                                    margin-right: 10px; /* Jarak antara kotak centang dan teks */
+                                }
+                                .content {
+                                    width: 100%;
+                                    height: auto;
+                                    page-break-inside: avoid; /* Menghindari pemutusan halaman di dalam konten */
+                                }
+                                body {
+                                    <!-- transform: scale(0.85); -->
+                                    transform-origin: top center;
+                                    zoom: 0.75;
+                                }
+                            </style>
+                            <!-- <table class="table-condensed" width="100%">
+                                <tr>
+                                    <td width="60%" style="border-left: hidden; border-top: hidden; border-bottom: hidden; vertical-align: middle; text-align: center">
+                                        <b style="font-size: 25px"><t t-esc="user.company_id.name"/></b>
+                                        <br/>
+                                        <b style="font-size: 15px">
+                                            <t t-esc="user.company_id.street"/>
+                                            <t t-if="user.company_id.street2">, <t t-esc="user.company_id.street2"/></t>
+                                            <br/>
+                                            <t t-esc="user.company_id.zip"/> - <t t-esc="user.company_id.city"/>,
+                                            <t t-esc="user.company_id.state_id.name" t-if="user.company_id.state_id"/>
+                                            <t t-esc="user.company_id.country_id.name"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table> -->
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-3"/>
+                                <div class="col-6 text-center">
+                                    <b style="border: 1px solid black; padding: 5px;">SURAT PERMINTAAN PEMBAYARAN (SPP)</b>
+                                </div>
+                                <div class="col-3"/>
+                            </div>
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            
+                            <table class="table-condensed" width="100%">
+                                <tr>
+                                    <td width="50%" style="border: 1px solid black; padding-left: 5px">
+                                        <span>UNIT KERJA :</span>
+                                        <span t-field="o.unit_kerja"/>
+                                        <br/>
+                                        <span>NO. SPP :</span>
+                                        <span t-field="o.name"/>
+                                        <br/>
+                                        <span>Tanggal SPP :</span>
+                                        <span t-field="o.tanggal_spp"/>
+                                        <br/>
+                                        <span>Branch :</span>
+                                        <span t-field="o.branch_ids"/>
+                                        <br/>
+                                        <span>Sub Branch :</span>
+                                        <span t-field="o.sub_branch_ids"/>
+                                    </td>
+                                    <td width="50%" style="border: 1px solid black; padding-left: 5px">
+                                        <span style="border-bottom: 1px solid black; font-weight: bold;">DIISI OLEH UNIT KERJA</span>
+                                        <br/>
+                                        <span>DIBAYARKAN KEPADA :</span>
+                                        <span t-field="o.partner_id"/>
+                                        <br/>
+                                        <span>ALAMAT :</span>
+                                        <span t-field="o.alamat"/>
+                                        <br/>
+                                        <span>REKENING BANK :</span>
+                                        <span t-field="o.rek_bank"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            
+                            <table class="table-condensed" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="border: 1px solid black; padding: 5px;">RINCIAN PERMINTAAN PEMBAYARAN</th>
+                                        <th style="border: 1px solid black; padding: 5px;">JUMLAH</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 5px;">
+                                                <t t-esc="line.rincian"/>
+                                            </td>
+                                            <td style="border: 1px solid black; padding: 5px;">
+                                                <t t-if="line.jumlah">
+                                                    <t t-set="formatted_jumlah" t-value="'Rp {:,.2f}'.format(line.jumlah)"/>
+                                                    <t t-esc="formatted_jumlah"/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- Sum row -->
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px; text-align: right;">JUMLAH</td>
+                                        <td style="border: 1px solid black; padding: 5px; text-align: left;">
+                                            <t t-if="o.total_jumlah">
+                                                <t t-set="formatted_total" t-value="'Rp {:,.2f}'.format(o.total_jumlah)"/>
+                                                <t t-esc="formatted_total"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <table class="table-condensed" width="100%">
+                            <tr>
+                                <td width="30%" style="border: 1px solid black; padding-left: 100px">
+                                    <span style="font-weight: bold;">TERBILANG :</span>
+                                    <span t-field="o.total_jumlah_text"/>
+                                </td>
+                            </tr>
+                            </table>
+                            <br/>
+                            <br/>
+
+                            <table class="table-condensed" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                                <tr>
+                                    <th style="border: 1px solid black; padding: 5px; color: white">______</th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Disetujui</th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Diminta</th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Disiapkan</th>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; border-bottom: hidden; color: white">TTD</td>
+                                    <td style="border: 1px solid black; padding: 5px; border-bottom: hidden;"/>
+                                    <td style="border: 1px solid black; padding: 5px; border-bottom: hidden;"/>
+                                    <td style="border: 1px solid black; padding: 5px; border-bottom: hidden;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden; border-bottom: hidden; color: white">TTD</td>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden; border-bottom: hidden;"/>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden; border-bottom: hidden;"/>
+                                    <td style="border: 1px solid black; padding: 5px; border-bottom: hidden;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; color: white">TTD</td>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden;">TTD</td>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden;"/>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden;"/>
+                                    <td style="border: 1px solid black; padding: 5px; border-top: hidden;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">NAMA</td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"><t t-esc="o.disetujui1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"><t t-esc="o.diminta1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"><t t-esc="o.disiapkan1.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">TGL</td>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                </tr>
+                            </table>
+                            <br/>
+                            
+                            <table class="table-condensed" style="width: 100%; border-top: hidden; border-collapse: collapse;">
+                                <tr>
+                                    <th colspan="3" style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px; text-align : left;">Lampiran atas SPP (coret yang tidak sesuai) :</th>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Surat Permohonan Pembayaran</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.surat_permohonan == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.surat_permohonan == 'tidak_ada'"/>
+                                        <label> Tidak Ada </label>
+                                    </td>
+                                    <th colspan="2" style="border: 1px solid black; padding: 5px; text-align : center;">Verifikasi</th>
+                                    <th colspan="2" style="border: 1px solid black; padding: 5px; text-align : center;">Diketahui</th>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Invoice</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.invoice == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.invoice == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <th style="border: 1px solid black; padding: 5px; text-align: center; width: 15%;">Akuntansi</th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align: center; width: 15%;">Pajak</th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align: center; font-size: 15px; width: 15%;">Manager Bidang pada Divisi Akuntansi</th>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Kwitansi</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.kwitansi == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.kwitansi == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Faktur Pajak</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.faktur_pajak == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.faktur_pajak == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Bukti Pemotongan Pajak (PPh)</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.pph == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.pph == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Perjanjian Pekerjaan</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.perjanjian_pekerjaan == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.perjanjian_pekerjaan == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Surat Perintah Kerja</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.surat_perintah_kerja == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.surat_perintah_kerja == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                    <td style="border: 1px solid black; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Berita Acara Serah Terima Pekerjaan</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.berita_acara == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.berita_acara == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"><t t-esc="o.verifikasi_keuangan1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"><t t-esc="o.verifikasi_pajak1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"><t t-esc="o.manager_keuangan3.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Berita Acara Penyelesaian Pekerjaan</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.berita_acara2 == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.berita_acara2 == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"/>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"/>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;"/>
+                                </tr>
+                                <!-- <t t-if="o.berita_acara == 'ada'">
+                                    <tr>
+                                        <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                            <t t-esc="dict(o._fields['tipe_berita_acara'].selection).get(o.tipe_berita_acara, '...')"/>
+                                        </td>
+                                        <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;"/>
+                                        <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;"/>
+                                    </tr>
+                                </t> -->
+                                <tr>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">Lainnya</td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                        <input type="checkbox" t-att-checked="o.lainnya == 'ada'"/>
+                                        <label> Ada</label>
+                                    </td>
+                                    <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 0px;">
+                                        <input type="checkbox" t-att-checked="o.lainnya == 'tidak_ada'"/>
+                                        <label> Tidak Ada</label>
+                                    </td>
+                                    
+                                </tr>
+                                <t t-if="o.lainnya == 'ada'">
+                                    <tr>
+                                        <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;">
+                                            <t t-esc="o.lainnya1 or '...'"/>
+                                        </td>
+                                        <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;"/>
+                                        <td style="border-left: hidden; border-top: hidden; border-bottom: hidden; padding: 5px;"/>
+                                    </tr>
+                                </t>
+                            </table>
+                            <br/>
+                            <br/>
+                            
+                            <table class="table-condensed" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                                
+                                <tr>
+                                    <th colspan="3" style="border: 1px solid black; padding: 5px; text-align : center;">Divisi Keuangan</th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Kepala Divisi Akuntansi</th>
+                                </tr>
+                                <tr>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Kepala Divisi Keuangan </th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Manager Bidang Keuangan </th>
+                                    <th style="border: 1px solid black; padding: 5px; text-align : center;">Manager Bidang Anggaran &amp; Asuransi </th>
+
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px; color: white"></td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px; color: white"></td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px; color: white"></td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">Ttd : </td>
+                                    <td style="border: 1px solid black; padding: 5px;">Ttd : </td>
+                                    <td style="border: 1px solid black; padding: 5px;">Ttd : </td>
+                                    <td style="border: 1px solid black; padding: 5px;">Ttd : </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Nama : <t t-esc="o.kepala_div_keuangan1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Nama : <t t-esc="o.manager_keuangan1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Nama : <t t-esc="o.manager_anggaran1.name"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Nama : <t t-esc="o.kepala_div_akuntansi1.name"/></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Tgl : </td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Tgl : </td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Tgl : </td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Tgl : </td>
+
+                                </tr>
+                            </table>
+                            <br/>
+                            <br/>
+                            
+                            <table class="table-condensed" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                                <colgroup>
+                                    <col style="width: 50%;"/>
+                                    <col style="width: 50%;"/>
+                                </colgroup>
+                                <tr>
+                                    <td colspan="2" style="border: 1px solid black; padding: 5px; text-align: center;">WEWENANG PERSETUJUAN</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;">WEWENANG II</td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: center;">WEWENANG I</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px; color: white"></td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px; color: white"></td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px; color: white"></td>
+                                    <td style="border: 1px solid black; border-bottom: hidden; padding: 5px;"/>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">Ttd : </td>
+                                    <td style="border: 1px solid black; padding: 5px;">Ttd : </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Nama : <t t-esc="o.wewenang1"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Nama : <t t-esc="o.wewenang2"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Jabatan : <t t-esc="o.jabatan_wewenang1"/></td>
+                                    <td style="border: 1px solid black; padding: 5px; text-align: left;">Jabatan : <t t-esc="o.jabatan_wewenang2"/></td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <br/>
+                            <br/>
+                            
+                            <table class="table-condensed" style="width: 100%;  border-collapse: collapse;">
+                                <colgroup>
+                                    <col style="width: 30%;"/>
+                                    <col style="width: 30%;"/>
+                                    <col style="width: 30%;"/>
+                                </colgroup>
+                                <tr>
+                                    <td style=" padding: 5px; text-align: left;">Lembar 1 : Bagian Keuangan</td>
+                                    <td style=" padding: 5px; text-align: center;">Lembar 2 : Bagian Akuntansi dan Aset</td>
+                                    <td style=" padding: 5px; text-align: right;">Lembar 3 : Arsip (Unit Kerja Ybs)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
+
+            

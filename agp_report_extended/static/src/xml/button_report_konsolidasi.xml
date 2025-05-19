@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-extend="ListView.buttons" t-name="agp_report_extended.buttons">
+        <t t-jquery="button.o_list_export_xlsx" t-operation="before">
+            <button t-if="widget.modelName == 'account.keuangan.rkap.konsolidasi'" type="button" class="btn btn-primary open_account_keuangan_rkap_konsolidasi_action m-2">
+                Print RKAP Konsolidasi
+            </button>
+        </t>
+    </t>
+</templates>

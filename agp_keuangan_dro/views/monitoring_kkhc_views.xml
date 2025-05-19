@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- monitor dropping kkhc tree view | usaha -->
+    <record id="account_keuangan_kkhc_line_view_tree_usaha" model="ir.ui.view">
+        <field name="name">account.keuangan.kkhc.line.view.tree.usaha</field>
+        <field name="model">account.keuangan.monitor.kkhc.line</field>
+        <field name="arch" type="xml">
+            <tree string="Monitoring Dropping KKHC Usaha" create="0" editable="top">
+                <field name="branch_id" string="Nama Cabang" readonly="1" />
+                <field name="periode_kkhc_start" string="Periode" readonly="0" />
+                <field name="kkhc_id" readonly="1" string="No. KKHC" />
+                <field name="nodin_id" readonly="0" string="No. Nota Dinas" domain="[('is_umum', '=', False)]"/>
+                <field name="nodin_bod_id" readonly="0" string="No. Nota Dinas BoD" />
+                <field name="kode_anggaran_id" string="Kode" readonly="1" />
+                <field name="account_code_id" readonly="1" />
+                <field name="deskripsi" string="Deskripsi" readonly="1" />
+                <field name="nominal_pengajuan" string="Cabang" readonly="0" />
+                <field name="nominal_disetujui_usaha" string="Usaha/Umum" readonly="1" optional="hide"/>
+                <field name="nominal_disetujui_anggaran" attrs="{'readonly': [('user_level', '!=', 'anggaran')]}"/>
+                <field name="nominal_final" readonly="1" string="Final" optional="show"/>
+                <field name="nominal_bayar_pertama" attrs="{'readonly': [('user_level', '!=', 'keuangan')]}"/>
+                <field name="tgl_bayar_pertama" optional="hide"/>
+                <field name="nominal_bayar_kedua" string="Bayar 2" optional="hide"/>
+                <field name="tgl_bayar_kedua" optional="hide"/>
+                <field name="pagu_limit" groups="base.group_no_one"/>
+                <field name="is_rejected" />
+                <field name="user_level" invisible="1" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- monitor dropping kkhc tree view | umum -->
+    <record id="account_keuangan_kkhc_line_view_tree_umum" model="ir.ui.view">
+        <field name="name">account.keuangan.kkhc.line.view.tree.umum</field>
+        <field name="model">account.keuangan.monitor.kkhc.line</field>
+        <field name="arch" type="xml">
+            <tree string="Monitoring Dropping KKHC Umum" create="0" editable="top">
+                <field name="branch_id" string="Nama Cabang" readonly="1" />
+                <field name="periode_kkhc_start" string="Periode" readonly="0" />
+                <field name="kkhc_id" readonly="1" string="No. KKHC" />
+                <field name="nodin_id" readonly="0" string="No. Nota Dinas" domain="[('is_umum', '=', True)]"/>
+                <field name="kode_anggaran_id" string="Kode" readonly="1" />
+                <field name="account_code_id" readonly="1" />
+                <field name="deskripsi" string="Deskripsi" readonly="1" />
+                <field name="nominal_pengajuan" string="Cabang" readonly="0" />
+                <field name="nominal_disetujui_usaha" string="Usaha/Umum" readonly="1" optional="hide"/>
+                <field name="nominal_disetujui_anggaran" attrs="{'readonly': [('user_level', '!=', 'anggaran')]}"/>
+                <field name="nominal_final" readonly="1" string="Final" optional="show"/>
+                <field name="nominal_bayar_pertama" attrs="{'readonly': [('user_level', '!=', 'keuangan')]}"/>
+                <field name="tgl_bayar_pertama" optional="hide"/>
+                <field name="nominal_bayar_kedua" string="Bayar 2" optional="hide"/>
+                <field name="tgl_bayar_kedua" optional="hide"/>
+                <field name="pagu_limit" groups="base.group_no_one"/>
+                <field name="is_rejected" />
+                <field name="user_level" invisible="1" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- monitor dropping kkhc pivot view | usaha -->
+    <!-- <record id="account_keuangan_monitor_kkhc_line_view_pivot_usaha" model="ir.ui.view">
+        <field name="name">account.keuangan.monitor.kkhc.line.view.pivot.usaha</field>
+        <field name="model">account.keuangan.monitor.kkhc.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Monitoring KKHC Usaha - Pivot">
+                <field name="branch_id" type="row"/>
+                <field name="kode_anggaran_id" type="row"/>
+                <field name="account_code_id" type="row"/>
+                <field name="periode_kkhc_start" type="col"/>
+                <field name="nominal_pengajuan" type="measure"/>
+                <field name="nominal_disetujui_usaha" type="measure"/>  
+                <field name="nominal_disetujui_anggaran" type="measure"/>
+                <field name="nominal_final" type="measure"/>
+                <field name="nominal_bayar_pertama" type="measure"/>
+                <field name="nominal_bayar_kedua" type="measure"/>
+            </pivot>
+        </field>
+    </record> -->
+
+    <!-- monitor dropping kkhc pivot view | umum -->
+    <!-- <record id="account_keuangan_monitor_kkhc_line_view_pivot_umum" model="ir.ui.view">
+        <field name="name">account.keuangan.monitor.kkhc.line.view.pivot.umum</field>
+        <field name="model">account.keuangan.monitor.kkhc.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Monitoring KKHC Umum - Pivot">
+                <field name="branch_id" type="row"/>
+                <field name="kode_anggaran_id" type="row"/>
+                <field name="account_code_id" type="row"/>
+                <field name="periode_kkhc_start" type="col"/>
+                <field name="nominal_pengajuan" type="measure"/>
+                <field name="nominal_disetujui_usaha" type="measure"/>
+                <field name="nominal_disetujui_anggaran" type="measure"/>
+                <field name="nominal_final" type="measure"/>
+                <field name="nominal_bayar_pertama" type="measure"/>
+                <field name="nominal_bayar_kedua" type="measure"/>
+            </pivot>
+        </field>
+    </record> -->
+
+    <!-- monitor dropping kkhc pivot bu ade -->
+    <record id="account_keuangan_monitor_kkhc_line_pivot_view" model="ir.ui.view">
+        <field name="name">account.keuangan.monitor.kkhc.line.pivot</field>
+        <field name="model">account.keuangan.monitor.kkhc.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Monitoring KKHC">
+                <field name="branch_id" type="row"/>
+                <field name="nominal_disetujui_operasional" type="measure" string="OPERASIONAL"/>
+                <field name="nominal_disetujui_umum" type="measure" string="UMUM"/>
+                <field name="nominal_disetujui_total" type="measure" string="JUMLAH"/>
+            </pivot>
+        </field>
+    </record>
+
+
+</odoo>

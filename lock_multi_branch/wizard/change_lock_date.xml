@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_view_change_lock_date">
+            <field name="name">change.lock.date.form</field>
+            <field name="model">change.lock.date</field>
+            <field name="inherit_id" ref="om_fiscal_year.view_change_lock_date"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="branch_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

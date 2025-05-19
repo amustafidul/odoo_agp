@@ -1,0 +1,21 @@
+{
+    "name": "AGP HR Leave",
+    "summary": "Modul khusus cuti untuk AGP",
+    "version": "16.0.1.0.0",
+    "depends": ["base", "hr", "hr_holidays"],
+    "author": "AGP",
+    "category": "Human Resources",
+    "data": [
+        "wizard/hr_leave_ask_for_revision_wizard_view.xml",
+        "wizard/hr_leave_reject_wizard_view.xml",
+        "security/ir.model.access.csv",
+        "data/ir_cron.xml",
+        "views/hr_leave_type_views.xml",
+        "views/hr_leave_view.xml",
+        "views/hr_leave_allocation_rule_view.xml",
+        "views/hr_leave_menuitem.xml",
+    ],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+}

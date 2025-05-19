@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Action untuk Invoice -->
+        <record id="action_scf" model="ir.actions.act_window">
+            <field name="name">Invoices - SCF</field>
+            <field name="res_model">account.keuangan.scf</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a customer invoice - scf
+                </p><p>
+                    Create invoices - scf, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+        <!-- Form View untuk Invoice -->
+        <record id="view_scf_form" model="ir.ui.view">
+            <field name="name">scf.form</field>
+            <field name="model">account.keuangan.scf</field>
+            <field name="arch" type="xml">
+                <form string="Invoice - scf">
+                    <!-- <header>
+                        <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/>
+                        <button name="action_print" type="object" string="Preview" states="posted" class="btn-secondary"/>
+                        <button name="action_print" type="object" string="Preview" states="draft" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header> -->
+                    <header>
+                        <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <!-- Menggunakan span untuk teks statis "Invoice" -->
+                            <span class="o_form_label">Invoice - SCF</span>
+
+                            <h1>
+                                <!-- Menggunakan field name untuk menampilkan nilai dari field 'name' di model -->
+                                <field name="name"  placeholder="Draft"/>
+                                <!-- <span attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'draft'), ('name', '!=', '/'), ('posted_before', '=', True), ('quick_edit_mode', '=', True)]}">Draft</span> -->
+                            </h1>
+                        </div>
+                        <br></br>
+                        
+                        <group>
+                            <group>
+                                <field name="tahap_scf"/>
+                                <field name="tempo_pelunasan"/>
+                                <field name="tanggal_pelunasan"/>
+                                <field name="keterangan"/>
+                                <field name="nominal_diterima"/>
+                                <field name="nominal_pelunasan" readonly='false'/>
+                                <field name="nominal_penarikan" readonly='false'/>
+                                <field name="sisa_pengembalian" readonly='false'/>
+                            </group>
+                            <group>
+                                <field name="tanggal_bunga_awal"/>
+                                <field name="nominal_bunga_awal"/>
+                                <field name="tanggal_bunga_akhir"/>
+                                <field name="pengembalian_bunga_awal"/>
+                                <field name="nominal_bunga_asli"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page id="scf_tab" name="scf_tab" string="Invoice - SCF Lines">
+                                <field name="scf_line_ids" widget="section_and_note_one2many" context="{'default_invoice_id': id}">
+                                    <tree editable="bottom" string="Invoice - SCF Lines" default_order="id">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <!-- <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/> -->
+                                            <!-- <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/> -->
+                                        </control>
+
+                                        <field name="invoice_id"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="nomor_referensi" readonly="1"/>
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="jenis_kegiatan_id" readonly="1"/>
+                                        <field name="periode_pekerjaan"/>
+                                        <!-- <field name="periode_akhir" readonly="1"/> -->
+                                        <field name="tanggal_invoices" readonly="1"/>
+                                        <field name="sub_branch_ids" readonly="1" widget="many2many_tags"/>
+                                        <field name="total_sebelum_pajak" readonly="1"/>
+                                        <field name="tax_amount_non_pph" readonly="1"/>
+                                        <field name="total_sesudah_pajak" readonly="1"/>
+                                        <field name="tax_ids" widget="many2many_tags"/>
+                                        <field name="tax_amount" readonly="1"/>
+                                        <field name="is_bni"/>
+                                        <!-- <field name="nominal_bni" attrs="{'invisible': [('is_bni', '=', False)]}"/> -->
+                                        <field name="dibayar" readonly="1"/>                 
+                                    </tree>
+                                </field>
+                                <!-- <group class="oe_subtotal_footer oe_right">
+                                    <field name="untaxed_amount" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                    <field name="taxes" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                    <field name="total" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                </group> -->
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View untuk Invoice -->
+        <record id="view_scf_tree" model="ir.ui.view">
+            <field name="name">scf.tree</field>
+            <field name="model">account.keuangan.scf</field>
+            <field name="arch" type="xml">
+                <tree string="Invoice - SCF">    
+                    <field name="name" optional="show"/>
+                    <field name="tahap_scf" optional="show"/>
+                    <field name="tempo_pelunasan" optional="show"/>
+                    <field name="nominal_pelunasan" optional="show"/>
+                    <field name="tanggal_pelunasan" optional="hide"/>
+                    <field name="pengembalian_bunga" optional="hide"/>
+                    <field name="nominal_diterima" optional="show"/>
+                    <field name="nominal_bunga_asli" optional="show"/>
+                    <field name="nominal_pelunasan" optional="hide"/>
+                    <field name="tanggal_bunga_awal" optional="hide"/>
+                    <field name="nominal_bunga_awal" optional="hide"/>
+                    <field name="tanggal_bunga_akhir" optional="hide"/>
+                    <field name="pengembalian_bunga_awal" optional="hide"/>
+                    <field name="nominal_bunga_asli" optional="hide"/>
+                    <field name="keterangan" optional="hide"/>
+                    <field name="nominal_penarikan" optional="hide"/>
+                    <field name="sisa_pengembalian" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

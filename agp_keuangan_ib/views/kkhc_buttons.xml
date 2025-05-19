@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_kkhc_tree_inherit_disable_create_import_bod" model="ir.ui.view">
+        <field name="name">account.keuangan.kkhc.tree.inherit.disable.create.import.bod</field>
+        <field name="model">account.keuangan.kkhc</field>
+        <field name="inherit_id" ref="view_kkhc_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="before">
+
+                <!-- Override list view buttons (Create) -->
+                <t t-name="account.keuangan.kkhc.list.buttons" t-inherit="web.ListView.buttons" t-inherit-mode="extension">
+                    <xpath expr="." position="replace">
+                        <t t-if="!user.has_group('agp_keuangan_dro.group_board_of_director')">
+                            <t t-call="web.ListView.buttons"/>
+                        </t>
+                    </xpath>
+                </t>
+
+                <t t-name="account.keuangan.kkhc.control.panel" t-inherit="web.ControlPanel" t-inherit-mode="extension">
+                    <xpath expr="//div[contains(@class, 'o_control_panel_main_buttons')]" position="attributes">
+                        <attribute name="t-if">!user.has_group('agp_keuangan_dro.group_board_of_director')</attribute>
+                    </xpath>
+                </t>
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

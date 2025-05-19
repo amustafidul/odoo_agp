@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <odoo>
+        <record id="deposito_form_py3o" model="ir.actions.report">
+            <field name="name">Deposito</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">account.keuangan.deposito</field>
+            <field name="report_name">deposito_form</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/deposito_form.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_account_keuangan_deposito"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="deposito_py3o" model="ir.actions.report">
+            <field name="name">Deposito PDF</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">deposito.export.wizard</field>
+            <field name="report_name">deposito</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">agp_report_py3o</field>
+            <field name="py3o_template_fallback">report/deposito.odt</field>
+            <field name="binding_model_id" ref="agp_keuangan_ib.model_deposito_export_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+    </odoo>
+
+
+

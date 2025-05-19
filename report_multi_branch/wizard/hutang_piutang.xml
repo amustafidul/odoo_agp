@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <data noupdate="1">
+        <record id="perubahan_equitas_mb0" model="account.financial.report">
+            <field name="name">Laporan Perubahan Equitas</field>
+            <field name="type">sum</field>
+        </record>
+    </data> -->
+
+    <record id="hutang_piutang_view" model="ir.ui.view">
+        <field name="name">Kartu Hutang/Piutang</field>
+        <field name="model">hutang.piutang.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="4">
+                    <field name="jenis_kartu"/>
+                    <field name="partner_ids" widget="many2many_tags"/>
+                    <field name="periode"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="jenis_kegiatan_id" domain="[('company_id', '=', company_id)]"/>
+                </group>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="action_xls" string="Cetak Xls" type="object" class="oe_highlight" data-hotkey="w"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hutang_piutang" model="ir.actions.act_window">
+        <field name="name">Kartu Hutang/Piutang</field>
+        <field name="res_model">hutang.piutang.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hutang_piutang_view"/>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_hutang_piutang" name="Kartu Hutang/Piutang" sequence="55" action="action_hutang_piutang" parent="accounting_pdf_reports.menu_finance_partner_reports" groups="account.group_account_manager"/>
+
+</odoo>

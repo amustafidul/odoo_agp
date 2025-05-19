@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree view for account.keuangan.kkhc.reject -->
+    <record id="view_kkhc_tree_rejected_lines" model="ir.ui.view">
+        <field name="name">account.keuangan.kkhc.reject.tree</field>
+        <field name="model">account.keuangan.kkhc.reject</field>
+        <field name="arch" type="xml">
+            <tree string="KKHC Rejects">
+                <field name="name"/>
+                <field name="nama_anggaran"/>
+                <field name="branch_id"/>
+                <field name="rkap_id"/>
+                <field name="periode_kkhc_start"/>
+                <field name="periode_kkhc_end"/>
+                <field name="tanggal_pengajuan"/>
+                <field name="tanggal_disetujui"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for account.keuangan.kkhc.reject -->
+    <record id="view_kkhc_form_rejected_lines" model="ir.ui.view">
+        <field name="name">account.keuangan.kkhc.reject.form</field>
+        <field name="model">account.keuangan.kkhc.reject</field>
+        <field name="arch" type="xml">
+            <form string="KKHC Reject">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="nama_anggaran"/>
+                        <field name="branch_id"/>
+                        <field name="rkap_id"/>
+                    </group>
+                    <group>
+                        <field name="periode_kkhc_start"/>
+                        <field name="periode_kkhc_end"/>
+                        <field name="tanggal_pengajuan"/>
+                        <field name="tanggal_disetujui"/>
+                    </group>
+                    <notebook>
+                        <page string="Rejected Lines">
+                            <field name="kkhc_reject_ids" string="Line Reject by Pusat">
+                                <tree>
+                                    <field name="kode_anggaran_id"/>
+                                    <field name="deskripsi"/>
+                                    <field name="account_code_id"/>
+                                    <field name="uraian_pemakaian"/>
+                                    <field name="nominal_pengajuan"/>
+                                    <field name="nominal_disetujui_divisi"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

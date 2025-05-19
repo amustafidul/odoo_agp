@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sub_branch,access_sub_branch,model_sub_branch,base.group_user,1,1,1,1
+access_jenis_kegiatan,jenis_kegiatan,model_jenis_kegiatan,base.group_user,1,1,1,1
+access_account_account_rk,access.account.account.rk,account.model_account_account,base.group_user,1,1,1,1

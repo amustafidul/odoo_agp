@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ir_cron_contract_expiration_reminder" model="ir.cron">
+            <field name="name">Peringatan Masa Kontrak Habis</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_contract_expiration_reminder()</field>
+            <field name="interval_type">days</field>
+            <field name="interval_number">7</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="'2025-04-27 20:30:00'"/>
+        </record>
+        <record id="ir_cron_sertification_expiration_reminder" model="ir.cron">
+            <field name="name">Peringatan Masa Pelatihan Sertifikasi Habis</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sertification_training_expiration_reminder()</field>
+            <field name="interval_type">days</field>
+            <field name="interval_number">7</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="'2025-04-28 20:30:00'"/>
+        </record>
+        <record id="ir_cron_process_email_queue_custom" model="ir.cron">
+            <field name="name">Process Email Queue (Custom)</field>
+            <field name="model_id" ref="mail.model_mail_mail"/>
+            <field name="state">code</field>
+            <field name="code">model.process_email_queue_ib()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_type">days</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+            <field name="nextcall" eval="'2025-04-25 19:00:00'"/>
+        </record>
+        <record id="ir_cron_notify_employee_53" model="ir.cron">
+            <field name="name">Notify Employees Nearing Age 53</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.notify_upcoming_53()</field>
+            <field name="interval_number">7</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="'2025-04-25 21:00:00'"/>
+        </record>
+        <record id="ir_cron_notify_upcoming_5_year_contract" model="ir.cron">
+            <field name="name">Notify Employees About 5-Year Contract</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.notify_upcoming_5_year_contract()</field>
+            <field name="interval_number">7</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="'2025-04-25 21:30:00'"/>
+        </record>
+        <record id="ir_cron_create_historic_employee_records" model="ir.cron">
+            <field name="name">Create Historic Employee Records</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.create_historic_records()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_type">months</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+        <record id="ir_cron_assign_kelompok_umur" model="ir.cron">
+            <field name="name">Assign Kelompok Umur to Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_kelompok_umur()</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+            <field name="nextcall" eval="'2025-04-25 17:00:00'"/>
+        </record>
+        <record id="ir_cron_sync_contract_id_histori_jabatan" model="ir.cron">
+            <field name="name">[SYNC] Set Contract ID for Histori Jabatan</field>
+            <field name="model_id" ref="model_hr_employee_histori_jabatan"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_sync_existing_contract_ids()</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">1</field>
+            <field name="active" eval="False"/>
+        </record>
+        <record id="ir_cron_refresh_collective_view" model="ir.cron">
+            <field name="name">Refresh Nota Dinas Collective View</field>
+            <field name="model_id" ref="model_agp_nota_dinas_collective"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_refresh_collective_view()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="'2025-04-25 17:45:00'"/>
+        </record>
+    </data>
+</odoo>

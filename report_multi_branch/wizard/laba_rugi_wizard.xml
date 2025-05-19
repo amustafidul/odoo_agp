@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <record id="laba_rugi_mb0" model="account.financial.report">
+            <field name="name">Laba Rugi Multi Branch</field>
+            <field name="type">sum</field>
+        </record>
+        <record model="financial.param" id="data_laba_rugi_financial_param">
+            <field name="name">Laba Rugi</field>
+        </record>
+        <record model="financial.param" id="data_laba_rugi_cabang_financial_param">
+            <field name="name">Laba Rugi Cabang</field>
+        </record>
+    </data>
+
+    <record id="laba_rugi_mb_view" model="ir.ui.view">
+        <field name="name">Laba Rugi</field>
+        <field name="model">laba.rugi.mb.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="4">
+                    <field name="company_id" invisible="1"/>
+                    <field name="financial_param_id" domain="[('company_id', '=', company_id),('name', 'ilike', 'Laba Rugi')]" required="1" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="report_type" required="1"/>
+                    <field name="date_from"/>
+                    <field name="date_to" required="1"/>
+                </group>
+                <footer>
+                    <button name="check_report_laba_rugi_mb" string="View" type="object" default_focus="1" class="oe_highlight" data-hotkey="q"/>
+                    <button name="check_report_xls_laba_rugi_mb" string="Print" type="object" default_focus="1" class="oe_highlight" data-hotkey="w"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_laba_rugi_mb" model="ir.actions.act_window">
+        <field name="name">Laba Rugi</field>
+        <field name="res_model">laba.rugi.mb.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="laba_rugi_mb_view"/>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+        <!-- <field name="context" eval="{
+            'default_account_report_id':ref('report_multi_branch.laba_rugi_mb0'),
+            'default_financial_param_id':ref('report_multi_branch.data_laba_rugi_financial_param'),
+        }"/> -->
+    </record>
+
+    <menuitem id="menu_laba_rugi_mb" name="Laba Rugi" sequence="20" action="action_laba_rugi_mb" parent="accounting_pdf_reports.menu_finance_legal_statement" groups="account.group_account_manager"/>
+
+</odoo>

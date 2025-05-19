@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="agp_vendor_tad_tree_view" model="ir.ui.view">
+        <field name="name">agp.vendor.tad.view.tree</field>
+        <field name="model">agp.vendor.tad</field>
+        <field name="arch" type="xml">
+            <tree string="Vendor TAD">
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="agp_vendor_tad_form_view" model="ir.ui.view">
+        <field name="name">agp.vendor.tad.view.form</field>
+        <field name="model">agp.vendor.tad</field>
+        <field name="arch" type="xml">
+            <form string="Vendor TAD">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="agp_vendor_tad_action" model="ir.actions.act_window">
+        <field name="name">Vendor TAD</field>
+        <field name="res_model">agp.vendor.tad</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat master data vendor TAD baru
+            </p>
+        </field>
+    </record>
+</odoo>

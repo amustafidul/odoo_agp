@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Menu Config - Kode Masalah -->
+    <menuitem
+        id="agp_kode_masalah_menu"
+        name="Kode Masalah"
+        action="agp_kode_masalah_action"
+        parent="agp_keuangan_ib.parent_menu_board_keuangan_configuration"
+        sequence="8"/>
+
+    <!-- Menu Nota Dinas - Override Andro -->
+    <menuitem
+        id="account_keuangan_nota_dinas_menu_override"
+        name="Nota Dinas"
+        parent="agp_keuangan_ib.parent_menu_board_keuangan_anggaran"
+        groups="agp_keuangan_dro.group_nodin_header,agp_keuangan_dro.group_item_usaha,agp_keuangan_dro.group_item_umum"
+        sequence="4"/>
+
+        <!-- Menu - Nota Dinas Tahap Satu -->
+        <menuitem
+            id="menu_keuangan_anggaran_nota_dinas_ops" 
+            name="Nota Dinas Tahap Satu"
+            parent="agp_keuangan_dro.account_keuangan_nota_dinas_menu_override"
+            action="agp_keuangan_ib.action_nota_dinas"
+            groups="agp_keuangan_dro.group_nodin_header,agp_keuangan_dro.group_item_usaha,agp_keuangan_dro.group_item_umum"
+            sequence="5"/>
+
+        <!-- Menu - Nota Dinas Tahap Dua -->
+        <menuitem
+            id="menu_keuangan_anggaran_nota_dinas_bod" 
+            name="Nota Dinas Tahap Dua" 
+            parent="agp_keuangan_dro.account_keuangan_nota_dinas_menu_override"
+            action="agp_keuangan_dro.nota_dinas_bod_action"
+            groups="agp_keuangan_dro.group_nodin_header,agp_keuangan_dro.group_item_usaha,agp_keuangan_dro.group_board_of_director"
+            sequence="6"/>
+
+    <!-- Menu - Parent Approval Anggaran Sub Menu Separator -->
+    <menuitem id="monitoring_master_menu"
+        name="Approval Divisi &amp; Monitoring Siklus"
+        parent="agp_keuangan_ib.parent_menu_board_keuangan_anggaran"
+        sequence="90"/>
+
+    <!-- Menu - Parent KKHC Lines -->
+    <menuitem id="monitoring_parent_kkhc"
+        name="KKHC Lines"
+        parent="monitoring_master_menu"
+        sequence="20"
+        groups="agp_keuangan_dro.group_item_usaha,agp_keuangan_dro.group_item_umum"/>
+
+        <!-- Menu - Monitoring KKHC Item Usaha -->
+        <menuitem id="monitoring_kkhc_line_usaha_menu"
+            parent="monitoring_parent_kkhc"
+            name="KKHC Lines Usaha"
+            action="agp_keuangan_dro.account_keuangan_kkhc_line_usaha_action"
+            groups="agp_keuangan_dro.group_item_usaha"
+            sequence="10"/>
+
+        <!-- Menu - Monitoring KKHC Item Umum -->
+        <menuitem id="monitoring_kkhc_line_umum_menu"
+            parent="monitoring_parent_kkhc"
+            name="KKHC Lines Umum"
+            action="agp_keuangan_dro.account_keuangan_kkhc_line_umum_action"
+            groups="agp_keuangan_dro.group_item_umum"
+            sequence="20"/>
+
+    <!-- Menu - Monitoring KKHC Root -->
+    <menuitem
+        id="monitoring_kkhc_parent_menu"
+        name="Nota Dinas Dropping Lines"
+        parent="agp_keuangan_dro.monitoring_master_menu"
+        sequence="100"
+        groups="agp_keuangan_dro.group_item_usaha,agp_keuangan_dro.group_item_umum"/>
+
+        <!-- Menu - Monitor Nodin Usaha -->
+        <menuitem
+            id="monitoring_kkhc_usaha_menu"
+            name="Monitoring KKHC Usaha"
+            action="account_keuangan_monitor_kkhc_line_usaha_action"
+            parent="agp_keuangan_dro.monitoring_kkhc_parent_menu"
+            groups="agp_keuangan_dro.group_item_usaha"
+            sequence="1"/>
+
+        <!-- Menu - Monitor Nodin Umum -->
+        <menuitem
+            id="monitoring_kkhc_umum_menu"
+            name="Monitoring KKHC Umum"
+            action="account_keuangan_monitor_kkhc_line_umum_action"
+            parent="agp_keuangan_dro.monitoring_kkhc_parent_menu"
+            groups="agp_keuangan_dro.group_item_umum"
+            sequence="2"/>
+
+    <!-- Menu - KKHC Parent Config  -->
+    <menuitem
+        id="menu_kkhc_keu_config_parent"
+        name="KKHC"
+        parent="agp_keuangan_ib.parent_menu_board_keuangan_configuration"
+        sequence="50"/>
+
+        <!-- Menu - Rekapitulasi KKHC -->
+        <menuitem
+            id="menu_monitoring_pivot"
+            name="Rekapitulasi KKHC"
+            action="account_keuangan_monitor_kkhc_line_pivot_action"
+            parent="menu_kkhc_keu_config_parent"
+            sequence="7"/>
+
+        <!-- Menu - Akun Bank untuk Item -->
+        <menuitem
+            id="menu_partner_bank"
+            name="Akun Bank Untuk Item"
+            action="action_partner_bank_div_keu"
+            parent="menu_kkhc_keu_config_parent"
+            groups="agp_keuangan_dro.group_dv_keuangan_kkhc_bank_partner"
+            sequence="90"/>
+
+        <!-- Menu - KKHC Rejected Items (For Cabang) -->
+        <menuitem
+            id="menu_kkhc_rejected_items_only"
+            name="KKHC Rejected Items"
+            action="action_kkhc_rejected_items"
+            parent="menu_kkhc_keu_config_parent"
+            groups="agp_keuangan_dro.group_budgetting_maker_branch"
+            sequence="100"/>
+
+</odoo>

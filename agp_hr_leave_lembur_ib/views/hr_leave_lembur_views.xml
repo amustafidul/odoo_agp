@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_open_reject_wizard_lembur" model="ir.actions.act_window">
+        <field name="name">Reject</field>
+        <field name="res_model">lembur.reject.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_lembur_reject_wizard_form"/>
+        <field name="target">new</field>
+        <field name="help">Gunakan ini untuk menolak permintaan lembur. Pastikan Anda memiliki catatan alasan yang jelas.</field>
+    </record>
+
+    <record id="action_open_ask_for_revision_wizard_lembur" model="ir.actions.act_window">
+        <field name="name">Ask for Revision</field>
+        <field name="res_model">lembur.ask.for.revision.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_lembur_ask_for_revision_wizard_form"/>
+        <field name="target">new</field>
+        <field name="help">Gunakan ini untuk meminta revisi pada permintaan lembur. Pastikan Anda memberikan petunjuk revisi yang jelas.</field>
+    </record>
+
+    <record id="hr_leave_lembur_view_form_dashboard_new" model="ir.ui.view">
+        <field name="name">hr.leave.lembur.view.form.dashboard.new</field>
+        <field name="model">hr.leave.lembur</field>
+        <field name="inherit_id" ref="agp_hr_leave_ib.hr_leave_view_form_dashboard_new_ib"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='delegation_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//group[@name='col_left']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='col_left']" position="after">
+                <group name="col_left_dinas_custom">
+                    <field name="lembur_location_id" options="{'no_create': True}"/>
+                    <field name="new_date_field" required="1" string="Tanggal"/>
+                    <label for="lembur_request_hour_from" string="Waktu"/>
+                    <div>
+                        <label for="lembur_request_hour_from" string="Dari"/>
+                        <field name="lembur_request_hour_from" class="oe_inline" required="1"/>
+                        <label for="lembur_request_hour_to" string="Ke"/>
+                        <field name="lembur_request_hour_to" class="oe_inline" required="1"/>
+                    </div>
+                    <field name="duration_waktu_lembur" string="Durasi"/>
+                    <field name="name" string="Pekerjaan yang dilemburkan" placeholder="Add a description ..."/>
+                    <field name="supported_attachment_ids" widget="many2many_binary" string="Supporting Documents"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_view_dashboard" model="ir.ui.view">
+        <field name="name">hr.leave.lembur.view.dashboard</field>
+        <field name="model">hr.leave.lembur</field>
+        <field name="arch" type="xml">
+            <calendar
+                    string="Lembur Request"
+                    form_view_id="%(hr_leave_lembur_view_form_dashboard_new)d"
+                    event_open_popup="true"
+                    date_start="date_from"
+                    date_stop="date_to"
+                    quick_add="False"
+                    show_unusual_days="True"
+                    color="color"
+                    hide_time="True"
+                    mode="year">
+                <field name="display_name"/>
+                <field name="lembur_status_id" filters="1" invisible="1" color="color"/>
+                <field name="state" invisible="1"/>
+                <field name="is_hatched" invisible="1" />
+                <field name="is_striked" invisible="1"/>
+                <field name="can_cancel" invisible="1"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_action_new_request" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">hr.leave.lembur</field>
+        <field name="view_mode">calendar,tree,form,activity</field>
+        <field name="domain">[('user_id', '=', uid), ('employee_id.company_id', 'in', allowed_company_ids)]</field>
+        <field name="context">{'short_name': 1, 'search_default_date_from': 'today'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Keep track of your PTOs.
+            </p><p>
+                A great way to keep track on your lembur requests.
+            </p>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_action_new_request_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">calendar</field>
+        <field name="act_window_id" ref="hr_leave_lembur_action_new_request"/>
+        <field name="view_id" ref="hr_leave_lembur_view_dashboard"/>
+    </record>
+
+    <record id="hr_leave_lembur_view_tree_my_ib" model="ir.ui.view">
+        <field name="name">hr.leave.lembur.view.tree.ib</field>
+        <field name="model">hr.leave.lembur</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">
+                    new_date_field desc
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_approve']" position="attributes">
+                <attribute name="states"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_validate']" position="attributes">
+                <attribute name="states"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_refuse']" position="attributes">
+                <attribute name="states"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="after">
+                <field name="lembur_location_id"/>
+            </xpath>
+            <xpath expr="//field[@name='date_from']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_to']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_to']" position="after">
+                <field name="new_date_field"/>
+            </xpath>
+            <xpath expr="//field[@name='duration_display']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='duration_display']" position="after">
+                <field name="duration_waktu_lembur"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="decoration-warning">state in ('confirm','on_review','validate1')</attribute>
+                <attribute name="decoration-danger">state in ('ask_for_revision','rejected')</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_view_form_my_ib" model="ir.ui.view">
+        <field name="name">hr.leave.lembur.view.form.ib</field>
+        <field name="model">hr.leave.lembur</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='delegation_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//group[@name='col_left']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='col_left']" position="after">
+                <group name="col_left_dinas_custom">
+                    <field name="lembur_location_id" options="{'no_create': True}"/>
+                    <field name="new_date_field" required="1" string="Tanggal"/>
+                    <label for="lembur_request_hour_from" string="Waktu"/>
+                    <div>
+                        <label for="lembur_request_hour_from" string="Dari"/>
+                        <field name="lembur_request_hour_from" class="oe_inline" required="1"/>
+                        <label for="lembur_request_hour_to" string="Ke"/>
+                        <field name="lembur_request_hour_to" class="oe_inline" required="1"/>
+                    </div>
+                    <field name="duration_waktu_lembur" string="Durasi"/>
+                    <field name="name" string="Pekerjaan yang dilemburkan" placeholder="Add a description ..."/>
+                    <field name="supported_attachment_ids" widget="many2many_binary" string="Supporting Documents"/>
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="replace"/>
+            <xpath expr="//button[@name='action_submit_dyamic_approval_timeoff']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state','!=','draft')]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(agp_hr_leave_ib.action_open_reject_wizard)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(agp_hr_leave_ib.action_open_ask_for_revision_wizard)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(agp_hr_leave_ib.action_open_reject_wizard)d']" position="after">
+                <field name="is_hr_leave_lembur_model" invisible="1"/>
+                <button name="%(action_open_reject_wizard_lembur)d" type="action" string="Reject"
+                        attrs="{'invisible': [('state','!=','on_review')]}"
+                        help="Klik untuk menolak permintaan ini dengan memberikan alasan yang jelas."/>
+                <button name="%(action_open_ask_for_revision_wizard_lembur)d" type="action" string="Ask For Revision"
+                        attrs="{'invisible': [('state','!=','on_review')]}"
+                        help="Klik untuk meminta revisi atas permintaan ini."/>
+                <button name="set_to_draft" type="object" string="Mark as Draft"
+                        attrs="{'invisible': ['|', ('state','!=','ask_for_revision'),('is_hr_leave_lembur_model', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_action_my" model="ir.actions.act_window">
+        <field name="name">My Submission</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.lembur</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('user_id', '=', uid), ('employee_company_id', 'in', allowed_company_ids)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Keep track of your PTOs.
+            </p><p>
+                A great way to keep track on your lembur requests.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="hr_leave_lembur_view_tree_my_ib1">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr_leave_lembur_view_tree_my_ib"/>
+        <field name="act_window_id" ref="hr_leave_lembur_action_my"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="hr_leave_lembur_view_form_my_ib1">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hr_leave_lembur_view_form_my_ib"/>
+        <field name="act_window_id" ref="hr_leave_lembur_action_my"/>
+    </record>
+
+    <record id="pengajuan_lembur_action_my" model="ir.actions.act_window">
+        <field name="name">Pengajuan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.lembur</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('employee_id.user_id', '=', uid), ('employee_company_id', 'in', allowed_company_ids)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Daftar Pengajuan Lembur.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="pengajuan_lembur_view_tree_my_ib1">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr_leave_lembur_view_tree_my_ib"/>
+        <field name="act_window_id" ref="pengajuan_lembur_action_my"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="pengajuan_lembur_view_form_my_ib1">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hr_leave_lembur_view_form_my_ib"/>
+        <field name="act_window_id" ref="pengajuan_lembur_action_my"/>
+    </record>
+
+    <record id="persetujuan_hr_leave_lembur_view_tree_my_ib" model="ir.ui.view">
+        <field name="name">persetujuan.hr.leave.lembur.view.tree.ib</field>
+        <field name="model">hr.leave.lembur</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
+        <field name="mode">primary</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_approve']" position="attributes">
+                <attribute name="states"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_validate']" position="attributes">
+                <attribute name="states"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_refuse']" position="attributes">
+                <attribute name="states"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="persetujuan_hr_leave_lembur_view_form_my_ib" model="ir.ui.view">
+        <field name="name">persetujuan.hr.leave.lembur.view.form.ib</field>
+        <field name="model">hr.leave.lembur</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='delegation_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//group[@name='col_left']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='col_left']" position="after">
+                <group name="col_left_dinas_custom">
+                    <field name="lembur_location_id" options="{'no_create': True}"/>
+                    <field name="new_date_field" required="1" string="Tanggal"/>
+                    <label for="lembur_request_hour_from" string="Waktu"/>
+                    <div>
+                        <label for="lembur_request_hour_from" string="Dari"/>
+                        <field name="lembur_request_hour_from" class="oe_inline" required="1"/>
+                        <label for="lembur_request_hour_to" string="Ke"/>
+                        <field name="lembur_request_hour_to" class="oe_inline" required="1"/>
+                    </div>
+                    <field name="duration_waktu_lembur" string="Durasi"/>
+                    <field name="name" string="Pekerjaan yang dilemburkan" placeholder="Add a description ..."/>
+                    <field name="supported_attachment_ids" widget="many2many_binary" string="Supporting Documents"/>
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="replace"/>
+            <xpath expr="//button[@name='action_submit_dyamic_approval_timeoff']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state','!=','draft')]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(agp_hr_leave_ib.action_open_reject_wizard)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(agp_hr_leave_ib.action_open_ask_for_revision_wizard)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(agp_hr_leave_ib.action_open_reject_wizard)d']" position="after">
+                <field name="is_hr_leave_lembur_model" invisible="1"/>
+                <button name="%(action_open_reject_wizard_lembur)d" type="action" string="Reject"
+                        attrs="{'invisible': [('state','!=','on_review')]}"
+                        help="Klik untuk menolak permintaan ini dengan memberikan alasan yang jelas."/>
+                <button name="%(action_open_ask_for_revision_wizard_lembur)d" type="action" string="Ask For Revision"
+                        attrs="{'invisible': [('state','!=','on_review')]}"
+                        help="Klik untuk meminta revisi atas permintaan ini."/>
+                <button name="set_to_draft" type="object" string="Mark as Draft"
+                        attrs="{'invisible': ['|', ('state','!=','ask_for_revision'),('is_hr_leave_lembur_model', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="persetujuan_lembur_action_my" model="ir.actions.act_window">
+        <field name="name">Persetujuan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.lembur</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('state', '=', 'on_review'),
+            ('is_visible_to_current_user', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Daftar Persetujuan Lembur.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="persetujuan_lembur_view_tree_my_ib1">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="persetujuan_hr_leave_lembur_view_tree_my_ib"/>
+        <field name="act_window_id" ref="persetujuan_lembur_action_my"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="persetujuan_lembur_view_form_my_ib1">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="persetujuan_hr_leave_lembur_view_form_my_ib"/>
+        <field name="act_window_id" ref="persetujuan_lembur_action_my"/>
+    </record>
+
+    <record id="edit_leave_type_lembur_form" model="ir.ui.view">
+        <field name="name">hr.leave.type.lembur.form</field>
+        <field name="model">hr.leave.type.lembur</field>
+        <field name="arch" type="xml">
+            <form string="Tipe Lembur">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                type="object"
+                                name="action_see_days_allocated"
+                                icon="fa-calendar"
+                                attrs="{'invisible': ['|', ('requires_allocation', '=', 'no'), ('id', '=', False)]}"
+                                help="Count of allocations for this lembur type (approved or waiting for approbation) with a validity period starting this year.">
+                            <div class="o_stat_info">
+                                <field name="allocation_lembur_count"/>
+                                <span class="o_stat_text">Allocations</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button"
+                                type="object"
+                                name="action_see_group_leaves_lembur"
+                                icon="fa-calendar"
+                                attrs="{'invisible': [('id', '=', False)]}"
+                                help="Count of lembur requests for this lembur type (approved or waiting for approbation) with a start date in the current year.">
+                            <div class="o_stat_info">
+                                <field name="group_days_leave_lembur"/>
+                                <span class="o_stat_text">Lembur</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button"
+                                type="object"
+                                name="action_see_accrual_plans"
+                                icon="fa-calendar"
+                                attrs="{'invisible': ['|', ('id', '=', False), ('accrual_count', '=', 0)]}"
+                                help="Count of plans linked to this lembur type.">
+                            <div class="o_stat_info">
+                                <field name="accrual_count"/>
+                                <span class="o_stat_text">Accruals</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group name="leave_validation" id="lembur_requests" string="Lembur Requests">
+                            <field name="active" invisible="1"/>
+                            <field name="leave_validation_type" string="Approval" widget="radio"/>
+                            <field name="responsible_id" string="Responsible Lembur Officer"
+                                attrs="{
+                                'invisible': [('leave_validation_type', 'in', ['no_validation', 'manager']), '|', ('requires_allocation', '=', 'no'), ('allocation_validation_type', '!=', 'officer')],
+                                'required': ['|',('leave_validation_type', 'in', ['both', 'hr']), ('requires_allocation', '=', 'yes'), ('allocation_validation_type', '=', 'officer')]}"
+                                   help="Choose the Lembur Officer who will be notified to approve allocation or Lembur request"/>
+                            <field name="request_unit" string="Take Lembur in"/>
+                            <field name="support_document" string="Allow To Attach Supporting Document" />
+                            <field name="time_type" required="1" string="Kind of Lembur"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group name="allocation_validation" id="allocation_requests" string="Allocation Requests">
+                            <field name="requires_allocation" widget="radio" options="{'horizontal':true}" help="Yes: Lembur requests need to have a valid allocation.&#10;&#10;
+                                    No Limit: Lembur requests can be taken without any prior allocation."/>
+                            <field name="employee_requests" widget="radio" attrs="{'invisible': [('requires_allocation', '=', 'no')]}"/>
+                            <field name="allocation_validation_type" string="Approval" widget="radio" attrs="{'invisible': ['|', ('requires_allocation', '=', 'no'), ('employee_requests', '=', 'no')]}"
+                                   help="Select the level of approval needed in case of request by employee&#10;
+                                    - No validation needed: The employee's request is automatically approved.&#10;
+                                    - Approved by Lembur Officer: The employee's request need to be manually approved by the Lembur Officer."/>
+                        </group>
+                    </group>
+                    <group name="visual" id="visual" >
+                        <group colspan="2" string="Display Option">
+                        </group>
+                        <group colspan="2">
+                            <field name="color" widget="color_picker" help="The color selected here will be used in every screen with the lembur type."/>
+                            <field class="o_time_off_icon_types d-flex flex-wrap" name="icon_id" widget="hr_holidays_radio_image" options="{'horizontal': true}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_leave_type_lembur_view_kanban" model="ir.ui.view">
+        <field name="name">hr.leave.type.lembur.kanban</field>
+        <field name="model">hr.leave.type.lembur</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                <span>Max: <field name="max_leaves"/></span>
+                                <span class="float-end">Taken: <field name="leaves_taken"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_hr_leave_type_lembur_tree" model="ir.ui.view">
+        <field name="name">hr.leave.type.lembur.normal.tree</field>
+        <field name="model">hr.leave.type.lembur</field>
+        <field name="arch" type="xml">
+            <tree string="Tipe Lembur">
+                <field name="sequence" widget="handle"/>
+                <field name="display_name"/>
+                <field name="allocation_validation_type"/>
+                <field name="employee_requests" optional="hide"/>
+                <field name="requires_allocation" optional="hide"/>
+                <field name="leave_validation_type" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="open_view_leave_type_lembur" model="ir.actions.act_window">
+        <field name="name">Tipe Lembur</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.type.lembur</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'default_hr_leave_lembur': 1}</field>
+    </record>
+
+    <record id="view_lokasi_lembur_form" model="ir.ui.view">
+        <field name="name">res.lokasi.lembur.form</field>
+        <field name="model">res.branch</field>
+        <field name="inherit_id" ref="base_multi_branch.view_branch_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="string">Lokasi Lembur</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Lokasi</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sub_branch_ids']" position="attributes">
+                <attribute name="string">Sub Lokasi</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_lokasi_lembur_tree" model="ir.ui.view">
+        <field name="name">res.lokasi.lembur.tree</field>
+        <field name="model">res.branch</field>
+        <field name="inherit_id" ref="base_multi_branch.view_branch_tree"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="string">Lokasi Lembur</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Lokasi</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_lokasi_lembur_configuration_form" model="ir.actions.act_window">
+        <field name="name">Lokasi Lembur</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.branch</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new location
+          </p><p>
+            Create and manage lokasi lembur for the companies that will be managed by Odoo from here.
+          </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="lokasi_lembur_view_tree_ib">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_lokasi_lembur_tree"/>
+        <field name="act_window_id" ref="action_lokasi_lembur_configuration_form"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="lokasi_lembur_view_form_ib">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_lokasi_lembur_form"/>
+        <field name="act_window_id" ref="action_lokasi_lembur_configuration_form"/>
+    </record>
+</odoo>

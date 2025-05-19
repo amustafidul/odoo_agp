@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="report_paperformat_landscape" model="report.paperformat">
+        <field name="name">A4 Landscape</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">20</field>
+        <field name="margin_right">20</field>
+    </record>
+
+    <template id="report_payroll_summary_pdf_template_new_custom">
+        <t t-call="web.external_layout">
+            <main class="page" style="font-family: sans-serif;">
+                <h2 style="text-align: center; font-size: 20px; color: #2F5597;">REKAP GAJI PEGAWAI PERUSAHAAN</h2>
+                <h3 style="text-align: center; font-size: 16px;">
+                    BULAN <t t-esc="data['month_name']"/> <t t-esc="data['year_str']"/>
+                </h3>
+                <br/>
+                <table style="width: 100%; border-collapse: collapse; font-size: 10px;" border="1">
+                    <thead>
+                        <tr style="background-color: #B4C6E7; color: #000000; text-align: center;">
+                            <th style="padding: 6px; min-width: 30px;">No</th>
+                            <th style="padding: 6px; min-width: 80px;">Unit</th>
+                            <t t-foreach="data['sorted_categories']" t-as="cat">
+                                <t t-foreach="data['category_lines_map'][cat]" t-as="rule">
+                                    <th style="padding: 6px; min-width: 80px; word-wrap: break-word;" t-esc="rule"/>
+                                </t>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="row_no" t-value="0"/>
+                        <t t-foreach="data['branch_totals_map'].items()" t-as="branch_item">
+                            <t t-set="row_no" t-value="row_no + 1"/>
+                            <t t-set="row_style" t-value="'background-color:#f9f9f9;' if row_no % 2 == 0 else ''"/>
+                            <tr t-attf-style="{{ row_style }}">
+                                <td style="padding: 5px; text-align: center;" t-esc="row_no"/>
+                                <td style="padding: 5px;" t-esc="branch_item[0].name if branch_item[0] else 'Tanpa Cabang'"/>
+                                <t t-foreach="data['sorted_categories']" t-as="cat">
+                                    <t t-foreach="data['category_lines_map'][cat]" t-as="rule">
+                                        <td style="text-align: right; padding: 5px; min-width: 80px;">
+                                            <t t-esc="'Rp ' + ('{:,.0f}'.format(branch_item[1][cat][rule])).replace(',', '.')"/>
+                                        </td>
+                                    </t>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </main>
+        </t>
+    </template>
+
+    <report
+        id="report_payroll_summary_pdf_template"
+        model="payroll.organik.report.wizard"
+        string="Payroll Organik Summary"
+        report_type="qweb-pdf"
+        name="payroll_ib.report_payroll_summary_pdf_template_new_custom"
+        paperformat="report_paperformat_landscape"
+        print_report_name="(object.date_to).strftime('Rekap_Gaji_%B_%Y')"
+    />
+</odoo>

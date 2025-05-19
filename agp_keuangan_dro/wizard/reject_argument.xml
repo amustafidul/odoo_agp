@@ -1,0 +1,83 @@
+<odoo>
+    <data>
+
+        <!-- # === WIZARD KKHC === # -->
+        <record id="kkhc_reject_wizard_form" model="ir.ui.view">
+            <field name="name">kkhc.reject.wizard.form</field>
+            <field name="model">kkhc.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="reject_reason"/>
+                    </group>
+                    <footer>
+                        <button string="Simpan" name="ok" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_reject_wizard_kkhc" model="ir.actions.act_window">
+            <field name="name">Alasan Reject KKHC</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kkhc.reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- # === WIZARD RKAP === # -->
+        <record id="rkap_reject_wizard_form" model="ir.ui.view">
+            <field name="name">rkap.reject.wizard.form</field>
+            <field name="model">rkap.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="reject_reason"/>
+                    </group>
+                    <footer>
+                        <button string="Simpan" name="ok" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_reject_wizard_rkap" model="ir.actions.act_window">
+            <field name="name">Alasan Reject RKAP</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rkap.reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- # === WIZARD NODIN === # -->
+        <record id="nodin_reject_wizard_form" model="ir.ui.view">
+            <field name="name">nodin.reject.wizard.form</field>
+            <field name="model">nodin.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="reject_reason"/>
+                    </group>
+                    <footer>
+                        <button string="Simpan" name="ok" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_reject_wizard_nodin" model="ir.actions.act_window">
+            <field name="name">Alasan Reject Nota Dinas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nodin.reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

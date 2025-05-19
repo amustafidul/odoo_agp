@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_tna_rekap_xlsx" model="ir.actions.report">
+            <field name="name">Rekapitulasi TNA (XLSX)</field>
+            <field name="model">tna.rekap.report.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">agp_training_management.report_tna_rekap_xlsx</field>
+            <field name="report_file">agp_training_management.report_tna_rekap_xlsx</field>
+            <field name="print_report_name">(object.period_id.name or 'Rekap TNA') + '_Rekap_TNA.xlsx'</field>
+            <field name="binding_model_id" ref="model_tna_rekap_report_wizard"/>
+            <field name="binding_type">action</field>
+        </record>
+    </data>
+</odoo>

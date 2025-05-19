@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_employee_completed_training_tree" model="ir.ui.view">
+        <field name="name">hr.employee.completed.training.tree</field>
+        <field name="model">hr.employee.completed.training</field>
+        <field name="arch" type="xml">
+            <tree string="Histori Training Selesai" editable="bottom" create="false" delete="false">
+                <field name="employee_id" readonly="1" force_save="1"/>
+                <field name="training_name" readonly="1" force_save="1"/>
+                <field name="start_date" readonly="1" force_save="1"/>
+                <field name="end_date" readonly="1" force_save="1"/>
+                <field name="organizer" readonly="1" force_save="1"/>
+                <field name="certificate_number" readonly="1" force_save="1"/>
+                <field name="certificate_expiry_date" readonly="1" force_save="1"/>
+                <field name="notes"/>
+                <field name="company_id" groups="base.group_multi_company" readonly="1" force_save="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_completed_training_form" model="ir.ui.view">
+        <field name="name">hr.employee.completed.training.form</field>
+        <field name="model">hr.employee.completed.training</field>
+        <field name="arch" type="xml">
+            <form string="Detail Histori Training" create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="realization_id"/>
+                            <field name="training_name"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="organizer"/>
+                        </group>
+                    </group>
+                    <group string="Sertifikat">
+                        <field name="certificate_number"/>
+                        <field name="certificate_expiry_date"/>
+                    </group>
+                    <field name="notes"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_completed_training_search" model="ir.ui.view">
+        <field name="name">hr.employee.completed.training.search</field>
+        <field name="model">hr.employee.completed.training</field>
+        <field name="arch" type="xml">
+            <search string="Cari Histori Training">
+                <field name="employee_id"/>
+                <field name="training_name"/>
+                <field name="organizer"/>
+                <field name="certificate_number"/>
+                <filter string="Memiliki Sertifikat" name="has_certificate" domain="[('certificate_number', '!=', False)]"/>
+                <group expand="0" string="Kelompokkan Berdasarkan...">
+                    <filter string="Karyawan" name="group_by_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Training" name="group_by_training" context="{'group_by': 'realization_id'}"/>
+                    <filter string="Bulan Selesai" name="group_by_end_month" context="{'group_by': 'end_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_completed_training" model="ir.actions.act_window">
+        <field name="name">Histori Training Karyawan</field>
+        <field name="res_model">hr.employee.completed.training</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hr_employee_completed_training_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada data histori training karyawan yang selesai.
+            </p>
+        </field>
+    </record>
+</odoo>

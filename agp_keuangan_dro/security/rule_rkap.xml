@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="rkap_create_restriction_rule" model="ir.rule">
+        <field name="name">Restrict RKAP Creation to Budgeting Makers</field>
+        <field name="model_id" ref="model_account_keuangan_rkap"/>
+        <field name="domain_force">[(1,'=',1)]</field> <!-- Bypass domain filtering -->
+        <field name="global" eval="True"/> <!-- Applies globally -->
+        <field name="perm_create" eval="True"/> <!-- Only affects creation -->
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_read" eval="False"/>
+        <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_budgetting_maker_branch'))]"/>
+    </record>
+
+</odoo>

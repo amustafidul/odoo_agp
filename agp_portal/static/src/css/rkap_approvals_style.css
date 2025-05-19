@@ -1,0 +1,14 @@
+/* More specific selector to override Materialize */
+body .approval-table th {
+    background-color: #FF9800 !important;
+    color: white !important;
+}
+
+/* Even more specific selector */
+body .approval-table tr:nth-child(even) {
+    background-color: #FFEB3B !important;
+}
+
+body .approval-table tr:hover {
+    background-color: #FF5722 !important;
+}

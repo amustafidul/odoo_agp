@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="aging_ap_detail_view" model="ir.ui.view">
+        <field name="name">Aging AP Detail</field>
+        <field name="model">aging.ap.detail.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="periode"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="jenis_kegiatan_id" domain="[('company_id', '=', company_id)]"/>
+                        <field name="partner_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="action_xls" string="Cetak Xls" type="object" class="oe_highlight" data-hotkey="w"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_aging_ap_detail" model="ir.actions.act_window">
+        <field name="name">Aging AP Detail</field>
+        <field name="res_model">aging.ap.detail.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="aging_ap_detail_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_aging_ap_detail" name="Aging AP Detail" sequence="50" action="action_aging_ap_detail" parent="accounting_pdf_reports.menu_finance_partner_reports" groups="account.group_account_manager"/>
+</odoo>

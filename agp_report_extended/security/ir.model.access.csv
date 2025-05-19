@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_jenis_kegiatan_rkap_line,List Jenis Kegiatan,model_jenis_kegiatan_rkap_line,,1,1,1,1
+access_account_keuangan_rkap_konsolidasi,List Konsolidasi,model_account_keuangan_rkap_konsolidasi,,1,1,1,1
+access_account_keuangan_bank_harian_notes,List Catatan Bank Harian,model_account_keuangan_bank_harian_notes,,1,1,1,1
+
+access_rkap_konsolidasi_wizard,Wizard RKAP Konsolidasi,model_rkap_konsolidasi_wizard,base.group_user,1,1,1,1

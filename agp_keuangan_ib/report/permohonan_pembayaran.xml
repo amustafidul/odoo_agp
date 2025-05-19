@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_pp" model="report.paperformat">
+            <field name="name">PP Paper Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">16</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="dpi">90</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">13</field>
+        </record>
+
+        <!-- Define the report -->
+        <report
+            id="report_pp_pdf"
+            string="Surat Permohonan Pembayaran"
+            model="account.keuangan.permohonan.pembayaran"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_pp"
+            file="agp_keuangan_ib.report_pp"
+            paperformat="paperformat_pp"
+            attachment_use="False"/>
+
+        <!-- Define the template for the report -->
+        <template id="agp_keuangan_ib.report_pp">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div style="display: flex; justify-content: space-between; align-items: right; width: 64%;">
+                                <div style="flex-grow: 1; text-align: right;">
+                                    <td>
+                                        <t t-esc="doc.tempat" />, 
+                                        <t t-esc="doc.tanggal.strftime('%d %B %Y')" />
+                                    </td>                                </div>
+                                <!-- <img src="/agp_keuangan_ib/static/description/iso.png" alt="Logo" style="width: 100px; height: auto;" /> -->
+                            </div>
+                                
+                            <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;">
+                                <!-- Left-aligned labels with values on the right -->
+                                <table style="width: 50%; border-collapse: collapse;">
+                                    <tr style="height: 30px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Nomor</td>
+                                        <td>:</td>
+                                        <td><t t-esc="doc.nomor_referensi"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Lampiran</td>
+                                        <td>:</td>
+                                        <td><t t-esc="doc.lampiran"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Perihal</td>
+                                        <td>:</td>
+                                        <td><t t-esc="doc.perihal"/></td>
+                                    </tr>
+
+                                    <tr style="height: 40px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+                                </table>
+                                <table style="width: 50%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="font-weight: bold;">Kepada Yth.</td>
+                                    </tr>
+                                   
+                                    <tr>
+                                        <td style="width: 70%;">
+                                            <t t-esc="doc.kepada"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70%;">
+                                            <t t-esc="doc.ditujukan_kepada.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 70%;">
+                                            <t t-esc="doc.alamat_perusahaan"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 40px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="text-align: justify; white-space: pre-wrap;">
+                                            <t t-esc="doc.kata_pengantar" /> 
+                                        </td>
+                                    </tr> -->
+                                </table>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <tr>
+                                    <td style="text-align: left;">
+                                        Dengan Hormat,                                    
+                                    </td>
+                                </tr>
+                                <table style="width: 100%;">
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align: left;">
+                                        <t t-esc="doc.kata_pengantar" />
+                                        <br></br> 
+                                        <span style="font-weight: bold; white-space: pre-wrap;">
+                                            <t t-esc="'Rp. {:,.0f}'.format(doc.total_sesudah_pajak)" />
+                                        </span>
+                                        <br></br>
+                                        <t t-esc="'(' + doc.total_terbilang + ')'"/> termasuk PPN 11%.
+                                    </td>
+                                </table>
+                                <tr>
+                                    <td style="text-align: left;">
+                                        Demikian disampaikan, mohon arahan dan persetujuan Bapak/Ibu. Atas perhatian dan persetujuannya diucapkan terima kasih.
+                                    </td>
+                                </tr>
+
+                                <br></br>
+                                <br></br>
+                                <div style="text-align: right; margin-top: 20px;">
+                                    <table style="display: inline-block; border-collapse: collapse; width: 30%;">
+                                        <colgroup>
+                                            <col style="width: 100%;"/>
+                                        </colgroup>
+                                        <tr>
+                                            <td style="text-align: center; padding: 30px;">
+                                                <t t-esc="doc.jabatan" /><br/><br/><br/><br/><br/><br/><br/>
+                                                <strong><t t-esc="doc.ttd" /></strong><br/>
+                                                <br/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <td></td>
+
+                                <td></td>
+                            
+                                <table style="width: 30%; border-collapse: collapse;">
+                                    <strong>BANK INFORMATION:</strong>
+                                    <t t-if="doc.company_name">
+                                        <tr>
+                                            <td style="font-weight: bold;">Nama</td>
+                                            <td>:</td>
+                                            <td><t t-esc="doc.company_name"/></td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="doc.acc_holder_name">
+                                        <tr>
+                                            <td style="font-weight: bold;">Bank</td>
+                                            <td>:</td>
+                                            <td><t t-esc="doc.acc_holder_name"/></td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="doc.acc_number">
+                                        <tr>
+                                            <td style="font-weight: bold;">No.Rek</td>
+                                            <td>:</td>
+                                            <td><t t-esc="doc.acc_number"/></td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="doc.phone or doc.email">
+                                        <tr>
+                                            <td style="font-weight: bold;">Contact Person</td>
+                                            <td>:</td>
+                                            <td>
+                                                <t t-esc="doc.phone or '-'"/> / <t t-esc="doc.email or '-'"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+
+            

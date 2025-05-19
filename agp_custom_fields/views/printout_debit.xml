@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- Define the report -->
+        <report
+                id="report_debit_note_pdf"
+                string="Debit Note Report"
+                model="account.move"
+                report_type="qweb-pdf"
+                name="agp_custom_fields.report_debit_note"/>
+
+        <!-- Define the template for the report -->
+        <template id="report_debit_note">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2>Debit Note Report</h2>
+                                    <!-- Customize your report layout here -->
+
+                                    <table class="table-journal">
+                                        <tr class="primarycolor">
+                                            <th rowspan="2">Kode Akun</th>
+                                            <th colspan="2">Jumlah</th>
+                                        </tr>
+                                        <tr class="primarycolor">
+                                            <th>Debet</th>
+                                            <th>Kredit</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>55.000.000</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-content"></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>55.000.000</td>
+                                        </tr>
+
+                                        <tr class="primarycolor">
+                                            <th>Jumlah</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </table>
+
+                                    <table class="table-sign">
+                                        <tr class="primarycolor">
+                                            <th>MENGETAHUI,</th>
+                                            <th>MENYETUJUI,</th>
+                                            <th>DIBUAT OLEH,</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="sign-content"></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+
+                                        <tr class="primarycolor">
+                                            <th>HENDRA SUZERI</th>
+                                            <th>IRSALINA NUR IDZNI</th>
+                                            <th>DIMAS ARIO WICAKSONO</th>
+                                        </tr>
+                                        <tr class="primarycolor">
+                                            <th>KADIV AKUNTANSI</th>
+                                            <th>PLT MANAJER AKUNTANSI</th>
+                                            <th>STAFF AKUNTANSI</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

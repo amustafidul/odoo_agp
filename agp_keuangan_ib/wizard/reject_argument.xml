@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+
+        <!-- # === WIZARD PA === # -->
+        <record id="pa_reject_wizard_form" model="ir.ui.view">
+            <field name="name">pa.reject.wizard.form</field>
+            <field name="model">pa.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="reject_reason"/>
+                    </group>
+                    <footer>
+                        <button string="Simpan" name="ok" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" special="cancel" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_reject_wizard_pa" model="ir.actions.act_window">
+            <field name="name">Alasan Reject SPA</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pa.reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

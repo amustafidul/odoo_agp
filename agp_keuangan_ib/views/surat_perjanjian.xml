@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- <record id="view_surat_perjanjian" model="ir.ui.view">
+        <field name="name">surat.perjanjian.list</field>
+        <field name="model">account.keuangan.surat.perjanjian</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1" string="Surat Perjanjian">
+                <field name="name"/>
+                <field name="tanggal_perjanjian"/>
+                <field name="company_id"/>
+                <field name="partner_id"/>
+                <field name="branch_id"/>
+                <field name="no_adddendum"/>
+                <field name="tanggal_addendum"/>
+            </tree>
+        </field>
+    </record> -->
+
+    <record id="view_surat_perjanjian_form" model="ir.ui.view">
+        <field name="name">surat.perjanjian.form</field>
+        <field name="model">account.keuangan.surat.perjanjian</field>
+        <field name="arch" type="xml">
+            <form string="Surat Perjanjian">
+                <!-- <header>
+                    <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                </header> -->
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="tanggal_perjanjian"/>
+                        <field name="company_id"/>
+                        <field name="partner_id"/>
+                        <field name="branch_id" widget="many2many_tags"/>
+                        <field name="sub_branch_ids" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page id="list_addendum" string="List Addendum">
+                            <field name="surat_perjanjian_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="no_adddendum" width="150"/>
+                                    <field name="deskripsi" width="150"/>
+                                    <field name="tanggal_addendum_mulai" width="120"/>
+                                    <field name="tanggal_addendum_akhir" width="120"/>
+                                    <!-- <field name="bank_account_id" width="120"/> -->
+                                </tree>
+                            </field>
+                        </page>
+                        <page id="bank_account" string="Bank Account">
+                            <group name="bank_account_harian_id" string="Bank Account">
+                                <field name="bank_account_harian_id" width="150"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_surat_perjanjian_tree" model="ir.ui.view">
+        <field name="name">surat.perjanjian.tree</field>
+        <field name="model">account.keuangan.surat.perjanjian</field>
+        <field name="arch" type="xml">
+            <tree string="Surat Perjanjian">
+                <field name="name"/>
+                <field name="tanggal_perjanjian"/>
+                <field name="company_id"/>
+                <field name="partner_id"/>
+                <field name="branch_id" widget="many2many_tags"/>
+                <field name="sub_branch_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_surat_perjanjian_search" model="ir.ui.view">
+        <field name="name">surat.perjanjian.search</field>
+        <field name="model">account.keuangan.surat.perjanjian</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Surat Perjanjian" name="filter_surat_perjanjian" domain="[('name', 'ilike', self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_surat_perjanjian" model="ir.actions.act_window">
+        <field name="name">Surat Perjanjian</field>
+        <field name="res_model">account.keuangan.surat.perjanjian</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

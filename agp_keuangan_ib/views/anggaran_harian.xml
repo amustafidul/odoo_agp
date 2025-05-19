@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_anggaran_harian_form" model="ir.ui.view">
+        <field name="name">anggaran.harian.form</field>
+        <field name="model">account.keuangan.anggaran.harian</field>
+        <field name="arch" type="xml">
+            <form string="Anggaran Harian">
+                <header>
+                    <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="tanggal_anggaran"/>
+                            <field name="saldo_awal"/>
+                            <field name="total_penerimaan"/>
+                            <field name="total_pengeluaran"/>
+                            <field name="saldo_akhir"/>
+                        </group>
+                        <group>
+                            <field name="disiapkan"/>
+                            <field name="diketahui"/>
+                            <field name="disetujui"/>
+                            <field name="noted"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Penggunaan">
+                            <field name="anggaran_harian_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="no" invisible="1"/>
+                                    <field name="bank_account_name" invisible="1"/>
+                                    <field name="show_bank_account" invisible="1"/>
+                                    <field name="type_transaksi"/>
+                                    <field name="deskripsi"/>
+                                    <field name="bank_account_ids" attrs="{'invisible': [('show_bank_account', '=', False)]}" string="Bank Account"/>
+                                    <field name="nominal"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_anggaran_harian_tree" model="ir.ui.view">
+        <field name="name">anggaran.harian.tree</field>
+        <field name="model">account.keuangan.anggaran.harian</field>
+        <field name="arch" type="xml">
+            <tree string="Anggaran Harian">
+                <field name="name" optional="show"/>
+                <field name="tanggal_anggaran" optional="show"/>
+                <field name="saldo_awal" optional="show"/>
+                <field name="total_penerimaan" optional="show"/>
+                <field name="total_pengeluaran" optional="show"/>
+                <field name="saldo_akhir" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_anggaran_harian" model="ir.actions.act_window">
+        <field name="name">Anggaran Harian</field>
+        <field name="res_model">account.keuangan.anggaran.harian</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="menu_tagihan_rutin_root" name="Tagihan Rutin" parent="account.menu_finance"/> -->
+    <!-- <menuitem id="menu_tagihan_rutin" name="Tagihan Rutin" parent="parent_menu_board_keuangan" action="action_tagihan_rutin"/> -->
+    </data>
+</odoo>

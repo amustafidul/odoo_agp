@@ -1,0 +1,45 @@
+.table-responsive {
+    overflow-x: auto;
+}
+
+th.o_column_sortable[data-name="workflow_type"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}
+
+th.o_column_sortable[data-name="approver_user_id"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}
+
+th.o_column_sortable[data-name="approver_jabatan_id"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}
+
+th.o_column_sortable[data-name="approver_ds_level"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}
+
+th.o_column_sortable[data-name="approver_role_id"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}
+
+th.o_column_sortable[data-name="min_nominal"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}
+
+th.o_column_sortable[data-name="max_nominal"]
+{
+    width:150px !important;
+    max-width:150px !important;
+}

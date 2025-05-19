@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_nota_dinas_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="padding: 30px; font-size: 12px;">
+                        <h2 style="text-align: center; font-size: 18px; margin-bottom: 20px;">NOTA DINAS</h2>
+
+                        <div style="margin-bottom: 25px;">
+                            <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 25%;"><strong>Nomor</strong></td>
+                                    <td><t t-esc="doc.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tanggal</strong></td>
+                                    <td><t t-esc="doc.tanggal_nota_dinas.strftime('%d-%m-%Y') if doc.tanggal_nota_dinas else ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kepada Yth</strong></td>
+                                    <td><t t-esc="doc.employee_position_id.name or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tembusan</strong></td>
+                                    <td><t t-esc="doc.employee_position_tembusan_id.name or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dari</strong></td>
+                                    <td><t t-esc="doc.employee_id.name or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Perihal</strong></td>
+                                    <td><t t-esc="doc.perihal_desc or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Agenda</strong></td>
+                                    <td><t t-esc="doc.agenda_desc or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tujuan</strong></td>
+                                    <td><t t-esc="doc.destination_place or '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jadwal</strong></td>
+                                    <td>
+                                        <t t-esc="doc.dinas_date_from.strftime('%d-%m-%Y') if doc.dinas_date_from else '-'"/>
+                                        -
+                                        <t t-esc="doc.dinas_date_to.strftime('%d-%m-%Y') if doc.dinas_date_to else '-'"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pemberi Undangan</strong></td>
+                                    <td><t t-esc="doc.pemberi_undangan or '-'"/></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <strong>Peserta:</strong>
+                            <ul style="margin: 5px 0 0 15px;">
+                                <t t-foreach="doc.nota_dinas_line_ids" t-as="line">
+                                    <li>
+                                        <t t-esc="line.applicant_id.name"/> (<t t-esc="line.jabatan or '-'"/>)
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_nota_dinas"
+        string="Nota Dinas"
+        model="nota.dinas"
+        report_type="qweb-pdf"
+        name="agp_dinas_ib.report_nota_dinas_template"
+        file="agp_dinas_ib.report_nota_dinas_template"
+        print_report_name="'Nota Dinas - %s' % (object.name)"
+    />
+</odoo>

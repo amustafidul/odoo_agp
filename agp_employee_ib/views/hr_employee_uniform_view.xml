@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="employee_uniform_tree_view" model="ir.ui.view">
+        <field name="name">employee.uniform.view.tree</field>
+        <field name="model">employee.uniform</field>
+        <field name="arch" type="xml">
+            <tree string="Form Pendataan Seragam">
+                <field name="name"/>
+                <field name="uniform_type"/>
+                <field name="is_hc_assignment" invisible="1"/>
+                <field name="is_kadiv_gm_assignment" invisible="1"/>
+                <field name="department_ids" widget="many2many_tags"/>
+                <field name="employee_ids" widget="many2many_tags_avatar" attrs="{'column_invisible': [('is_kadiv_gm_assignment','=',False)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="employee_uniform_form_view" model="ir.ui.view">
+        <field name="name">employee.uniform.view.form</field>
+        <field name="model">employee.uniform</field>
+        <field name="arch" type="xml">
+            <form string="Form Pendataan Seragam">
+                <header>
+                    <field name="selected_employee_uniform_count" invisible="1"/>
+                    <field name="is_hc_assignment" invisible="1"/>
+                    <field name="is_kadiv_gm_assignment" invisible="1"/>
+                    <button name="action_notify_kadiv_gm" type="object" string="Notify Kadiv or GM"
+                            attrs="{'invisible': ['|', ('is_hc_assignment','=',False),('selected_employee_uniform_count', '&gt;', 0)]}"/>
+                    <button name="send_chat_message" string="Notify Employees &amp; Create a Form for a Uniform" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('selected_employee_uniform_count', '&gt;', 0), ('is_kadiv_gm_assignment','=',False)]}"/>
+                    <button name="action_view_selected_uniforms" type="object" string="View Entry"
+                            attrs="{'invisible': ['|', ('selected_employee_uniform_count', '=', 0),('is_kadiv_gm_assignment','=',False)]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Batik, etc.." required="1" attrs="{'readonly': [('completed_count_percentage','=',100)]}"/>
+                            <field name="uniform_type" placeholder="Shirt or Jacket" required="1" attrs="{'readonly': [('completed_count_percentage','=',100)]}"/>
+                            <field name="kode_anggaran_id" required="1"/>
+                            <field name="kode_anggaran_nominal" invisible="1"/>
+                            <field name="department_ids" widget="many2many_tags" string="Divisi" required="1"
+                                   placeholder="Pakaian dinas untuk divisi apa saja.."
+                                   help="Pilih divisi yang akan menerima seragam ini."
+                                   attrs="{'readonly': [('completed_count_percentage','=',100)]}"/>
+                            <field name="employee_ids" widget="many2many_tags_avatar"
+                                   placeholder="Pilih karyawan untuk pendataan seragam / pakaian dinas"
+                                   attrs="{'invisible': [('is_kadiv_gm_assignment','=',False)],
+                                            'required': [('is_kadiv_gm_assignment','=',True)],
+                                            'readonly': [('completed_count_percentage','=',100)]}"/>
+                            <field name="user_department_ids" widget="many2many_tags" invisible="1"/>
+                            <field name="is_employees_selected" invisible="1"/>
+                            <field name="completed_count" attrs="{'invisible': [('is_kadiv_gm_assignment','=',False)],
+                                                                                'readonly': [('completed_count_percentage','=',100)]}"/>
+                            <field name="completed_count_percentage" widget="progressbar" nolabel="1"
+                                   attrs="{'invisible': ['|', ('selected_employee_uniform_count', '=', 0), ('is_kadiv_gm_assignment','=',False)]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="uniform_price" string="Harga">
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <group string="Harga Lengan Pendek">
+                                    <field name="harga_lengan_pendek_xs"/>
+                                    <field name="harga_lengan_pendek_s"/>
+                                    <field name="harga_lengan_pendek_m"/>
+                                    <field name="harga_lengan_pendek_l"/>
+                                    <field name="harga_lengan_pendek_xl"/>
+                                    <field name="harga_lengan_pendek_xxl"/>
+                                    <field name="harga_lengan_pendek_xxxl"/>
+                                </group>
+                                <group string="Harga Lengan Panjang">
+                                    <field name="harga_lengan_panjang_xs"/>
+                                    <field name="harga_lengan_panjang_s"/>
+                                    <field name="harga_lengan_panjang_m"/>
+                                    <field name="harga_lengan_panjang_l"/>
+                                    <field name="harga_lengan_panjang_xl"/>
+                                    <field name="harga_lengan_panjang_xxl"/>
+                                    <field name="harga_lengan_panjang_xxxl"/>
+                                </group>
+                                <group string="Harga Rok">
+                                    <field name="harga_rok_xs"/>
+                                    <field name="harga_rok_s"/>
+                                    <field name="harga_rok_m"/>
+                                    <field name="harga_rok_l"/>
+                                    <field name="harga_rok_xl"/>
+                                    <field name="harga_rok_xxl"/>
+                                    <field name="harga_rok_xxxl"/>
+                                </group>
+                                <group string="Harga Celana">
+                                    <field name="harga_celana_xs"/>
+                                    <field name="harga_celana_s"/>
+                                    <field name="harga_celana_m"/>
+                                    <field name="harga_celana_l"/>
+                                    <field name="harga_celana_xl"/>
+                                    <field name="harga_celana_xxl"/>
+                                    <field name="harga_celana_xxxl"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_uniform_action_kadiv_gm" model="ir.actions.act_window">
+        <field name="name">Seragam Karyawan - Kadiv &amp; GM</field>
+        <field name="res_model">employee.uniform</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_kadiv_gm_assignment','=',True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No records
+            </p>
+        </field>
+    </record>
+
+    <record id="employee_uniform_action_hc_assignment" model="ir.actions.act_window">
+        <field name="name">Seragam Karyawan - HC Assignment</field>
+        <field name="res_model">employee.uniform</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('completed_count_percentage','=',100)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No records
+            </p>
+        </field>
+    </record>
+
+    <record id="selected_employee_uniform_tree_view" model="ir.ui.view">
+        <field name="name">selected.employee.uniform.view.tree</field>
+        <field name="model">selected.employee.uniform</field>
+        <field name="arch" type="xml">
+            <tree string="Form Pengisian Data Seragam" decoration-danger="complete_stage=='Not Completed'"
+                  decoration-success="complete_stage=='Completed'">
+                <field name="name"/>
+                <field name="complete_stage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="selected_employee_uniform_form_view" model="ir.ui.view">
+        <field name="name">selected.employee.uniform.view.form</field>
+        <field name="model">selected.employee.uniform</field>
+        <field name="arch" type="xml">
+            <form string="Form Pengisian Data Seragam" create="0">
+                <header>
+                    <button name="mark_as_done" type="object" string="Mark as Done" attrs="{'invisible': [('state','=','done')]}" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="done" attrs="{'invisible': [('state','!=','done')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="is_employees_selected" invisible="1"/>
+                            <field name="employee_id" attrs="{'readonly': ['|',('is_employees_selected','=',False),('state','=','done')]}"/>
+                            <field name="employment_type" attrs="{'readonly': ['|',('is_employees_selected','=',False),('state','=','done')]}"/>
+                            <field name="lengan" widget="radio" options="{'horizontal': True}" attrs="{'readonly': ['|',('is_employees_selected','=',False),('state','=','done')]}"/>
+                            <field name="ukuran_atasan" widget="radio" attrs="{'readonly': ['|',('is_employees_selected','=',False),('state','=','done')]}"/>
+                            <field name="jenis_bawahan_pakaian" widget="radio" options="{'horizontal': True}" attrs="{'readonly': ['|',('is_employees_selected','=',False),('state','=','done')]}"
+                                   help="Pilih jenis bawahan yang sesuai dengan kebutuhan seragam."/>
+                            <field name="ukuran_bawahan" widget="radio" attrs="{'readonly': ['|',('is_employees_selected','=',False),('state','=','done')]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="selected_employee_uniform_action" model="ir.actions.act_window">
+        <field name="name">Form Pengisian Seragam</field>
+        <field name="res_model">selected.employee.uniform</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by': 'employee_id', 'search_default_not_completed': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No records
+            </p>
+        </field>
+    </record>
+
+    <record id="kode_anggaran_hr_tree_view" model="ir.ui.view">
+        <field name="name">kode.anggaran.hr.view.tree</field>
+        <field name="model">kode.anggaran.hr</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="kode_anggaran_id"/>
+                <field name="deskripsi_anggaran"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="saldo_anggaran"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="kode_anggaran_hr_form_view" model="ir.ui.view">
+        <field name="name">kode.anggaran.hr.view.form</field>
+        <field name="model">kode.anggaran.hr</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="kode_anggaran_id" options="{'no_create': 1, 'no_edit': 1}"/>
+                            <field name="deskripsi_anggaran"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="saldo_anggaran"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="kode_anggaran_hr_action" model="ir.actions.act_window">
+        <field name="name">Anggaran HR</field>
+        <field name="res_model">kode.anggaran.hr</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No records
+            </p>
+        </field>
+    </record>
+</odoo>

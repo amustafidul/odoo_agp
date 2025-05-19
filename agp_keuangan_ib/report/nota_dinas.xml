@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_nota_dinas" model="report.paperformat">
+            <field name="name">Nota Dinas Paper Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">16</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="dpi">90</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">13</field>
+        </record>
+
+        <!-- Define the report -->
+        <!-- <report
+            id="report_nota_dinas_pdf"
+            string="Preview Nota Dinas"
+            model="account.keuangan.nota.dinas"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_nota_dinas"
+            file="agp_keuangan_ib.report_nota_dinas"
+            paperformat="paperformat_nota_dinas"
+            attachment_use="False"/> -->
+
+        <template id="agp_keuangan_ib.report_nota_dinas">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 style="text-align: center; color: black; text-decoration: underline;">NOTA DINAS</h2>
+                            <p style="text-align: center; color: black;">Nomor : <t t-esc="doc.name"/></p>
+
+                            <div style="margin-top: 20px;">
+                                <!-- Left-aligned labels with values on the right -->
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 15%; font-weight: bold;">Kepada Yth.</td>
+                                        <td style="width: 5%;">:</td>
+                                        <td style="width: 70%;"><t t-esc="doc.kepada"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Dari</td>
+                                        <td>:</td>
+                                        <td><t t-esc="doc.pengirim"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Perihal</td>
+                                        <td>:</td>
+                                        <td><t t-esc="doc.perihal"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Tanggal</td>
+                                        <td>:</td>
+                                        <td>
+                                            <t t-esc="doc.tanggal_pengajuan.strftime('%d %B %Y')" />
+                                        </td>
+                                    </tr>
+
+                                    <tr style="height: 40px;">
+                                        <td colspan="3"></td>
+                                    </tr>
+                                </table>
+
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align: left;">
+                                        <t t-esc="doc.kata_pengantar" />
+                                        <span style="font-weight: bold;">
+                                            <t t-esc="'Rp. {:,.0f}'.format(doc.total)" />
+                                        </span>
+                                        <t t-esc="'(' + doc.total_terbilang + ')'" />
+                                    </td>
+                                </tr>
+
+                                <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%; text-align: left; border-bottom: 1px solid #000;">No.</th>
+                                            <th style="width: 25%; text-align: left; border-bottom: 1px solid #000;">Cabang</th>
+                                            <th style="width: 45%; text-align: left; border-bottom: 1px solid #000;">Uraian Kebutuhan</th>
+                                            <th style="width: 15%; text-align: right; border-bottom: 1px solid #000;">Jumlah Biaya</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="row_index" t-value="1"/>
+                                        <t t-set="total" t-value="0"/>
+                                        <t t-foreach="doc.nota_dinas_line_ids" t-as="line" t-esc-options='{"widget": "monetary", "display_currency": doc.currency_id}'>
+                                            <tr>
+                                                <td><t t-esc="row_index" /></td>
+                                                <td><t t-esc="line.branch_ids.name" /></td>
+                                                <td><t t-esc="line.uraian" /></td>
+                                                <td style="text-align: right;">
+                                                    <t t-set="total" t-value="total + line.total_harga" />
+                                                    <t t-esc="'Rp. {:,.0f}'.format(line.total_harga)" />
+                                                </td>
+
+                                            </tr>
+                                            <!-- Increment the row counter -->
+                                            <t t-set="row_index" t-value="row_index + 1"/>
+                                        </t>
+                                    </tbody>
+                                    <!-- Total Row -->
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" style="text-align: right; font-weight: bold; border-top: 1px solid #000;">Total</td>
+                                            <td style="text-align: right; font-weight: bold; border-top: 1px solid #000;">
+                                                <t t-esc="'Rp. {:,.0f}'.format(total)" />
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="3" style="height: 20px;"></td></tr> <!-- baris kosong dengan tinggi 20px -->
+                                    </tfoot> 
+                                    <tr><td colspan="3" style="height: 20px;"></td></tr> <!-- baris kosong dengan tinggi 20px -->                                   
+                                </table>
+
+                                <tr>
+                                    <td style="text-align: left;">
+                                        Demikian disampaikan, mohon arahan dan persetujuan Bapak/Ibu. Atas perhatian dan persetujuannya diucapkan terima kasih.
+                                    </td>
+                                </tr>
+
+                                <table style="width: 80%;">
+                                    <!-- Baris kosong untuk jarak -->
+                                    <tr><td colspan="3" style="height: 40px;"></td></tr> 
+
+                                    <!-- Nama Pengirim -->
+                                    <tr>
+                                        <td style="text-align: right; font-weight: bold;">
+                                            <t t-esc="doc.pengirim" />
+                                        </td>
+                                    </tr>
+
+                                    <!-- Baris kosong untuk jarak antar tanda tangan -->
+                                    <tr><td colspan="3" style="height: 80px;"></td></tr> 
+
+                                    <!-- Nama Pengguna yang Login -->
+                                    <tr>
+                                        <td style="text-align: right; font-weight: bold;">
+                                            <t t-esc="user.name" />
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table style="width: 80%; margin-top: 20px; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+                                    <!-- Header DISPOSISI -->
+                                    <tr>
+                                        <th style="text-align: center; font-weight: bold; padding: 10px; border: 1px solid black;">
+                                            DISPOSISI
+                                        </th>
+                                    </tr>
+
+                                    <!-- Baris kosong untuk konten -->
+                                    <tr>
+                                        <td style="height: 250px; border: 1px solid black;"></td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

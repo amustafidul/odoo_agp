@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_attendance_report_wizard_form" model="ir.ui.view">
+        <field name="name">attendance.report.wizard.form</field>
+        <field name="model">attendance.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Attendance Report">
+                <group>
+                    <group>
+                        <field name="date_from" required="1"/>
+                        <field name="date_to" required="1"/>
+                        <field name="all_employee"/>
+                        <field name="employee_ids" widget="many2many_tags" options="{'no_create': True}"
+                               attrs="{'invisible': [('all_employee','=',True)], 'required': [('all_employee','=',False)]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_report" string="Cetak Excel" type="object" class="btn-primary"/>
+                    <button name="print_report_pdf" string="Cetak PDF" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_attendance_report_wizard" model="ir.actions.act_window">
+        <field name="name">Attendance Excel Report</field>
+        <field name="res_model">attendance.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="attendance_excel_report_menu" name="Attendance Report" parent="hr_attendance.menu_hr_attendance_report" sequence="31"
+              action="action_attendance_report_wizard"/>
+
+    <report
+       id="attendance_excel_report_action"
+       model="attendance.report.wizard"
+       string="Attendance Excel Report"
+       report_type="xlsx"
+       name="agp_attendance_ib.attendance_excel_report"
+       file="agp_attendance_ib.attendance_excel_report"
+       attachment_use="False"/>
+</odoo>

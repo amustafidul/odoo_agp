@@ -1,0 +1,50 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_account_keuangan_saldo_tree" model="ir.ui.view">
+        <field name="name">account.keuangan.saldo.tree</field>
+        <field name="model">account.keuangan.saldo</field>
+        <field name="arch" type="xml">
+             <tree string="Account Budget Usage">
+                <field name="kode_anggaran_id"/>
+                <!-- <field name="kode_anggaran_value"/> -->
+                <!-- <field name="branch_name_value"/> -->
+                <field name="branch_id"/>
+                <field name="saldo_awal"/>
+                <field name="total_pemakaian"/>
+                <field name="saldo"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <!-- <record id="view_account_keuangan_saldo_form" model="ir.ui.view">
+        <field name="name">account.keuangan.saldo.form</field>
+        <field name="model">account.keuangan.saldo</field>
+        <field name="arch" type="xml">
+            <form string="Saldo Per Kode Anggaran dan Branch">
+                <sheet>
+                    <group>
+                        <field name="kode_anggaran_id"/>
+                        <field name="branch_id"/>
+                        <field name="total_nominal"/>
+                        <field name="total_nominal_disetujui"/>
+                        <field name="saldo"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+    <!-- Action -->
+    <record id="action_account_keuangan_saldo" model="ir.actions.act_window">
+        <field name="name">Saldo Per Kode Anggaran dan Branch</field>
+        <field name="res_model">account.keuangan.saldo</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- Menu Item -->
+    <!-- <menuitem id="menu_account_keuangan_saldo"
+              name="Saldo Per Kode Anggaran dan Branch"
+              parent="account.menu_finance"
+              action="action_account_keuangan_saldo"/> -->
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_attendance_tree_inherit_keterangan" model="ir.ui.view">
+            <field name="name">hr.attendance.tree.inherit.keterangan</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/> <field name="arch" type="xml">
+                <xpath expr="//field[@name='check_out']" position="after">
+                    <field name="x_keterangan_check_in" string="Keterangan Check In" optional="show"/>
+                </xpath>
+
+                </field>
+        </record>
+    </data>
+</odoo>

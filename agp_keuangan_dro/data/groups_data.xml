@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Module Categ Anggaran -->
+        <record id="module_categ_anggaran_master" model="ir.module.category">
+            <field name="name">Anggaran</field>
+        </record>
+
+        <!-- Module Categ Keuangan -->
+        <record id="module_categ_keuangan_master" model="ir.module.category">
+            <field name="name">Keuangan</field>
+        </record>
+
+        <!-- Item Monitoring KKHC Usaha to Nodin -->
+        <record id="group_item_usaha" model="res.groups">
+            <field name="name">Approval Divisi Usaha</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+        
+        <!-- Item Monitoring KKHC Umum to Nodin -->
+        <record id="group_item_umum" model="res.groups">
+            <field name="name">Approval Divisi Umum</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Group Root RKAP -->
+        <record id="group_rkap_header" model="res.groups">
+            <field name="name">RKAP</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Group Root KKHC -->
+        <record id="group_kkhc_header" model="res.groups">
+            <field name="name">KKHC</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Group Root Nota Dinas -->
+        <record id="group_nodin_header" model="res.groups">
+            <field name="name">Nota Dinas</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Root SPA -->
+        <record id="group_spa_header" model="res.groups">
+            <field name="name">SPA</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_div_anggaran" model="res.groups">
+            <field name="name">Div Anggaran</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_board_of_director" model="res.groups">
+            <field name="name">Board of Director of Adhiguna Putera</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_budgetting_maker_branch" model="res.groups">
+            <field name="name">Maker of Budgetting Adhiguna Putera</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_division_head" model="res.groups">
+            <field name="name">Head of Division of Adhiguna Putera</field>
+            <field name="category_id" ref="module_categ_anggaran_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Root KKHC Bank -->
+        <record id="group_dv_keuangan_kkhc_bank_partner" model="res.groups">
+            <field name="name">See bank account of KKHC Lines</field>
+            <field name="category_id" ref="module_categ_keuangan_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_dv_keuangan_tagihan_receptionist" model="res.groups">
+            <field name="name">Receptionist</field>
+            <field name="category_id" ref="module_categ_keuangan_master"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

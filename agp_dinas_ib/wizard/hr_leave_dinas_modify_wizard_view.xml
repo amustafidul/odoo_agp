@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_leave_dinas_modify_wizard_form" model="ir.ui.view">
+        <field name="name">hr.leave.dinas.modify.wizard.form</field>
+        <field name="model">hr.leave.dinas.modify.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Modifikasi Perjalanan Peserta">
+                <group>
+                    <group>
+                        <field name="sppd_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="peserta_name_display" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="current_destination_display" readonly="1"/>
+                        <field name="current_date_to_display" readonly="1"/>
+                    </group>
+                </group>
+                <group string="Detail Modifikasi">
+                    <field name="modification_type" widget="radio" options="{'horizontal': true}"/>
+                    <field name="new_date_to"
+                           attrs="{'invisible': [('modification_type', '!=', 'early_return')],
+                                   'required': [('modification_type', '=', 'early_return')]}"/>
+                    <field name="extend_proposed_date_to_wiz"
+                           string="Tgl Perpanjangan Diajukan"
+                           attrs="{'invisible': [('modification_type', '!=', 'extend_days')],
+                                   'required': [('modification_type', '=', 'extend_days')]}"/>
+                    <field name="new_sppd_location"
+                           attrs="{'invisible': [('modification_type', '!=', 'change_location')],
+                                   'required': [('modification_type', '=', 'change_location')]}"/>
+                    <field name="city_transfer_date"
+                           attrs="{'invisible': [('modification_type', '!=', 'change_location')],
+                                   'required': [('modification_type', '=', 'change_location')]}"/>
+                    <field name="reason" placeholder="Jelaskan alasan modifikasi..."/>
+                </group>
+                <field name="biaya_peserta_internal_id" invisible="1"/>
+                <field name="biaya_peserta_external_id" invisible="1"/>
+                <footer>
+                    <button string="Ajukan Modifikasi" type="object" name="action_apply_modification" class="btn-primary"/>
+                    <button string="Batal" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_hr_leave_dinas_modify_wizard"
+                name="Modifikasi Perjalanan"
+                res_model="hr.leave.dinas.modify.wizard"
+                view_mode="form"
+                target="new"
+                view_id="view_hr_leave_dinas_modify_wizard_form"
+                context="{'default_leave_dinas_id': active_id}" />
+</odoo>

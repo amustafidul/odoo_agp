@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="view_rkap_konsolidasi_wizard" model="ir.ui.view">
+            <field name="name">rkap.konsolidasi.wizard.form</field>
+            <field name="model">rkap.konsolidasi.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate RKAP Konsolidasi Cabang">
+                    <group>
+                        <field name="is_all" string="Semua Cabang?" widget="boolean_toggle" />
+                        <field name="branch_ids" string="Pilih Cabang" attrs="{'invisible': [('is_all', '=', True)]}" widget="many2many_tags" />
+                    </group>
+                    <footer>
+                        <!-- <button string="View" type="object" name="action_print_report" class="btn-primary"/> -->
+                        <!-- <button string="Export to Excel" type="object" name="action_export_bank_garansi" class="btn-primary"/> -->
+                        <!-- <button string="Download PDF" type="object" name="action_print_pdf" class="btn-primary"/> -->
+                        <button string="Download PDF" attrs="{'invisible': [('is_all', '=', False)]}" type="object" name="action_print_pdf" class="btn-primary"/>
+                        <button string="Download XLS" attrs="{'invisible': [('is_all', '=', True)]}" type="object" name="action_print_xls" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_generate_konsolidasi" model="ir.actions.act_window">
+            <field name="name">Generate RKAP Konsolidasi Cabang</field>
+            <field name="res_model">rkap.konsolidasi.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- <record id="access_bank_garansi_export_wizard_user" model="ir.model.access">
+            <field name="name">access.bank.garansi.export.wizard.user</field>
+            <field name="model_id" ref="model_bank_garansi_export_wizard"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record> -->
+
+    </data>
+</odoo>

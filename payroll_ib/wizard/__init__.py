@@ -1,0 +1,1 @@
+from . import wizard_odoo_payroll

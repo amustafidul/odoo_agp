@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_neraca_mb" model="report.paperformat">
+        <field name="name">Neraca Multi Branch A2</field>
+        <field name="default" eval="True"/>
+        <field name="format">A2</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_neraca_mb" model="ir.actions.report">
+        <field name="name">Neraca Multi Branch</field>
+        <field name="model">account.financial.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_neraca_mb</field>
+        <field name="report_file">report_multi_branch.report_neraca_mb</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_neraca_mb"/>
+    </record>
+
+    <template id="report_neraca_mb">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <t t-if="o and 'company_id' in o">
+                            <t t-set="company" t-value="o.company_id.sudo()"/>
+                        </t>
+                        <t t-if="not o or not 'company_id' in o">
+                            <t t-set="company" t-value="res_company"/>
+                        </t>
+
+                        <h4>
+                            <b>NERACA</b>
+                        </h4>
+                        <div style="margin-top: -10px" t-esc="company.name"/>
+                        <div>
+                            <span>Periode :</span>
+                            <span t-esc="periode"/>
+                        </div>
+                        <br/>
+
+                        <style>
+                            .laporan-item tr th {
+                                font-size: 10px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                text-align: center;
+                                border: 1px solid black;
+                                vertical-align: middle;
+                                background-color: lightgrey; 
+                                font-weight: bold;
+                                padding: 5px;
+                            }
+
+                            .laporan-item tr td {
+                                font-size: 10px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                border: hidden;
+                                padding: 5px;
+                            }
+                            
+                            .bold-text {
+                                font-weight: bold;
+                            }
+                            
+                            .right-align {
+                                text-align: right;
+                            }
+                            
+                            .blank-value {
+                                color: white;
+                            }
+                        </style>
+                        <table class="laporan-item" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>KODE &amp; NAMA PERKIRAAN</th>
+                                    <th>KONSOLIDASI</th>
+                                    <t t-foreach="branchs" t-as="branch">
+                                        <th style="width: auto">
+                                            <span t-esc="branch['name']"/>
+                                        </th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="max_name_length" t-value="0" />
+                                <tr t-foreach="account_lines" t-as="account">
+                                    <t t-if="account.get('name')">
+                                        <t t-set="current_name_length" t-value="len(account['name'])" />
+                                        <t t-if="current_name_length > max_name_length">
+                                            <t t-set="max_name_length" t-value="current_name_length" />
+                                        </t>
+                                    </t>
+
+                                    <td style="width: {{ (max_name_length * 10) }}px;">
+                                        <span style="color: white;" t-esc="'...' * int(account.get('level', 0))"/>
+                                        <span t-att-class="account.get('bold') and 'bold-text' or ''" 
+                                            t-esc="account['name']"/>
+                                    </td>
+                                    
+                                    <td t-att-class="'right-align ' + 
+                                                (account.get('bold') and 'bold-text' or '') + 
+                                                (account.get('blank') and ' blank-value' or '')">
+                                        <span t-esc="'{0:,.0f}'.format(account.get('balance'))"/>
+                                    </td>
+                                    
+                                    <t t-foreach="account['branch_list_vals']" t-as="branch_balance">
+                                        <td t-att-class="'right-align ' + 
+                                                    (account.get('bold') and 'bold-text' or '') + 
+                                                    (account.get('blank') and ' blank-value' or '')">
+                                            <span t-esc="'{0:,.0f}'.format(branch_balance)"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

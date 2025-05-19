@@ -1,0 +1,24 @@
+<div>
+    Dear <t t-out="object.sudo().partner_id.name or 'Madam/Sir'" data-oe-t-inline="true" contenteditable="false">Madam/Sir</t>,<br><br>
+    <t t-out="object.name" data-oe-t-inline="true" style="box-sizing:border-box;" contenteditable="false"> </t>
+    Your&nbsp;ticket has been created with the ticket ID&nbsp;{{ object.ticket_ref }} 
+
+	<span style="color: #444b5a;font-size: 13px">{{&nbsp;</span><a href="https://object.id/" style="text-decoration:none;box-sizing:border-box;background-
+	color:transparent;color:#008f8c;">object.id</a><span style="color: #444b5a;font-size: 13px">&nbsp;}}&nbsp;</span>&nbsp;and Subject&nbsp;&nbsp;<t t-if="object.get_portal_url()"
+ 	data-oe-t-group-active="true" data-oe-t-group="0" data-oe-t-inline="true"><a t-attf-href="/my/ticket/{{ object.id }}/{{ object.access_token }}" t-out="object.name or ''" style="text-
+	decoration:none;box-sizing:border-box;background-color:transparent;color:inherit;" contenteditable="false"></a><a style="text-decoration:none;box-sizing:border-box;background-
+	color:transparent;color:inherit;">.</a></t><br>
+
+    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+        <a style="box-sizing:border-box;background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-att-href="object.get_portal_url()">View the ticket</a><br>
+    </div>
+
+    <br>{{ object.description }}<br><br>Someone from our customer service team will review it and respond shortly.<br><br>To add additional comments, reply to this email.<br><br>
+
+    <t t-if="object.team_id.show_knowledge_base" data-oe-t-group-active="true" data-oe-t-group="1" data-oe-t-inline="true">
+        Please, don't hesitate to visit our <a t-attf-href="{{ object.team_id.get_knowledge_base_url() }}" style="text-decoration:none;box-sizing:border-box;background-color:transparent;color:inherit;">Help Center</a>. You might find the answer to your question.
+        <br><br>
+    </t>
+
+    Thank you,<br><br>Sujata Computers Pvt Ltd.<br>Support Team</div>
+        

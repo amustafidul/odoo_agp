@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_permohonan_pembayaran_form" model="ir.ui.view">
+        <field name="name">permohonan.pembayaran.form</field>
+        <field name="model">account.keuangan.permohonan.pembayaran</field>
+        <field name="arch" type="xml">
+            <form string="Permohonan Pembayaran">
+                <!-- <header>
+                    <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                </header> -->
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="invoice_id"/>
+                            <field name="nomor_referensi"/>
+                            <field name="tempat"/>
+                            <field name="perihal"/>
+                            <field name="lampiran"/>
+                            <field name="kepada"/>
+                            <field name="tanggal"/>
+                            <field name="ditujukan_kepada"/>
+                            <field name="alamat_perusahaan"/>
+                            <field name="nomor_surat_perjanjian"/>
+                            <field name="tanggal_perjanjian"/>
+                            <field name="kata_pengantar"/>
+                        </group>
+                        <group>
+                            <field name="total_sesudah_pajak"/>
+                            <field name="bank_account_id"/>
+                            <field name="company_name"/>
+                            <field name="acc_holder_name"/>
+                            <field name="acc_number"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="jabatan"/>
+                            <field name="ttd"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_permohonan_pembayaran_tree" model="ir.ui.view">
+        <field name="name">permohonan.pembayaran.tree</field>
+        <field name="model">account.keuangan.permohonan.pembayaran</field>
+        <field name="arch" type="xml">
+            <tree string="Permohonan Pembayaran">
+                <field name="name" optional="show"/>
+                <field name="invoice_id" optional="show"/>
+                <field name="nomor_referensi" optional="show"/>
+                <field name="tanggal" optional="show"/>
+                <field name="perihal" optional="show"/>
+                <field name="ditujukan_kepada" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_permohonan_pembayaran" model="ir.actions.act_window">
+        <field name="name">Permohonan Pembayaran</field>
+        <field name="res_model">account.keuangan.permohonan.pembayaran</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="menu_tagihan_rutin_root" name="Tagihan Rutin" parent="account.menu_finance"/> -->
+    <!-- <menuitem id="menu_tagihan_rutin" name="Tagihan Rutin" parent="parent_menu_board_keuangan" action="action_tagihan_rutin"/> -->
+    </data>
+</odoo>

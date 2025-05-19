@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="group_div_anggaran" model="res.groups">
+            <field name="name">Divisi Anggaran</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_master_nodin" model="res.groups">
+            <field name="name">Nota Dinas</field>
+            <!-- <field name="category_id" ref="agp_keuangan_dro.module_categ_anggaran_master"/> -->
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

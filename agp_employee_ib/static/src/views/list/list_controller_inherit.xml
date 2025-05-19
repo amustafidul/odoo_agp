@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="agp_employee_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_holiday" t-on-click="onClickGetHolidayData" t-if="model.root.resModel === 'resource.calendar.leaves'">
+                Click to fetch public holiday data...
+            </button>
+        </xpath>
+    </t>
+
+    <t t-name="agp_employee_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_bulk_upload_attachment" t-on-click="onClickBulkUploadAttachment" t-if="model.root.resModel === 'hr.employee'">
+                Bulk Upload Attachment
+            </button>
+        </xpath>
+    </t>
+
+    <t t-name="agp_employee_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_bulk_import_data" t-on-click="onClickBulkImportData" t-if="model.root.resModel === 'hr.employee'">
+                Bulk Import Data
+            </button>
+        </xpath>
+    </t>
+
+</templates>

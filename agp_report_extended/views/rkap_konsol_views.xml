@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rkap_konsolidasi_tree" model="ir.ui.view">
+        <field name="name">rkap.konsolidasi.tree</field>
+        <field name="model">account.keuangan.rkap.konsolidasi</field>
+        <field name="arch" type="xml">
+            <!-- <tree string="Konsolidasi RKAP Semua Cabang" create="0" attrs="{'js_class': 'button_account_keuangan_rkap_konsolidasi_list'}"> -->
+            <!-- <tree string="Konsolidasi RKAP Semua Cabang" create="0" js_class="button_account_keuangan_rkap_konsolidasi_list"> -->
+            <tree string="Konsolidasi RKAP Semua Cabang" create="0">
+                <field name="kode" readonly="1"/>
+                <field name="coa" readonly="1"/>
+                <field name="uraian" readonly="1"/>
+                <field name="balikpapan" readonly="1"/>
+                <field name="banjarmasin" readonly="1"/>
+                <field name="batam" readonly="1"/>
+                <field name="belawan" readonly="1"/>
+                <field name="cilacap" readonly="1"/>
+                <field name="gresik" readonly="1"/>
+                <field name="jawa_barat" readonly="1"/>
+                <field name="lhokseumawe" readonly="1"/>
+                <field name="makassar" readonly="1"/>
+                <field name="merak" readonly="1"/>
+                <field name="nusa_tenggara" readonly="1"/>
+                <field name="padang" readonly="1"/>
+                <field name="paiton" readonly="1"/>
+                <field name="panjang" readonly="1"/>
+                <field name="tanjung_jati_b" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_rkap_konsolidasi_form" model="ir.ui.view">
+        <field name="name">rkap.konsolidasi.form</field>
+        <field name="model">account.keuangan.rkap.konsolidasi</field>
+        <field name="arch" type="xml">
+            <form string="Konsolidasi RKAP Semua Cabang">
+                <sheet>
+                    <group>
+                        <field name="kode" readonly="1"/>
+                        <field name="coa" readonly="1"/>
+                        <field name="uraian" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="balikpapan" readonly="1"/>
+                        <field name="banjarmasin" readonly="1"/>
+                        <field name="batam" readonly="1"/>
+                        <field name="belawan" readonly="1"/>
+                        <field name="cilacap" readonly="1"/>
+                        <field name="gresik" readonly="1"/>
+                        <field name="jawa_barat" readonly="1"/>
+                        <field name="lhokseumawe" readonly="1"/>
+                        <field name="makassar" readonly="1"/>
+                        <field name="merak" readonly="1"/>
+                        <field name="nusa_tenggara" readonly="1"/>
+                        <field name="padang" readonly="1"/>
+                        <field name="paiton" readonly="1"/>
+                        <field name="panjang" readonly="1"/>
+                        <field name="tanjung_jati_b" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id="action_rkap_konsolidasi" model="ir.actions.act_window">
+        <field name="name">Konsolidasi RKAP Semua Cabang</field>
+        <field name="res_model">account.keuangan.rkap.konsolidasi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_rkap_konsolidasi_tree"/>
+        <field name="help" type="html">
+            <p>Here you can manage the Konsolidasi RKAP for all branches.</p>
+        </field>
+    </record> -->
+
+    <!-- <menuitem id="menu_account_keuangan_rkap_konsolidasi" 
+              name="Konsolidasi RKAP"
+              parent="agp_keuangan_ib.parent_menu_board_keuangan_configuration" 
+              action="action_rkap_konsolidasi"/> -->
+
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_kkhc_form_super" model="ir.ui.view">
+        <field name="name">kkhc.form.super</field>
+        <field name="model">account.keuangan.kkhc</field>
+        <field name="arch" type="xml">
+            <form string="KKHC">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,on_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Kebutuhan Kas Harian Cabang</span>
+                        <h1>
+                            <field name="name"  placeholder="Draft" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                        </h1>
+                    </div>
+                    <br></br>
+                    
+                    <group>
+                        <group>
+                            <field name="nama_anggaran" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="branch_id" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="nomor_referensi" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="kata_pengantar" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="keterangan" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                        </group>
+                        <group>
+                            <field name="tanggal_pengajuan" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="tanggal_disetujui" attrs="{'readonly': [('state', '=', 'approved')], 'invisible': [('state', '=', 'draft')]}" />
+                            <field name="jumlah_ajuan_anggaran" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="jumlah_pemasukan_pengajuan" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="jumlah_pemasukan_disetujui" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="jumlah_pengeluaran_pengajuan" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="jumlah_pengeluaran_disetujui" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page id="kkhc_tab" name="kkhc_tab" string="KKHC Lines">
+                            <field name="kkhc_line_ids" attrs="{'readonly': [('state', '=', 'approved')]}" widget="section_and_note_one2many" context="{'default_kkhc_id': id}">
+                                <tree editable="bottom" string="KKHC Lines" default_order="id">
+                                    <control>
+                                        <create name="add_line_control" string="Add a line"/>
+                                    </control>
+                                    <field name="header_state" invisible="1" />
+                                    <field name="available_kode_anggaran_ids" invisible="1"/>
+                                    <field name="kode_anggaran_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="deskripsi" string="Deskripsi" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="account_code_id" string="COA" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="deskripsi_penggunaan" string="Tujuan Penggunaan" widget="section_and_note_text" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="bank_account_id" string="No. Rekening" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="pagu_limit" string="Pagu Limit" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="nominal_pengajuan" string="Pengajuan" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('header_state', '=', 'approved')]}" />
+                                    <field name="nominal_disetujui" string="Disetujui" readonly="1" />
+                                    <field name="sisa_pengajuan" string="Sisa Pengajuan" readonly="1" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kkhc_tree_super" model="ir.ui.view">
+        <field name="name">kkhc.tree.super</field>
+        <field name="model">account.keuangan.kkhc</field>
+        <field name="arch" type="xml">
+            <tree string="KKHC">
+                <field name="name" optional="show"/>
+                <field name="nama_anggaran" optional="show"/>                    
+                <field name="tanggal_pengajuan" optional="show"/>
+                <field name="jumlah_ajuan_anggaran" optional="show"/>
+                <field name="branch_id" optional="hide"/>
+                <field name="nomor_referensi" optional="hide"/>
+                <field name="kata_pengantar" optional="hide"/>
+                <field name="tanggal_disetujui" optional="hide"/>
+                <field name="jumlah_pemasukan_pengajuan" optional="hide"/>
+                <field name="jumlah_pemasukan_disetujui" optional="hide"/>
+                <field name="jumlah_pengeluaran_pengajuan" optional="hide"/>
+                <field name="jumlah_pengeluaran_disetujui" optional="hide"/>
+                <field name="keterangan" optional="hide"/>
+                <field name="is_pending" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nota_dinas_disposisi_wizard_form" model="ir.ui.view">
+        <field name="name">nota.dinas.disposisi.wizard.form</field>
+        <field name="model">nota.dinas.disposisi.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Input Disposisi">
+                <group>
+                    <field name="nota_dinas_id" readonly="1" force_save="1" options="{'no_open': True}"/>
+                    <field name="approval_level" readonly="1" force_save="1"/>
+                    <field name="disposisi_text" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_submit_disposisi" string="Submit Disposisi &amp; Lanjutkan Approval" type="object" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

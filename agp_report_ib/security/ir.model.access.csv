@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_agp_report_ib_report_overtime_xlsx,access_report_agp_report_ib_report_overtime_xlsx,model_report_agp_report_ib_report_overtime_xlsx,,1,1,1,1
+access_report_overtime_wizard,access_report_overtime_wizard,model_report_overtime_wizard,,1,1,1,1

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="agp_employee_ib.hr_holidays.CalendarController.controlButtons" t-inherit="hr_holidays.CalendarController.controlButtons" t-inherit-mode="extension">
+        <xpath expr="//span[hasclass('o_timeoff_buttons')]" position="replace">
+            <span class="o_leaves_buttons">
+                <button class="btn btn-primary btn-time-off mx-1" t-on-click="newTimeOffRequest" type="button">
+                    New Leaves
+                </button>
+                <button class="btn btn-secondary" t-on-click="newAllocationRequest" type="button">
+                    <t t-if="employeeId">New</t> Allocation Request
+                </button>
+            </span>
+        </xpath>
+    </t>
+
+</templates>

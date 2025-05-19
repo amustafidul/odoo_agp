@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="agp_kode_masalah_view_tree" model="ir.ui.view">
+        <field name="name">agp.kode.masalah.view.tree</field>
+        <field name="model">agp.kode.masalah</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="kode_masalah" />
+                <field name="uraian" />
+            </tree>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rkap_form_inherit" model="ir.ui.view">
+        <field name="name">rkap.form.inherit</field>
+        <field name="model">account.keuangan.rkap</field>
+        <field name="inherit_id" ref="agp_keuangan_ib.view_rkap_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='rkap_line_ids']/tree/field[@name='deskripsi']" position="after">
+                <field name="nominal_prev" string="Nominal Anggaran Sebelumnya" groups="base.group_no_one"/>
+                <field name="nominal_next" string="Nominal Anggaran Setelahnya" groups="base.group_no_one"/>
+            </xpath>
+
+            <xpath expr="//page[@id='rkap_tab']" position="after">
+                <page id="list_kegiatan_tab" name="list_kegiatan_tab" string="List Kegiatan">
+                    <field name="kegiatan_line_ids" widget="one2many">
+                        <tree string="Kegiatan List" editable="top">
+                            <field name="kode_anggaran_id"/>
+                            <field name="kegiatan_id"/>
+                            <field name="account_code_id"/>
+                            <field name="deskripsi"/>
+                            <field name="nominal_prev" groups="base.group_no_one"/>
+                            <field name="nominal"/>
+                            <field name="pemakaian_anggaran"/>
+                            <field name="realisasi"/>
+                            <field name="ri_terhadap_rkap" groups="base.group_no_one"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <field name="kode_anggaran_id" readonly="0"/>
+                                <field name="kegiatan_id" readonly="0"/>
+                                <field name="account_code_id" readonly="0"/>
+                                <field name="deskripsi" readonly="0"/>
+                            </group>
+                            <group>
+                                <field name="nominal" readonly="0"/>
+                                <field name="pemakaian_anggaran" readonly="0"/>
+                                <field name="realisasi" readonly="0"/>
+                                <field name="ri_terhadap_rkap" groups="base.group_no_one" readonly="0"/>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+
+                <!-- <page string="List Konsolidasi">
+                    <field name="konsolidasi_line_ids" readonly="1" widget="one2many">
+                        <tree string="Konsolidasi RKAP Semua Cabang">
+                            <field name="kode" readonly="1"/>
+                            <field name="coa" readonly="1"/>
+                            <field name="uraian" readonly="1"/>
+                            <field name="balikpapan" readonly="1"/>
+                            <field name="banjarmasin" readonly="1"/>
+                            <field name="batam" readonly="1"/>
+                            <field name="belawan" readonly="1"/>
+                            <field name="cilacap" readonly="1"/>
+                            <field name="gresik" readonly="1"/>
+                            <field name="jawa_barat" readonly="1"/>
+                            <field name="lhokseumawe" readonly="1"/>
+                            <field name="makassar" readonly="1"/>
+                            <field name="merak" readonly="1"/>
+                            <field name="nusa_tenggara" readonly="1"/>
+                            <field name="padang" readonly="1"/>
+                            <field name="paiton" readonly="1"/>
+                            <field name="panjang" readonly="1"/>
+                            <field name="tanjung_jati_b" readonly="1"/>
+                        </tree>
+                    </field>
+                </page> -->
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

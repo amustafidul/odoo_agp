@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="agp_report_extended.list">
+      <field name="name">agp_report_extended list</field>
+      <field name="model">agp_report_extended.agp_report_extended</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="agp_report_extended.action_window">
+      <field name="name">agp_report_extended window</field>
+      <field name="res_model">agp_report_extended.agp_report_extended</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="agp_report_extended.action_server">
+      <field name="name">agp_report_extended server</field>
+      <field name="model_id" ref="model_agp_report_extended_agp_report_extended"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="agp_report_extended" id="agp_report_extended.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="agp_report_extended.menu_1" parent="agp_report_extended.menu_root"/>
+    <menuitem name="Menu 2" id="agp_report_extended.menu_2" parent="agp_report_extended.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="agp_report_extended.menu_1_list" parent="agp_report_extended.menu_1"
+              action="agp_report_extended.action_window"/>
+    <menuitem name="Server to list" id="agp_report_extended" parent="agp_report_extended.menu_2"
+              action="agp_report_extended.action_server"/>
+-->
+  </data>
+</odoo>

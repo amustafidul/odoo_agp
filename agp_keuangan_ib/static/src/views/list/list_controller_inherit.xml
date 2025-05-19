@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="agp_keuangan_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_holiday" t-on-click="onClickExportBankGaransi" t-if="model.root.resModel === 'account.keuangan.bank.garansi'">
+                Export
+            </button>
+        </xpath>
+    </t>    
+    
+    <t t-name="agp_keuangan_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_holiday" t-on-click="onClickExportSinkingFund" t-if="model.root.resModel === 'account.keuangan.sinking'">
+                Export
+            </button>
+        </xpath>
+    </t>
+    
+    <t t-name="agp_keuangan_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_holiday" t-on-click="onClickExportDeposito" t-if="model.root.resModel === 'account.keuangan.deposito'">
+                Export
+            </button>
+        </xpath>
+    </t>
+    
+    <t t-name="agp_keuangan_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_holiday" t-on-click="onClickExportShl" t-if="model.root.resModel === 'account.keuangan.shl'">
+                Export
+            </button>
+        </xpath>
+    </t>
+    
+    <t t-name="agp_keuangan_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn o_list_button_holiday" t-on-click="onClickExportNp" t-if="model.root.resModel === 'account.keuangan.np'">
+                Export
+            </button>
+        </xpath>
+    </t>
+
+
+    <t t-name="agp_keuangan_ib.ListView.Buttons.Inherit" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button
+                id="button_generate_konsolidasi"
+                type="button"
+                class="btn o_list_button_holiday"
+                t-on-click="onClickGenerateKonsolidasiRkap"
+                t-if="model.root.resModel === 'account.keuangan.rkap'"
+                groups="agp_keuangan_dro.group_board_of_director">
+                <i class="fa fa-book" /> Generate RKAP Konsolidasi
+            </button>
+        </xpath>
+    </t>
+
+</templates>

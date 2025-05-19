@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="compare_tax_view" model="ir.ui.view">
+        <field name="name">Compare Tax</field>
+        <field name="model">compare.tax.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <label for="bulan_start" string="Period"/>
+                        <div class="o_row">
+                            <field name="bulan_start"/>
+                            <i class="fa fa-long-arrow-right mx-1" aria-label="Arrow icon" title="Arrow" />
+                            <field name="bulan_end"/>
+                        </div>
+                        <field name="tahun"/>
+                        <field name="type"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight" data-hotkey="q"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_compare_tax" model="ir.actions.act_window">
+        <field name="name">Compare Tax</field>
+        <field name="res_model">compare.tax.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="compare_tax_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_compare_tax" name="Compare Tax" sequence="20" action="action_compare_tax" parent="accounting_pdf_reports.menu_finance_audit_reports" groups="account.group_account_user,account.group_account_manager"/>
+
+</odoo>

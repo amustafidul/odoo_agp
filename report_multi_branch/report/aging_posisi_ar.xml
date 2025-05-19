@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_aging_posisi_ar" model="report.paperformat">
+        <field name="name">Aging Posisi AR A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_aging_posisi_ar" model="ir.actions.report">
+        <field name="name">Aging Posisi AR</field>
+        <field name="model">aging.posisi.ar.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_aging_posisi_ar</field>
+        <field name="report_file">report_multi_branch.report_aging_posisi_ar</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_aging_posisi_ar"/>
+    </record>
+
+    <template id="report_aging_posisi_ar">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <h4 style="text-align: center">
+                            <b>PT ADHI GUNA PUTERA</b>
+                        </h4>
+                        <h4 style="text-align: center">
+                            <b>LAPORAN POSISI PIUTANG</b>
+                        </h4>
+                        <h4 style="text-align: center">
+                            <b>PER
+                                <span t-esc="periode"/>
+                            </b>
+                        </h4>
+
+                        <style>
+                            .laporan-item tr th {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            vertical-align: middle;
+                            background-color: #C6E0B4;
+                            }
+
+                            .laporan-item tr td {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            }
+                        </style>
+                        <table class="laporan-item" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th rowspan="2">Jenis Piutang</th>
+                                    <th rowspan="2">Jumlah</th>
+                                    <th colspan="6">Umur Piutang</th>
+                                    <!-- <th colspan="2">Kelengkapan Berkas Penagihan</th>
+                                    <th colspan="2">Proses Penagihan</th>
+                                    <th rowspan="2">Keterangan</th> -->
+                                </tr>
+                                <tr class="text-center">
+                                    <th>1-2 Bulan</th>
+                                    <th>3-6 Bulan</th>
+                                    <th>7-9 Bulan</th>
+                                    <th>10-12 Bulan</th>
+                                    <th>1-3 Tahun</th>
+                                    <th>Lebih dari 3 Tahun</th>
+                                    <!-- <th>BAPP</th>
+                                    <th>BAST</th>
+                                    <th>Selesai</th>
+                                    <th>Belum Selesai</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total" t-value="0"/>
+                                <t t-set="total1" t-value="0"/>
+                                <t t-set="total2" t-value="0"/>
+                                <t t-set="total3" t-value="0"/>
+                                <t t-set="total4" t-value="0"/>
+                                <t t-set="total5" t-value="0"/>
+                                <t t-set="total6" t-value="0"/>
+                                <tr>
+                                    <td>Piutang Usaha :</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_emkl['piutang_emkl_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_emkl['piutang_emkl_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_emkl['piutang_emkl_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_emkl['piutang_emkl_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_emkl['piutang_emkl_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_emkl['piutang_emkl_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_emkl['piutang_emkl_total6']"/>
+                                    
+                                    <td>1. EMKL</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_emkl['piutang_emkl_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_bongkar_muat['piutang_bongkar_muat_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_bongkar_muat['piutang_bongkar_muat_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_bongkar_muat['piutang_bongkar_muat_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_bongkar_muat['piutang_bongkar_muat_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_bongkar_muat['piutang_bongkar_muat_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_bongkar_muat['piutang_bongkar_muat_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_bongkar_muat['piutang_bongkar_muat_total6']"/>
+
+                                    <td>2. Bongkar Muat</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_bongkar_muat['piutang_bongkar_muat_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_keagenan['piutang_keagenan_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_keagenan['piutang_keagenan_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_keagenan['piutang_keagenan_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_keagenan['piutang_keagenan_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_keagenan['piutang_keagenan_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_keagenan['piutang_keagenan_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_keagenan['piutang_keagenan_total6']"/>
+
+                                    <td>3. Keagenan</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_keagenan['piutang_keagenan_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_assist_tug['piutang_assist_tug_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_assist_tug['piutang_assist_tug_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_assist_tug['piutang_assist_tug_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_assist_tug['piutang_assist_tug_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_assist_tug['piutang_assist_tug_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_assist_tug['piutang_assist_tug_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_assist_tug['piutang_assist_tug_total6']"/>
+
+                                    <td>4. Tug Assist</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_assist_tug['piutang_assist_tug_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_jetty_manajemen['piutang_jetty_manajemen_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_jetty_manajemen['piutang_jetty_manajemen_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_jetty_manajemen['piutang_jetty_manajemen_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_jetty_manajemen['piutang_jetty_manajemen_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_jetty_manajemen['piutang_jetty_manajemen_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_jetty_manajemen['piutang_jetty_manajemen_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_jetty_manajemen['piutang_jetty_manajemen_total6']"/>
+
+                                    <td>5. Jetty Manajemen</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jetty_manajemen['piutang_jetty_manajemen_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total6']"/>
+
+                                    <td>6. Operasi Lainnya</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_jasa_operasi_lainnya['piutang_jasa_operasi_lainnya_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_logistik['piutang_logistik_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_logistik['piutang_logistik_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_logistik['piutang_logistik_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_logistik['piutang_logistik_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_logistik['piutang_logistik_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_logistik['piutang_logistik_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_logistik['piutang_logistik_total6']"/>
+
+                                    <td>7. Logistik</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_logistik['piutang_logistik_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + piutang_lain['piutang_lain_total']"/>
+                                    <t t-set="total1" t-value="total1 + piutang_lain['piutang_lain_total1']"/>
+                                    <t t-set="total2" t-value="total2 + piutang_lain['piutang_lain_total2']"/>
+                                    <t t-set="total3" t-value="total3 + piutang_lain['piutang_lain_total3']"/>
+                                    <t t-set="total4" t-value="total4 + piutang_lain['piutang_lain_total4']"/>
+                                    <t t-set="total5" t-value="total5 + piutang_lain['piutang_lain_total5']"/>
+                                    <t t-set="total6" t-value="total6 + piutang_lain['piutang_lain_total6']"/>
+
+                                    <td>Piutang Lain-lain :</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(piutang_lain['piutang_lain_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <td>Pendapatan Yang Akan Diterima :</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_emkl['pendapatan_emkl_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_emkl['pendapatan_emkl_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_emkl['pendapatan_emkl_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_emkl['pendapatan_emkl_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_emkl['pendapatan_emkl_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_emkl['pendapatan_emkl_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_emkl['pendapatan_emkl_total6']"/>
+
+                                    <td>1. EMKL</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_emkl['pendapatan_emkl_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_bongkar_muat['pendapatan_bongkar_muat_total6']"/>
+
+                                    <td>2. Bongkar Muat</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_bongkar_muat['pendapatan_bongkar_muat_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_keagenan['pendapatan_keagenan_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_keagenan['pendapatan_keagenan_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_keagenan['pendapatan_keagenan_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_keagenan['pendapatan_keagenan_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_keagenan['pendapatan_keagenan_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_keagenan['pendapatan_keagenan_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_keagenan['pendapatan_keagenan_total6']"/>
+
+                                    <td>3. Keagenan</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_keagenan['pendapatan_keagenan_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_assist_tug['pendapatan_assist_tug_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_assist_tug['pendapatan_assist_tug_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_assist_tug['pendapatan_assist_tug_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_assist_tug['pendapatan_assist_tug_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_assist_tug['pendapatan_assist_tug_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_assist_tug['pendapatan_assist_tug_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_assist_tug['pendapatan_assist_tug_total6']"/>
+
+                                    <td>4. Tug Assist</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_assist_tug['pendapatan_assist_tug_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total6']"/>
+
+                                    <td>5. Jetty Manajemen</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jetty_manajemen['pendapatan_jetty_manajemen_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total6']"/>
+
+                                    <td>6. Operasi Lainnya</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_jasa_operasi_lainnya['pendapatan_jasa_operasi_lainnya_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <t t-set="total" t-value="total + pendapatan_logistik['pendapatan_logistik_total']"/>
+                                    <t t-set="total1" t-value="total1 + pendapatan_logistik['pendapatan_logistik_total1']"/>
+                                    <t t-set="total2" t-value="total2 + pendapatan_logistik['pendapatan_logistik_total2']"/>
+                                    <t t-set="total3" t-value="total3 + pendapatan_logistik['pendapatan_logistik_total3']"/>
+                                    <t t-set="total4" t-value="total4 + pendapatan_logistik['pendapatan_logistik_total4']"/>
+                                    <t t-set="total5" t-value="total5 + pendapatan_logistik['pendapatan_logistik_total5']"/>
+                                    <t t-set="total6" t-value="total6 + pendapatan_logistik['pendapatan_logistik_total6']"/>
+
+                                    <td>7. Logistik</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total5'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(pendapatan_logistik['pendapatan_logistik_total6'])"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                                <tr>
+                                    <td>Total Piutang</td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total)"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total1)"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total2)"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total3)"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total4)"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total5)"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(total6)"/>
+                                    </td>
+                                    <!-- <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="agp_custom_endpoint.list">
+      <field name="name">agp_custom_endpoint list</field>
+      <field name="model">agp_custom_endpoint.agp_custom_endpoint</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="agp_custom_endpoint.action_window">
+      <field name="name">agp_custom_endpoint window</field>
+      <field name="res_model">agp_custom_endpoint.agp_custom_endpoint</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="agp_custom_endpoint.action_server">
+      <field name="name">agp_custom_endpoint server</field>
+      <field name="model_id" ref="model_agp_custom_endpoint_agp_custom_endpoint"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="agp_custom_endpoint" id="agp_custom_endpoint.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="agp_custom_endpoint.menu_1" parent="agp_custom_endpoint.menu_root"/>
+    <menuitem name="Menu 2" id="agp_custom_endpoint.menu_2" parent="agp_custom_endpoint.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="agp_custom_endpoint.menu_1_list" parent="agp_custom_endpoint.menu_1"
+              action="agp_custom_endpoint.action_window"/>
+    <menuitem name="Server to list" id="agp_custom_endpoint" parent="agp_custom_endpoint.menu_2"
+              action="agp_custom_endpoint.action_server"/>
+-->
+  </data>
+</odoo>

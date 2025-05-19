@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_monitor_kkhc_rejected_tree" model="ir.ui.view">
+        <field name="name">account.keuangan.monitor.kkhc.line.rejected.tree</field>
+        <field name="model">account.keuangan.monitor.kkhc.line.rejected</field>
+        <field name="arch" type="xml">
+            <tree string="Rejected KKHC Lines" create="0">
+                <field name="kkhc_id"/>
+                <field name="kkhc_line_id"/>
+                <field name="nodin_id"/>
+                <field name="nodin_bod_id"/>
+                <field name="branch_id"/>
+                <field name="kode_anggaran_id"/>
+                <field name="account_code_id"/>
+                <field name="deskripsi"/>
+                <field name="nominal_pengajuan"/>
+                <field name="nominal_disetujui"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

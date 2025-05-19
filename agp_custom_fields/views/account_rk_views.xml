@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="action_account_move_line_rk" model="ir.actions.act_window">
+        <field name="name">Journal Items R/K</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">tree,pivot,graph,kanban</field>
+        <field name="view_id" ref="account.view_move_line_tree"/>
+        <field name="context">
+            {
+                'journal_type': 'general',
+                'create': 0,
+            }
+        </field>
+        <field name="domain">
+            [
+                ('display_type', 'not in', ('line_section', 'line_note')),
+                ('account_id.name', 'ilike', 'R/K'),
+            ]
+        </field>
+    </record>
+
+    
+    <menuitem id="menu_account_rk_action"
+              name="Journal Items R/K"
+              parent="account.menu_finance_entries_accounting_miscellaneous"
+              action="action_account_move_line_rk"
+              sequence="20"/>
+  </data>
+</odoo>

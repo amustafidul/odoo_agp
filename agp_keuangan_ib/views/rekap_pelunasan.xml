@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_rekap_pelunasan_form" model="ir.ui.view">
+        <field name="name">rekap.pelunasan.form</field>
+        <field name="model">account.keuangan.rekap.pelunasan</field>
+        <field name="arch" type="xml">
+            <form string="Rekap Pelunasan dan Drropping Dana">
+                <header>
+                    <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="total_uang_masuk"/>
+                        <field name="total_dropping_dana"/>
+                        <field name="total_pembayaran_pihak_ketiga"/>
+                        <field name="total_keseluruhan"/>
+                    </group>
+                    <notebook>
+                        <page string="Detail">
+                            <field name="rekap_pelunasan_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="no" invisible="1" width="1"/>
+                                    <field name="branch_id" width="25"/>
+                                    <field name="uang_masuk" width="15"/>
+                                    <field name="dropping_dana" width="30"/>
+                                    <field name="pembayaran_pihak_ketiga" width="10"/>
+                                    <field name="total" width="10"/>
+                                    <field name="keterangan" width="10"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_rekap_pelunasan_tree" model="ir.ui.view">
+        <field name="name">rekap.pelunasan.tree</field>
+        <field name="model">account.keuangan.rekap.pelunasan</field>
+        <field name="arch" type="xml">
+            <tree string="Rekap Pelunasan dan Dropping Dana">
+                <field name="name" optional="show"/>
+                <field name="total_uang_masuk" optional="show"/>
+                <field name="total_dropping_dana" optional="show"/>
+                <field name="total_pembayaran_pihak_ketiga" optional="show"/>
+                <field name="total_keseluruhan" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_rekap_pelunasan" model="ir.actions.act_window">
+        <field name="name">Rekap Pelunasan dan Dropping Dana</field>
+        <field name="res_model">account.keuangan.rekap.pelunasan</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="menu_tagihan_rutin_root" name="Tagihan Rutin" parent="account.menu_finance"/> -->
+    <!-- <menuitem id="menu_tagihan_rutin" name="Tagihan Rutin" parent="parent_menu_board_keuangan" action="action_tagihan_rutin"/> -->
+    </data>
+</odoo>

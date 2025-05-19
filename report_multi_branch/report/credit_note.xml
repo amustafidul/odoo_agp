@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence Data -->
+        <record id="seq_report_credit_note" model="ir.sequence">
+            <field name="name">Credit Note</field>
+            <field name="code">report.credit_note</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+
+    <!-- Form View for Credit Note -->
+    <record id="view_credit_note_form" model="ir.ui.view">
+        <field name="name">credit.note.form</field>
+        <field name="model">report.report_multi_branch.credit_note</field>
+        <field name="arch" type="xml">
+            <form string="Credit Note">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="branch_id"/>
+                        <field name="to"/>
+                        <field name="date"/>
+                        <field name="perihal"/>
+                        <field name="lampiran"/>
+                        <field name="note"/>
+                    </group>
+                    <notebook>
+                        <page string="Account Lines">
+                            <field name="account_line_ids" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="account_id"/>
+                                    <field name="debit"/>
+                                    <field name="credit"/>                                
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="total_amount" readonly="1" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- View for 'credit note' -->
+    <record id="view_credit_note_tree" model="ir.ui.view">
+        <field name="name">credit.note.tree</field>
+        <field name="model">report.report_multi_branch.credit_note</field>
+        <field name="arch" type="xml">
+            <tree string="Credit Note">
+                <field name="name"/>
+                <field name="to"/>
+                <field name="date"/>
+                <field name="perihal"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for 'credit note' -->
+    <record id="action_view_credit_note" model="ir.actions.act_window">
+        <field name="name">Credit Note</field>
+        <field name="res_model">report.report_multi_branch.credit_note</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_credit_note_tree"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu for Debit/Credit Note -->
+    <menuitem id="menu_debit_credit_note" 
+                  name="Debit/Credit Note" 
+                  parent="account.menu_finance_entries" 
+                  sequence="2" />
+
+    <!-- Menuitem for action 'credit note' -->
+    <menuitem id="menu_action_view_credit_note"
+              name="Credit Note"
+              action="action_view_credit_note"
+              parent="menu_debit_credit_note"
+              sequence="10"/>
+
+</odoo>

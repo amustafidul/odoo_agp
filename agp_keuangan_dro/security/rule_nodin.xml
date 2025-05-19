@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="rule_nodin_usaha" model="ir.rule">
+        <field name="name">Restrict Usaha Users to Business and Not Set Type</field>
+        <field name="model_id" ref="agp_keuangan_ib.model_account_keuangan_nota_dinas"/>
+        <field name="domain_force">[('tipe_nodin', 'in', ['business', 'not_set'])]</field>
+        <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_item_usaha'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_nodin_umum" model="ir.rule">
+        <field name="name">Restrict Umum Users to Common and Not Set Type</field>
+        <field name="model_id" ref="agp_keuangan_ib.model_account_keuangan_nota_dinas"/>
+        <field name="domain_force">[('tipe_nodin', 'in', ['common', 'not_set'])]</field>
+        <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_item_umum'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_nodin_bod_usaha" model="ir.rule">
+        <field name="name">Restrict BoD Usaha Users to Business and Not Set Type</field>
+        <field name="model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas_bod"/>
+        <field name="domain_force">[('tipe_nodin', 'in', ['business', 'not_set'])]</field>
+        <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_item_usaha'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_nodin_bod_umum" model="ir.rule">
+        <field name="name">Restrict BoD Umum Users to Common and Not Set Type</field>
+        <field name="model_id" ref="agp_keuangan_dro.model_account_keuangan_nota_dinas_bod"/>
+        <field name="domain_force">[('tipe_nodin', 'in', ['common', 'not_set'])]</field>
+        <field name="groups" eval="[(4, ref('agp_keuangan_dro.group_item_umum'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

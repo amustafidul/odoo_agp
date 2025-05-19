@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Action untuk Invoice -->
+        <record id="action_shl" model="ir.actions.act_window">
+            <field name="name">Shareholder Loan</field>
+            <field name="res_model">account.keuangan.shl</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Shareholder Loan
+                </p><p>
+                    Create Shareholder Loan, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Form View untuk Invoice -->
+        <record id="view_shl_form" model="ir.ui.view">
+            <field name="name">shl.form</field>
+            <field name="model">account.keuangan.shl</field>
+            <field name="arch" type="xml">
+                <form string="Shareholder Loan">
+                    <header>
+                        <button name="export_to_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                    </header>
+                    <!-- <header>
+                        <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/>
+                        <button name="action_print" type="object" string="Preview" states="posted" class="btn-secondary"/>
+                        <button name="action_print" type="object" string="Preview" states="draft" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header> -->
+                    <sheet>
+                        <div class="oe_title">
+                            <!-- Menggunakan span untuk teks statis "Invoice" -->
+                            <span class="o_form_label">Shareholder Loan</span>
+
+                            <h1>
+                                <!-- Menggunakan field name untuk menampilkan nilai dari field 'name' di model -->
+                                <field name="name"/>
+                                <!-- <span attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'draft'), ('name', '!=', '/'), ('posted_before', '=', True), ('quick_edit_mode', '=', True)]}">Draft</span> -->
+                            </h1>
+                        </div>
+                        <br></br>
+                        
+                        <group>
+                            <group>
+                                <field name="tujuan"/>
+                                <field name="nomor_perjanjian_id"/>
+                                <field name="tanggal_perjanjian"/>
+                                <field name="nomor_addendum" widget="many2many_tags"/>
+                                <!-- <field name="tanggal_addendum"/> -->
+                                <!-- <field name="periode_akhir"/> -->
+                            </group>
+                            <group>
+                                <field name="nominal_perjanjian"/>
+                                <field name="nominal_dipinjamkan"/>
+                                <field name="nominal_belum_dipinjamkan"/>
+                                <field name="nominal_pengembalian"/>
+                                <field name="nominal_kekurangan_pembayaran_shl"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page id="shl_tab" name="shl_tab" string="Shareholder Loan Lines">
+                                <field name="shl_line_ids" widget="section_and_note_one2many" context="{'default_shl_id': id}">
+                                    <tree editable="bottom" string="Shareholder Loan Lines" default_order="id">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                        </control>
+                                        <field name="no_invoice"/>
+                                        <field name="no_spp"/>
+                                        <field name="pengajuan_oleh"/>
+                                        <field name="tanggal_pengajuan"/>
+                                        <field name="tipe_shl"/>
+                                        <field name="tanggal_transaksi"/>
+                                        <field name="bank_account_id"/>
+                                        <field name="nominal_transaksi" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="keterangan"/>
+                                    </tree>
+                                </field>
+                                <!-- <group class="oe_subtotal_footer oe_right">
+                                    <field name="total_jumlah" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                </group> -->
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_shl_tree" model="ir.ui.view">
+            <field name="name">shl.tree</field>
+            <field name="model">account.keuangan.shl</field>
+            <field name="arch" type="xml">
+                <tree string="Shareholder Loan">    
+                    <field name="name" optional="show"/>
+                    <field name="tujuan" optional="hide"/>
+                    <!-- <field name="no_invoice" optional="hide"/> -->
+                    <!-- <field name="no_spp" optional="hide"/> -->
+                    <field name="nomor_perjanjian_id" optional="hide"/>
+                    <field name="tanggal_perjanjian" optional="hide"/>
+                    <field name="nomor_addendum" widget="many2many_tags" optional="hide"/>
+                    <!-- <field name="tanggal_addendum" optional="hide"/> -->
+                    <!-- <field name="tanggal_pengajuan" optional="show"/> -->
+                    <!-- <field name="pengajuan_oleh" optional="show"/> -->
+                    <field name="nominal_perjanjian" optional="show"/>
+                    <field name="nominal_dipinjamkan" optional="show"/>
+                    <field name="nominal_belum_dipinjamkan" optional="show"/>
+                    <field name="nominal_pengembalian" optional="show"/>
+                    <field name="nominal_kekurangan_pembayaran_shl" optional="show"/>
+                    <!-- <field name="pengajuan_oleh" optional="hide"/> -->
+                    <!-- <field name="shl_line_ids" widget="one2many_list" string="Lines">
+                        <tree>
+                            <field name="tipe_shl"/>
+                            <field name="tanggal_transaksi"/>
+                            <field name="bank_account_id"/>
+                            <field name="nominal"/>
+                            <field name="keterangan"/>
+                        </tree>
+                    </field> -->
+                </tree>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="org_chart_employee.org_chart_template">
+    <div id="chart-container"></div>
+    <script type="text/javascript">
+      $(function() {
+        <!-- Get Employee Data -->
+        var datascource = employee_data.values;
+
+        var oc = $('#chart-container').orgchart({
+          'data' : datascource,
+          'nodeTemplate': nodeTemplate,
+          'toggleSiblingsResp': true
+        });
+
+      });
+    </script>
+  </t>
+</templates>

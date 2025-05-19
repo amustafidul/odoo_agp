@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_kkhc" model="report.paperformat">
+            <field name="name">KKHC Paper Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">16</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="dpi">90</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">13</field>
+            <!-- <field name="report_ids" eval="[(6, 0, [ref('report_kkhc_pdf')])]"/> -->
+        </record>
+
+        <!-- Define the report -->
+        <!-- <report
+            id="report_kkhc_pdf"
+            string="Kebutuhan Kas Harian Cabang"
+            model="account.keuangan.kkhc"
+            report_type="qweb-html"
+            name="agp_keuangan_ib.report_kkhc"
+            file="agp_keuangan_ib.report_kkhc"
+            paperformat="paperformat_kkhc"
+            attachment_use="False"/> -->
+
+        <template id="agp_keuangan_ib.report_kkhc">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h4 style="text-align: center"><b>PT ADHI GUNA PUTERA</b></h4>
+                            <h4 style="text-align: center"><t t-esc="doc.name"/></h4>
+                            <h4 style="text-align: center">
+                                <b>CABANG <span t-esc="doc.branch_id and doc.branch_id.name or ''"/></b>
+                            </h4>
+                            <h4 style="text-align: center"><t t-esc="doc.kata_pengantar"/></h4> 
+                            <br/>
+
+                            <table class="table table-sm table-hover" style="border: 1px solid black; border-collapse: collapse; width: 100%; color: black;">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="3" style="border: 1px solid black; text-align: center; vertical-align: middle; background-color: #48D1CC;">URAIAN KEGIATAN</th>
+                                        <th colspan="3" style="border: 1px solid black; text-align: center; background-color: #48D1CC;">PENERIMAAN</th>
+                                        <th colspan="3" style="border: 1px solid black; text-align: center; background-color: #48D1CC;">PENGELUARAN</th>
+                                    </tr>
+                                    <tr style="border: 1px solid black; text-align: center; background-color: #48D1CC;">
+                                        <t t-set="penerimaan_accounts" t-value="doc.get_penerimaan_pengeluaran()['penerimaan']"/>
+                                        <t t-set="pengeluaran_accounts" t-value="doc.get_penerimaan_pengeluaran()['pengeluaran']"/>
+
+                                        <t t-foreach="penerimaan_accounts" t-as="penerimaan">
+                                            <th style="border: 1px solid black; text-align: center;">
+                                                <t t-esc="penerimaan['bank_account'].acc_number or ''"/>
+                                            </th>
+                                        </t>
+                                        <t t-foreach="pengeluaran_accounts" t-as="pengeluaran">
+                                            <th style="border: 1px solid black; text-align: center;">
+                                                <t t-esc="pengeluaran['bank_account'].acc_number or ''"/>
+                                            </th>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="3" style="border: 1px solid black; text-align: center; background-color: #48D1CC;">TEST</th>
+                                        <th colspan="2" style="border: 1px solid black; text-align: center; background-color: #48D1CC;"></th>
+                                        <th colspan="2" style="border: 1px solid black; text-align: center; background-color: #48D1CC;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th colspan="6" style="border: 1px solid black; text-align: center; background-color: #FFE4E1">ESTIMASI PENERIMAAN</th>
+                                    </tr>
+
+                                    <!-- Definisikan kelompok yang akan ditampilkan -->
+                                    <t t-set="kelompok_list" t-value="['penerimaan_bongkar_muat', 'penerimaan_jetty_management', 'penerimaan_keagenan', 'penerimaan_tug_assist', 'penerimaan_uang_muka_lainnya']"/>
+                                    <t t-foreach="kelompok_list" t-as="kelompok">
+                                        <t t-set="kelompok_lines" t-value="doc.kkhc_line_ids.filtered(lambda line: line.kode_anggaran_id.kelompok == kelompok)"/>
+                                        <tr>
+                                            <th style="border: 1px solid black; text-align: left;">
+                                                <t t-if="kelompok == 'penerimaan_bongkar_muat'">A. PENERIMAAN DARI KEGIATAN BONGKAR MUAT (PIUTANG)</t>
+                                                <t t-if="kelompok == 'penerimaan_jetty_management'">B. PENERIMAAN DARI KEGIATAN JETTY MANAGEMENT (PIUTANG)</t>
+                                                <t t-if="kelompok == 'penerimaan_keagenan'">C. PENERIMAAN DARI KEGIATAN KEAGENAN (PIUTANG)</t>
+                                                <t t-if="kelompok == 'penerimaan_tug_assist'">D. PENERIMAAN DARI KEGIATAN TUG ASSIST (PIUTANG)</t>
+                                                <t t-if="kelompok == 'penerimaan_uang_muka_lainnya'">E. PENERIMAAN DARI UANG MUKA KEGIATAN LAINNYA</t>
+                                            </th>
+                                        </tr>
+
+                                        <!-- Menampilkan data jika ada -->
+                                        <t t-if="kelompok_lines">
+                                            <!-- Initialize total for kelompok -->
+                                            <t t-set="kelompok_total" t-value="0"/>
+
+                                            <t t-foreach="kelompok_lines" t-as="line">
+                                                <tr>
+                                                    <td style="border: 1px solid black; text-align: center;">
+                                                        <t t-esc="line.deskripsi"/>
+                                                    </td> 
+                                                    <td style="border: 1px solid black; text-align: center;">
+                                                        <t t-esc="line.nominal_disetujui"/>
+                                                    </td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                </tr>
+                                                <!-- Accumulate the total for kelompok -->
+                                                <t t-set="kelompok_total" t-value="kelompok_total + line.nominal_disetujui"/>
+                                            </t>
+
+                                            <!-- Display the total for the kelompok -->
+                                            <tr>
+                                                <td style="border: 1px solid black; text-align: right; font-weight: bold;" colspan="1">Total:</td>
+                                                <td style="border: 1px solid black; text-align: center; font-weight: bold;">
+                                                    <t t-esc="kelompok_total"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                            </tr>
+                                        </t>
+
+
+                                        <!-- Menampilkan pesan jika tidak ada data -->
+                                        <t t-if="not kelompok_lines">
+                                            <tr>
+                                                <td colspan="6" style="border: 1px solid black; text-align: center;">
+                                                    <i>Tidak ada data untuk kelompok ini.</i>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <br />
+                                    <!-- New section for Rencana Anggaran Biaya Administrasi dan Umum -->
+                                    <tr>
+                                        <th colspan="6" style="border: 1px solid black; text-align: center; color: white">-</th>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th colspan="6" style="border: 1px solid black; text-align: center; background-color: #FFE4E1">RENCANA ANGGARAN BIAYA ADMINISTRASI DAN UMUM</th>
+                                    </tr>
+
+                                    <!-- Definisikan kelompok yang akan ditampilkan -->
+                                    <t t-set="kelompok_list_biaya" t-value="['biaya_administrasi_umum', 'biaya_ops_jetty_pmb']"/>
+                                    <t t-foreach="kelompok_list_biaya" t-as="kelompok">
+                                        <t t-set="kelompok_lines_biaya" t-value="doc.kkhc_line_ids.filtered(lambda line: line.kode_anggaran_id.kelompok == kelompok)"/>
+                                        <tr>
+                                            <th style="border: 1px solid black; text-align: left;">
+                                                <t t-if="kelompok == 'biaya_administrasi_umum'">A. BIAYA ADMINISTRASI DAN UMUM</t>
+                                                <t t-if="kelompok == 'biaya_ops_jetty_pmb'">B. BIAYA OPERASIONAL JETTY &amp; PBM</t>
+                                            </th>
+                                        </tr>
+
+                                        <!-- Menampilkan data jika ada -->
+                                        <t t-if="kelompok_lines_biaya">
+                                            <!-- Initialize total for kelompok -->
+                                            <t t-set="kelompok_total" t-value="0"/>
+
+                                            <t t-foreach="kelompok_lines_biaya" t-as="line">
+                                                <tr>
+                                                    <td style="border: 1px solid black; text-align: center;">
+                                                        <t t-esc="line.deskripsi"/>
+                                                    </td> 
+                                                    <td style="border: 1px solid black; text-align: center;">
+                                                        <t t-esc="line.nominal_disetujui"/>
+                                                    </td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                </tr>
+                                                <!-- Accumulate the total for kelompok -->
+                                                <t t-set="kelompok_total" t-value="kelompok_total + line.nominal_disetujui"/>
+                                            </t>
+
+                                            <!-- Display the total for the kelompok -->
+                                            <tr>
+                                                <td style="border: 1px solid black; text-align: right; font-weight: bold;" colspan="1">Total:</td>
+                                                <td style="border: 1px solid black; text-align: center; font-weight: bold;">
+                                                    <t t-esc="kelompok_total"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                            </tr>
+                                        </t>
+                                        <!-- Menampilkan pesan jika tidak ada data -->
+                                        <t t-if="not kelompok_lines_biaya">
+                                            <tr>
+                                                <td colspan="6" style="border: 1px solid black; text-align: center;">
+                                                    <i>Tidak ada data untuk kelompok ini.</i>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <br />
+                                    <!-- New section for Rencana Anggaran Biaya Administrasi dan Umum -->
+                                    <tr>
+                                        <th colspan="6" style="border: 1px solid black; text-align: center; color: white">-</th>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th colspan="6" style="border: 1px solid black; text-align: center; background-color: #FFE4E1">RENCANA ANGGARAN PIHAK III</th>
+                                    </tr>
+
+                                    <!-- Definisikan kelompok yang akan ditampilkan -->
+                                    <t t-set="kelompok_list_anggaran" t-value="['anggaran_bongkar_muat', 'anggaran_jetty', 'anggaran_keagenan', 'anggaran_tug_assist', 'anggaran_lainnya']"/>
+                                    <t t-foreach="kelompok_list_anggaran" t-as="kelompok">
+                                        <t t-set="kelompok_list_anggaran" t-value="doc.kkhc_line_ids.filtered(lambda line: line.kode_anggaran_id.kelompok == kelompok)"/>
+                                        <tr>
+                                            <th style="border: 1px solid black; text-align: left;">
+                                                <t t-if="kelompok == 'anggaran_bongkar_muat'">A. ANGGARAN KEGIATAN BONGKAR MUAT</t>
+                                                <t t-if="kelompok == 'anggaran_jetty'">B. ANGGARAN KEGIATAN JETTY MANAJEMEN</t>
+                                                <t t-if="kelompok == 'anggaran_keagenan'">C. ANGGARAN KEGIATAN KEAGENAN</t>
+                                                <t t-if="kelompok == 'anggaran_tug_assist'">D. ANGGARAN KEGIATAN TUG ASSIST</t>
+                                                <t t-if="kelompok == 'anggaran_lainnya'">E. ANGGARAN KEGIATAN LAINNYA</t>
+                                            </th>
+                                        </tr>
+
+                                        <!-- Menampilkan data jika ada -->
+                                        <t t-if="kelompok_list_anggaran">
+                                            <!-- Initialize total for kelompok -->
+                                            <t t-set="kelompok_total" t-value="0"/>
+
+                                            <t t-foreach="kelompok_list_anggaran" t-as="line">
+                                                <tr>
+                                                    <td style="border: 1px solid black; text-align: center;">
+                                                        <t t-esc="line.deskripsi"/>
+                                                    </td> 
+                                                    <td style="border: 1px solid black; text-align: center;">
+                                                        <t t-esc="line.nominal_disetujui"/>
+                                                    </td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                    <td style="border: 1px solid black; text-align: center;"></td>
+                                                </tr>
+                                                <!-- Accumulate the total for kelompok -->
+                                                <t t-set="kelompok_total" t-value="kelompok_total + line.nominal_disetujui"/>
+                                            </t>
+
+                                            <!-- Display the total for the kelompok -->
+                                            <tr>
+                                                <td style="border: 1px solid black; text-align: right; font-weight: bold;" colspan="1">Total:</td>
+                                                <td style="border: 1px solid black; text-align: center; font-weight: bold;">
+                                                    <t t-esc="kelompok_total"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                                <td style="border: 1px solid black; text-align: center;"></td>
+                                            </tr>
+                                        </t>
+                                        <!-- Menampilkan pesan jika tidak ada data -->
+                                        <t t-if="not kelompok_list_anggaran">
+                                            <tr>
+                                                <td colspan="6" style="border: 1px solid black; text-align: center;">
+                                                    <i>Tidak ada data untuk kelompok ini.</i>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+
+            

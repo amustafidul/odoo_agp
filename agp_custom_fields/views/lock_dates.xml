@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_change_lock_date_tree" model="ir.ui.view">
+        <field name="name">change.lock.date.tree</field>
+        <field name="model">change.lock.date</field>
+        <field name="arch" type="xml">
+             <tree create="false">
+                <field name="company_id"/>
+                <field name="period_lock_date"/>
+                <field name="fiscalyear_lock_date"/>
+                <field name="tax_lock_date"/>
+                <field name="branch_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Tambahkan action untuk view ini -->
+    <record id="action_change_lock_date" model="ir.actions.act_window">
+        <field name="name">List Lock Date</field>
+        <field name="res_model">change.lock.date</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_change_lock_date_tree"/>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_change_lock_date"
+                    name="List Lock Dates"
+                    action="action_change_lock_date"
+                    parent="account.menu_finance_entries_actions"
+                    sequence="56"
+                    groups="account.group_account_manager"/>
+
+</odoo>

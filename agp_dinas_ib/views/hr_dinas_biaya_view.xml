@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_dinas_biaya_header_form" model="ir.ui.view">
+        <field name="name">hr.dinas.biaya.header.form</field>
+        <field name="model">hr.dinas.biaya.header</field>
+        <field name="arch" type="xml">
+            <form string="Master Biaya Dinas">
+                <sheet>
+                    <group>
+                        <field name="name" placeholder="Contoh: Biaya Dinas Direksi Ibu Kota"/>
+                        <field name="keterangan" placeholder="Keterangan tambahan (opsional)"/>
+                    </group>
+                    <notebook>
+                        <page string="Detail Komponen Biaya">
+                            <field name="biaya_line_ids">
+                                <tree editable="bottom">
+                                    <field name="komponen_id"/>
+                                    <field name="jenis_lokasi"/>
+                                    <field name="golongan"/>
+                                    <field name="jumlah" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="satuan" placeholder="Contoh: Rp / Hari"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_dinas_biaya_header_tree" model="ir.ui.view">
+        <field name="name">hr.dinas.biaya.header.tree</field>
+        <field name="model">hr.dinas.biaya.header</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="keterangan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_dinas_biaya_header" model="ir.actions.act_window">
+        <field name="name">Master Biaya Dinas</field>
+        <field name="res_model">hr.dinas.biaya.header</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hr_dinas_biaya_header"
+              name="Master Biaya Dinas"
+              parent="menu_anggaran_dinas"
+              action="action_hr_dinas_biaya_header"
+              sequence="2"/>
+</odoo>

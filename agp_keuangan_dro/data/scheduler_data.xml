@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Daily KKHC Monitoring Scheduler -->
+        <record id="ir_cron_generate_kkhc_monitoring" model="ir.cron">
+            <field name="name">[Manual] KKHC Monitoring - Generate Items Every 15 Minutes</field>
+            <field name="model_id" ref="model_account_keuangan_kkhc"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_create_monitoring_lines()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- RKAP Line Sequence Reorder -->
+        <record id="ir_cron_rkap_line_sequence_reorder" model="ir.cron">
+            <field name="name">RKAP Items: Reorder Sequence RKAP Line</field>
+            <field name="model_id" ref="model_account_keuangan_rkap"/>
+            <field name="state">code</field>
+            <field name="code">model._reorder_rkap_lines()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- KKHC Line Sequence Reorder -->
+        <record id="ir_cron_kkhc_line_sequence_reorder" model="ir.cron">
+            <field name="name">KKHC Items: Reorder Sequence KKHC Line</field>
+            <field name="model_id" ref="model_account_keuangan_kkhc"/>
+            <field name="state">code</field>
+            <field name="code">model._reorder_kkhc_lines()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Maker Group Assignment -->
+        <record id="ir_cron_assign_maker_common_groups" model="ir.cron">
+            <field name="name">[Manual] Assign Maker Users to Group - Maker of Budgeting (Branches)</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_maker_common_groups()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- BoD Group Assignment -->
+        <record id="ir_cron_assign_bod_groups" model="ir.cron">
+            <field name="name">[Manual] Assign BoD Users to Group - Board of Directors of AGP</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_bod_groups()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Usaha Group Assignment -->
+        <record id="ir_cron_assign_usaha_groups" model="ir.cron">
+            <field name="name">[Manual] Assign Usaha Users to Group - Item Usaha Nodin of AGP</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_usaha_groups()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Umum Group Assignment -->
+        <record id="ir_cron_assign_umum_groups" model="ir.cron">
+            <field name="name">[Manual] Assign Umum Users to Group - Item Umum Nodin of AGP</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_umum_groups()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Generate KKHC Rejected Items for Cabang -->
+        <record id="ir_cron_generate_kkhc_rejects" model="ir.cron">
+            <field name="name">[Manual] Generate KKHC Rejects</field>
+            <field name="model_id" ref="agp_keuangan_dro.model_account_keuangan_kkhc_reject"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_update_rejected_kkhc()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Head Divs Group Assignment -->
+        <record id="ir_cron_assign_kadiv_groups" model="ir.cron">
+            <field name="name">[Manual] Assign Kadiv Users to Group - Head of Division of AGP</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_assign_kadiv_groups()</field>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

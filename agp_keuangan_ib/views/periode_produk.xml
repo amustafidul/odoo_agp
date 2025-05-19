@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Action untuk Periode Produk -->
+        <record id="action_periode_produk" model="ir.actions.act_window">
+            <field name="name">Periode Produk</field>
+            <field name="res_model">account.keuangan.periode.produk</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

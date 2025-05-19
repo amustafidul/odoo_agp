@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Define the paper format -->
+    <record id="paperformat_kartu_neraca" model="report.paperformat">
+        <field name="name">Kartu Neraca A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <template id="report_kartu_neraca_summary">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <style>
+                            .summary-table th, .summary-table td {
+                                font-size: 12px;
+                                font-family: Arial, Helvetica, sans-serif;
+                                border: 1px solid black;
+                            }
+
+                            .summary-table th {
+                                background-color: #00b8e6;
+                                color: black;
+                            }
+                        </style>
+
+                        <h5 style="text-align: center">
+                            <b>
+                                KARTU NERACA (SUMMARY)
+                            </b>
+                        </h5>
+                        <h5 style="text-align: center">
+                            <b>PERIOD: <t t-esc="'%s - %s' % (start_date, end_date)"/></b>
+                        </h5>
+                        <h5 style="text-align: center">
+                            <b><span t-esc="account_id"/></b>
+                        </h5>
+
+                        <table class="summary-table" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th rowspan="2">NO</th>
+                                    <th rowspan="2">KODE DEBITUR</th>
+                                    <th rowspan="2">NAMA DEBITUR</th>
+                                    <th>SALDO</th>
+                                    <th colspan="5">AGING</th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>
+                                        <span t-esc="periode"/>
+                                    </th>
+                                    <th>0-6 BULAN</th>
+                                    <th>7-12 BULAN</th>
+                                    <th>13-24 BULAN</th>
+                                    <th>25-36 BULAN</th>
+                                    <th>&gt; 36 BULAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <tr t-foreach="lines" t-as="line">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <td class="text-center">
+                                        <span t-esc="no"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line['code']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['name']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total5'])"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_kartu_neraca_detail">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <h4 style="text-align: center">
+                            <b>KARTU NERACA <span t-esc="jenis_kegiatan"/>
+                            </b>
+                        </h4>
+                        <h4 style="text-align: center">
+                            <b>PERIOD: <span t-esc="'%s - %s' % (start_date, end_date)"/>
+                            </b>
+                        </h4>
+                        <h5 style="text-align: center">
+                            <b><span t-esc="account_id"/></b>
+                        </h5>
+
+                        <style>
+                            .laporan-item tr th {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            vertical-align: middle;
+                            background-color: #00b8e6;
+                            }
+
+                            .laporan-item tr td {
+                            font-size: 12px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid black;
+                            }
+                        </style>
+                        <table class="laporan-item" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>NO</th>
+                                    <th>CABANG</th>
+                                    <th>NAMA DEBITUR</th>
+                                    <th>NO DOKUMEN</th>
+                                    <th>TANGGAL</th>
+                                    <th>JUMLAH</th>
+                                    <th>DOKUMEN PELUNASAN</th>
+                                    <th>TANGGAL</th>
+                                    <th>PELUNASAN</th>
+                                    <th>SALDO</th>
+                                    <th>UMUR (Hari)</th>
+                                    <th>KETERANGAN</th>
+                                    <th>0-6 BULAN</th>
+                                    <th>7-12 BULAN</th>
+                                    <th>13-24 BULAN</th>
+                                    <th>25-36 BULAN</th>
+                                    <th>&gt; 36 BULAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <tr t-foreach="lines" t-as="line">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <td class="text-center">
+                                        <span t-esc="no"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line['branch']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['partner']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['name']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['date']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['amount_total'])"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['payment_name']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['payment_date']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['payment_amount'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['residual'])"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="line['age_id_days']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['narration']"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total1'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total2'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total3'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total4'])"/>
+                                    </td>
+                                    <td align="right">
+                                        <span t-esc="'{0:,.0f}'.format(line['total5'])"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_kartu_neraca_summary" model="ir.actions.report">
+        <field name="name">Kartu Neraca Summary</field>
+        <field name="model">kartu.neraca.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_kartu_neraca_summary</field>
+        <field name="paperformat_id" ref="paperformat_kartu_neraca"/>
+        <field name="print_report_name">'Kartu Neraca Summary - %s' % (object.name)</field>
+    </record>
+
+    <record id="action_report_kartu_neraca_detail" model="ir.actions.report">
+        <field name="name">Kartu Neraca Detail</field>
+        <field name="model">kartu.neraca.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_kartu_neraca_detail</field>
+        <field name="paperformat_id" ref="paperformat_kartu_neraca"/>
+        <field name="print_report_name">'Kartu Neraca Detail - %s' % (object.name)</field>
+    </record>
+</odoo>

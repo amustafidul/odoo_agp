@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menambahkan kategori modul -->
+    <record model="ir.module.category" id="module_additional_invoicing">
+        <field name="name">Invoicing Additional Access</field>
+        <field name="sequence">0</field>
+    </record>
+    
+</odoo>

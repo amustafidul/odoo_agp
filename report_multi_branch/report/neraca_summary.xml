@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_neraca_summary" model="report.paperformat">
+        <field name="name">Neraca Summary A4</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_neraca_summary" model="ir.actions.report">
+        <field name="name">Neraca Summary</field>
+        <field name="model">neraca.summary.mb.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">report_multi_branch.report_neraca_summary</field>
+        <field name="report_file">report_multi_branch.report_neraca_summary</field>
+        <field name="paperformat_id" ref="report_multi_branch.paperformat_neraca_summary" />
+    </record>
+
+    <template id="report_neraca_summary">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="page">
+                        <table class="table-condensed" width="100%">
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">PT ADHI GUNA PUTERA</b>
+                                </td>
+                                <td colspan="3"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">PT ADHI GUNA PUTERA</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">&#160;&#160;DAN ENTITAS ANAK</b>
+                                </td>
+                                <td colspan="3"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px"> AND ITS SUBSIDIARY</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">LAPORAN POSISI KEUANGAN KONSOLIDASIAN</b>
+                                </td>
+                                <td colspan="3"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">CONSOLIDATED STATEMENT OF FINANCIAL POSITION</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">Per 31 Desember <span t-esc="current_year" />
+                                    </b>
+                                </td>
+                                <td colspan="3"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">As of December 31, <span t-esc="current_year" />
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <b style="font-size: 20px">(dalam Rupiah)</b>
+                                </td>
+                                <td colspan="3"></td>
+                                <td align="right">
+                                    <b style="font-size: 20px">(expressed in Rupiah)</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border-bottom: 2px solid black">
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>Catatan/Notes</b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>
+                                        <span t-esc="current_year" />
+                                    </b>
+                                </td>
+                                <td align="center" style="border-bottom: 2px solid black">
+                                    <b>
+                                        <span t-esc="previous_year" />
+                                    </b>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr t-foreach="account_lines" t-as="account">
+                                <t t-set="text_style" t-value="'font-weight: normal;'"/>
+                                <t t-set="float_style" t-value="'font-weight: normal;'"/>
+
+                                <t t-if="account['bold']">
+                                    <t t-set="text_style" t-value="'font-weight: bold;'"/>
+                                    <t t-set="float_style" t-value="'font-weight: bold;'"/>
+                                </t>
+
+                                <t t-if="account['blank']">
+                                    <t t-set="float_style" t-value="'color: white;'"/>
+                                </t>
+
+                                <td align="left">
+                                    <!-- <span t-esc="&#160; * int(account.get('level', 0))"/> -->
+                                    <span style="color: white;" t-esc="'...' * int(account.get('level', 0))"/>
+                                    <span t-att-style="text_style" t-esc="account['name1']" />
+                                </td>
+                                <td></td>
+                                <td align="right" style="padding-left: 5px; padding-right: 5px">
+                                    <span t-att-style="float_style" t-esc="'{0:,.0f}'.format(account['balance1'])" />
+                                </td>
+                                <td align="right" style="padding-left: 5px; padding-right: 5px">
+                                    <span t-att-style="float_style" t-esc="'{0:,.0f}'.format(account['balance2'])" />
+                                </td>
+                                <td align="right">
+                                    <span t-att-style="text_style" t-esc="account['name2']" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

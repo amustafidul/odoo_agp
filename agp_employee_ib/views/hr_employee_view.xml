@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_employee_histori_jabatan_form_ib" model="ir.ui.view">
+        <field name="name">view.hr.employee.histori.jabatan.form.ib</field>
+        <field name="model">hr.employee.histori.jabatan</field>
+        <field name="arch" type="xml">
+            <form string="Histori Jabatan">
+                <sheet>
+                    <group>
+                        <separator string="Dokumen Penugasan / SK" colspan="2"/>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="sk_doc_attachment_ids" widget="many2many_binary"
+                                   placeholder="Tambahkan dokumen SK"/>
+                            <field name="sk_number" placeholder="Masukkan nomor SK"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <separator string="Detail Jabatan" colspan="2"/>
+                        <group>
+                            <field name="employment_type" required="1" string="Jenis Pegawai"/>
+                            <field name="keterangan_jabatan_id" string="Keterangan"
+                                   attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])]}"
+                                   placeholder="Pilih jabatan Organik/PKWT"/>
+                            <field name="jabatan_komplit_id" string="Jabatan"
+                                   attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])]}"
+                                   />
+                            <field name="fungsi_penugasan_id" string="Jabatan TAD"
+                                   attrs="{'invisible': [('employment_type','!=','tad')]}"
+                                   placeholder="Pilih jabatan TAD"/>
+                            <field name="vendor_tad_id" string="Vendor TAD"
+                                   attrs="{'invisible': [('employment_type','!=','tad')]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="delta_amount" attrs="{'invisible': [('employment_type','!=','tad')]}"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <separator string="Periode Jabatan" colspan="2"/>
+                        <group>
+                            <field name="tmt_date" required="1" widget="date" string="TMT"/>
+                            <field name="masa_jabatan_bulan" string="Lama Jabatan"/>
+                            <field name="tanggal_pengangkatan" required="0" widget="date"/>
+                            <field name="tanggal_selesai_kontrak" widget="date"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <separator string="Informasi Kontrak" colspan="2"/>
+                        <group>
+                            <field name="contract_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_form_ib" model="ir.ui.view">
+        <field name="name">view.hr.employee.form.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_skills.hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="redirect_to_simkp" string="Lihat Data Penilaian" type="object" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//page[@name='skills_resume']" position="after">
+                <field name="is_can_edit" invisible="1"/>
+                <field name="employment_type_temp" invisible="1"/>
+                <field name="is_editor_employee_data" invisible="1"/>
+                <page name="histori_jabatan" string="Histori Jabatan">
+                    <field name="histori_jabatan_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">
+                        <tree editable="top">
+                            <field name="name" invisible="1"/>
+                            <field name="sk_doc_attachment_ids" widget="many2many_binary" invisible="1"/>
+                            <field name="sk_number" invisible="1"/>
+                            <field name="jabatan" invisible="1"/>
+                            <field name="employment_type" required="1"/>
+                            <field name="hr_branch_id" required="1"/>
+                            <field name="tmt_date" required="1"/>
+                            <field name="masa_jabatan_bulan"/>
+                            <field name="tanggal_pengangkatan"/>
+                            <field name="tanggal_selesai_kontrak"/>
+                            <button name="action_open_form_histori_jabatan" type="object" string="Details"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="family_tab" string="Family">
+                    <field name="family_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="nik"/>
+                            <field name="gender"/>
+                            <field name="status_hubungan"/>
+                            <field name="tempat_lahir"/>
+                            <field name="tanggal_lahir"/>
+                            <field name="attachment_doc_ktp" invisible="1"/>
+                        </tree>
+                    </field>
+                    <group>
+                        <group>
+                            <field name="kk_name" invisible="1"/>
+                            <field name="attachment_doc_kk" filename="kk_name"/>
+                        </group>
+                        <group>
+                            <field name="ktp_name" invisible="1"/>
+                            <field name="attachment_doc_ktp" filename="ktp_name"/>
+                        </group>
+                        <group>
+                            <field name="marital_status_custom"/>
+                            <field name="buku_nikah_attachment"
+                                   attrs="{'invisible': [('marital_status_custom','!=','nikah_resmi')]}"
+                            />
+                        </group>
+                    </group>
+                </page>
+                <page name="hr_employee_ijazah" string="Pendidikan">
+                    <field name="hr_employee_ijazah_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name" invisible="1"/>
+                            <field name="employee_name" invisible="1"/>
+                            <field name="pendidikan_terakhir" invisible="1"/>
+                            <field name="pendidikan_terakhir_selc"/>
+                            <field name="jurusan"/>
+                            <field name="asal_sekolah"/>
+                            <field name="ijazah_filename" invisible="1"/>
+                            <field name="ijazah_attachment_id" string="Ijazah" filename="ijazah_filename" widget="many2many_binary"/>
+                            <field name="ijazah_and_sertifikat" invisible="1"/>
+                            <field name="ijazah_date" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="hr_employee_hukuman" string="Hukuman">
+                    <field name="hr_employee_hukuman_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name" invisible="1"/>
+                            <field name="nip" invisible="1"/>
+                            <field name="employee_name" invisible="1"/>
+                            <field name="sk_doc_attachment" invisible="1"/>
+                            <field name="sk_attachment_id" filename="sk_filename" widget="many2many_binary"/>
+                            <field name="sk_filename" invisible="1"/>
+                            <field name="sk_number" invisible="1"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="masa_hukuman"/>
+                            <field name="description"/>
+                        </tree>
+                    </field>
+                </page>
+<!--                <page name="hr_employee_sertifikasi_pelatihan" string="Sertifikasi &amp; Pelatihan">-->
+<!--                    <field name="hr_employee_sertifikasi_pelatihan_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">-->
+<!--                        <tree editable="bottom">-->
+<!--                            <field name="name" string="Nama Training"/>-->
+<!--                            <field name="organizer" string="Penyelenggara"/>-->
+<!--                            <field name="certificate_doc_attachment" invisible="1"/>-->
+<!--                            <field name="certificate_attachment_id" filename="certificate_filename" widget="many2many_binary"/>-->
+<!--                            <field name="certificate_filename" invisible="1"/>-->
+<!--                            <field name="certificate_doc_name" invisible="1"/>-->
+<!--                            <field name="certification_start_date"/>-->
+<!--                            <field name="certification_end_date"/>-->
+<!--                            <field name="certification_expiration_date"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                </page>-->
+                <page name="hr_sk_tim" string="Penugasan Khusus / Tim">
+                    <field name="sk_tim_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">
+                        <tree>
+                            <field name="no_sk"/>
+                            <field name="upload_sk"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="jabatan"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="penilaian_kinerja" string="Penilaian Kinerja">
+                    <field name="penilaian_kerja_ids">
+                        <tree create="0" edit="0" delete="0">
+                            <field name="tahun"/>
+                            <field name="semester"/>
+                            <field name="penilaian"/>
+<!--                            <button name="redirect_to_simkp" string="Lihat Detail" type="object" class="oe_highlight"/>-->
+                        </tree>
+                    </field>
+                </page>
+                <page name="assesment" string="Assesment">
+                    <field name="assesment_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}">
+                        <tree editable="bottom">
+                            <field name="date"/>
+                            <field name="hasil"/>
+                            <field name="attachment_file"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="salary_information" string="Salary Information">
+                    <group>
+                        <group>
+                            <field name="salary_amount" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                            <field name="amount_tunjangan" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                        </group>
+                    </group>
+                    <group string="Informasi BPJS">
+                        <field name="bpjs_kesehatan_no" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                        <field name="bpjs_ketenagakerjaan_no" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                        <field name="kis_attachment" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                        <field name="jamsostek_attachment" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                    </group>
+                    <group string="NPWP">
+                        <field name="npwp" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                        <field name="npwp_attachment" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                    </group>
+                    <group string="Informasi Rekening">
+                        <field name="bank_account_ids" widget="one2many_list" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                    </group>
+                    <group string="Kepesertaan Asuransi">
+                        <field name="insurance_collective" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                        <field name="nomor_polis" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='skills_resume']" position="replace"/>
+        </field>
+    </record>
+
+    <record id="view_employee_tree_inherit_ib" model="ir.ui.view">
+        <field name="name">view.employee.tree.inherit.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="employment_type" string="Employee Type"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_contract_ib" model="ir.ui.view">
+        <field name="name">view.employee.form.contract.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_company_inherit_ib" model="ir.ui.view">
+        <field name="name">view.employee.form.company.inherit.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='personal_information']//group[3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_title']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='category_ids']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='address_id']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='work_location_id']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tz']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_hr_expense_ib" model="ir.ui.view">
+        <field name="name">view.employee.form.hr.expense.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_expense.hr_employee_view_form_inherit_expense"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expense_manager_id']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_hr_expense_leave_manager_ib" model="ir.ui.view">
+        <field name="name">view.employee.form.hr.expense.leave.manager.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_holidays.view_employee_form_leave_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='leave_manager_id']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_hourly_cost_ib" model="ir.ui.view">
+        <field name="name">view.employee.form.hourly.cost.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_hourly_cost.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='hourly_cost']" position="attributes">
+                <field name="is_editor_employee_data" invisible="1"/>
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_inherit_ib" model="ir.ui.view">
+        <field name="name">view.employee.form.inherit.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile_phone']" position="replace"/>
+            <xpath expr="//field[@name='work_phone']" position="replace"/>
+            <xpath expr="//field[@name='work_email']" position="replace">
+                <field name="is_can_edit" invisible="1"/>
+                <field name="is_editor_employee_data" invisible="1"/>
+                <field name="is_first_status" invisible="1"/>
+                <field name="is_second_status" invisible="1"/>
+                <field name="is_admin_user" invisible="1"/>
+                <field name="is_non_hr_admin" invisible="1"/>
+                <field name="resigned" readonly="1"/>
+                <field name="resign_date" attrs="{'invisible': [('resigned','=',False)]}"/>
+                <field name="nip_organik" attrs="{'invisible': [('employment_type','!=','organik')], 'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="nip_pkwt" attrs="{'invisible': [('employment_type','!=','pkwt')], 'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="employment_type" string="Employee Type" readonly="1"/>
+                <field name="status_pajak_pkwt_id" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="unit_penempatan_cabang_organik_pkwt_id" string="Cabang"
+                       invisible="1"
+                       placeholder="Kantor pusat, Batam, Padang, etc.."/>
+                <field name="hr_employee_unit_id" string="Unit"
+                       attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="keterangan_jabatan_id" string="Keterangan"
+                       attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])], 'readonly': [('is_editor_employee_data','=',False)]}" readonly="1"/>
+                <label for="jabatan_komplit_id" string="Jabatan" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])]}"/>
+                <div class="row" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])]}">
+                    <group>
+                        <field name="jabatan_komplit_id" class="oe_inline" colspan="2" nolabel="1" readonly="1" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])]}" style="vertical-align: middle; margin-left: 12px;"/>
+                        <field name="jenis_jabatan" class="oe_inline" nolabel="1" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])], 'readonly': [('is_editor_employee_data','=',False)]}" style="vertical-align: middle; margin-left: 12px;"/>
+                    </group>
+                </div>
+                <field name="employment_type_temp" invisible="1"/>
+                <field name="gender" string="Gender" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="agama" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <label for="place_of_birth" string="Tempat &amp; Tanggal Lahir"/>
+                <div class="row">
+                    <group>
+                        <field name="place_of_birth" class="oe_inline" placeholder="Tempat lahir" nolabel="1" attrs="{'readonly': [('is_editor_employee_data','=',False)]}" style="vertical-align: middle; margin-left: 12px;"/>
+                        <field name="date_of_birth" class="oe_inline wide_date_field" placeholder="Tanggal lahir" nolabel="1" attrs="{'readonly': [('is_editor_employee_data','=',False)]}" style="vertical-align: middle;"/>
+                    </group>
+                </div>
+                <field name="usia" readonly="1"/>
+                <field name="perkiraan_tanggal_pensiun" readonly="1" string="Perkiraan Pensiun" attrs="{'invisible': [('employment_type','not in',['organik','tad'])]}"/>
+                <field name="masa_kerja" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])], 'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="kelompok_umur_id" readonly="1" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])]}"/>
+
+                <field name="cabang_kerja_id" string="Penempatan" invisible="1"/>
+                <field name="hr_branch_id" string="Penempatan" readonly="1"/>
+                <field name="sub_cabang_kerja_id" string="Divisi atau Unit" invisible="1"/>
+                <field name="sub_branch_id" string="Divisi atau Unit" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="show_alamat_sub_cabang" invisible="1"/>
+                <field name="alamat_sub_cabang" attrs="{
+                    'invisible': [('show_alamat_sub_cabang', '=', False)],
+                    'required': [('show_alamat_sub_cabang', '=', True)],
+                    'readonly': [('is_editor_employee_data','=',False)]
+                }"/>
+
+                <!--tad-->
+                <field name="unit_penempatan_id" string="Unit Penempatan" invisible="1"/>
+                <field name="fungsi_penugasan_id" string="Jabatan" attrs="{'invisible': [('employment_type','!=','tad')], 'readonly': [('is_editor_employee_data','=',False)]}" readonly="1"/>
+                <field name="vendor_tad_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='contract_id']" position="replace"/>
+            <xpath expr="//field[@name='job_id']" position="replace"/>
+            <xpath expr="//field[@name='coach_id']" position="replace">
+                <field name="mobile_phone" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="work_phone" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="work_email" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="alamat" invisible="1"/>
+                <field name="alamat_ktp" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="alamat_domisili" attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+                <field name="jabatan" string="Employee Position" attrs="{'invisible': [('employment_type','not in',['organik','pkwt'])], 'readonly': [('is_editor_employee_data','=',False)]}"/>
+            </xpath>
+            <xpath expr="//group[@name='active_group']/field[@name='employee_type']" position="attributes">
+                <attribute name="required">False</attribute>
+                <attribute name="readonly">True</attribute>
+            </xpath>
+            <xpath expr="//group[@name='active_group']/field[@name='employee_type']" position="replace"/>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+                <attribute name="string">Atasan Langsung</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="direksi" string="Jabatan Direksi" help="Pilih jika pegawai ini menjabat sebagai salah satu Direksi."
+                       attrs="{'readonly': [('is_editor_employee_data','=',False)]}"/>
+            </xpath>
+            <xpath expr="//group[1]/field[@name='company_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='active_group']/field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='identification_group']/field[@name='pin']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='barcode']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_editor_employee_data','=',False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_employee_view_ib_search" model="ir.ui.view">
+        <field name="name">hr.employee.search.ib.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_employee_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='newly_hired_employee']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_resigned_ib_filter">
+        <field name="name">hr.employee.form.ib.resignation.filter</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_resignation.hr_employee_resigned_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='resigned']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='fired']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_employee_view_ib1_search" model="ir.ui.view">
+        <field name="name">hr.employee.search.view.ib1.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_holidays.hr_employee_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='is_absent']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_employee_view_ib2_search" model="ir.ui.view">
+        <field name="name">hr.employee.view.ib2.search</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_contract.hr_employee_view_search"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//filter[@name='with_contract_warning']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_agunan_pinjaman_koperasi_form" model="ir.ui.view">
+        <field name="name">hr.employee.koperasi.agunan.form</field>
+        <field name="model">hr.employee.koperasi.agunan</field>
+        <field name="arch" type="xml">
+            <form string="Agunan">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_payroll_form_ib" model="ir.ui.view">
+        <field name="name">view.hr.employee.payroll.form.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="view_employee_form_inherit_ib"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Koperasi">
+                    <field name="koperasi_ids" attrs="{'readonly': [('is_editor_employee_data','=',False)]}" mode="tree,form">
+                        <tree>
+                            <field name="name" invisible="1"/>
+                            <field name="jenis_simpanan"/>
+                            <field name="jenis_koperasi"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount" widget="monetary"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="name" invisible="1"/>
+                                    <field name="jenis_simpanan"/>
+                                    <field name="jenis_koperasi"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="amount" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="start_date"/>
+                                    <field name="end_date" attrs="{'required': [('jenis_koperasi','in',['one_time','periodic'])]}"/>
+                                    <field name="employee_id"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <page string="Agunan" attrs="{'invisible': [('jenis_simpanan', '!=', 'pinjaman_koperasi')]}">
+                                    <field name="agunan_ids">
+                                        <tree create="0" edit="0" delete="0">
+                                            <field name="name" readonly="1"/>
+                                            <field name="start_date"/>
+                                            <field name="end_date"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="amount" widget="monetary"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_form_inherit_ib" model="ir.ui.view">
+        <field name="name">view.hr.employee.payroll.form.inherit.ib</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="view_hr_employee_form_ib"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='histori_jabatan_ids']/tree/field[@name='hr_branch_id']" position="after">
+                <field name="grade_id" required="0"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_employee_view_ib3_search" model="ir.ui.view">
+        <field name="name">hr.employee.search.view.ib3.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='message_needaction']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='my_team']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='my_department']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <filter name="employment_type_organik" string="Pegawai Organik" domain="[('employment_type', '=', 'organik')]"/>
+                <filter name="employment_type_pkwt" string="Pegawai PKWT" domain="[('employment_type', '=', 'pkwt')]"/>
+                <filter name="employment_type_tad" string="Pegawai TAD" domain="[('employment_type', '=', 'tad')]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+        <field name="domain">[]</field>
+        <field name="context">{'chat_icon': True, 'show_only_own_employee': True}</field>
+    </record>
+
+    <record model="ir.actions.server" id="action_check_duplication_data">
+       <field name="name">Duplication Check</field>
+       <field name="model_id" ref="hr.model_hr_employee"/>
+       <field name="binding_model_id" ref="hr.model_hr_employee"/>
+       <field name="state">code</field>
+       <field name="code">
+           action = records.cek_duplikasi()
+       </field>
+    </record>
+
+    <record id="action_update_histori_jabatan" model="ir.actions.server">
+        <field name="name">Update Histori Jabatan</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records._action_open_update_histori_jabatan_wizard()
+        </field>
+    </record>
+
+    <record id="action_employee_dashboard" model="ir.actions.client">
+        <field name="name">Employee Dashboard</field>
+        <field name="tag">employee_dashboard</field>
+    </record>
+
+    <record id="view_jabatan_komplit_tree" model="ir.ui.view">
+        <field name="name">hr.employee.jabatan.komplit.tree</field>
+        <field name="model">hr.employee.jabatan.komplit</field>
+        <field name="arch" type="xml">
+            <tree string="Jabatan Komplit">
+                <field name="name"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_jabatan_komplit_form" model="ir.ui.view">
+        <field name="name">hr.employee.jabatan.komplit.form</field>
+        <field name="model">hr.employee.jabatan.komplit</field>
+        <field name="arch" type="xml">
+            <form string="Jabatan Komplit">
+                <sheet>
+                    <group>
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="active"/>
+                        </group>
+                        <group colspan="1">
+                            <field name="department_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" widget="text" placeholder="Masukkan deskripsi jabatan secara lengkap..." nolabel="0"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_jabatan_komplit_action" model="ir.actions.act_window">
+        <field name="name">Jabatan Komplit</field>
+        <field name="res_model">hr.employee.jabatan.komplit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

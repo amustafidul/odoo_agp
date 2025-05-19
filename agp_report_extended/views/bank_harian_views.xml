@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_bank_harian_form_inherit" model="ir.ui.view">
+            <field name="name">bank.harian.form.inherit</field>
+            <field name="model">account.keuangan.bank.harian</field>
+            <field name="inherit_id" ref="agp_keuangan_ib.view_bank_harian_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='detail']" position="after">
+                    <page name="list_catatan" string="List Catatan">
+                        <field name="note_line_ids" nolabel="1">
+                            <tree editable="top">
+                                <field name="no" invisible="1" width="1"/>
+                                <field name="ket_satu" width="15"/>
+                                <field name="saldo_satu" width="15"/>
+                                <field name="ket_dua" width="15"/>
+                                <field name="saldo_dua" width="15"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+

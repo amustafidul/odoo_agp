@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_nota_dinas_tree" model="ir.ui.view">
+        <field name="name">nota.dinas.tree</field>
+        <field name="model">nota.dinas</field>
+        <field name="arch" type="xml">
+            <tree string="Nota Dinas" default_order="name">
+                <field name="name"/>
+                <field name="employee_position_id" invisible="1"/>
+                <field name="employee_position_komplit_id"/>
+                <field name="tanggal_nota_dinas" string="Tanggal Pengajuan"/>
+                <field name="tanggal_nota_dinas_year" string="Tahun" invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state in ['done']"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_nota_dinas_persetujuan_tree" model="ir.ui.view">
+        <field name="name">nota.dinas.persetujuan.tree</field>
+        <field name="model">nota.dinas</field>
+        <field name="arch" type="xml">
+            <tree string="Nota Dinas" create="0" delete="0">
+                <field name="name"/>
+                <field name="employee_position_id" invisible="1"/>
+                <field name="employee_position_komplit_id"/>
+                <field name="tanggal_nota_dinas" string="Tanggal Pengajuan"/>
+                <field name="state" widget="badge" decoration-success="state in ['done']"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_nota_dinas_form" model="ir.ui.view">
+        <field name="name">nota.dinas.form</field>
+        <field name="model">nota.dinas</field>
+        <field name="arch" type="xml">
+            <form string="Nota Dinas">
+                <header>
+                    <button name="action_submit"
+                        type="object"
+                        string="Submit"
+                        states="draft"
+                        class="btn-primary"/>
+
+                    <!-- Statusbar Kantor Pusat -->
+                    <field name="state" widget="statusbar"
+                           attrs="{'invisible': [('type_nodin', '!=', 'kantor_pusat')]}"
+                           statusbar_visible="draft,manager_bidang,kepala_divisi,direktur_operasional,direktur_keuangan,direktur_utama,done"/>
+
+                    <!-- Statusbar Kantor Cabang -->
+                    <field name="state" widget="statusbar"
+                           attrs="{'invisible': [('type_nodin', '!=', 'kantor_cabang')]}"
+                           statusbar_visible="draft,gm,mb_keu_sdm_umum,kadiv_keu_kantor_pusat,direktur_utama,done"/>
+
+                    <!-- Statusbar Not Set (Hanya Draft) -->
+                    <field name="state" widget="statusbar"
+                           attrs="{'invisible': [('type_nodin', '!=', 'not_set')]}"
+                           statusbar_visible="draft"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_related_sppd"
+                                type="object"
+                                string="SPPD"
+                                icon="fa-plane"
+                                attrs="{'invisible': [('state', '!=', 'done')]}">
+                            <field name="related_sppd_count" widget="statinfo" string="Perjalanan Dinas"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="type_nodin"/>
+                            <field name="pemohon" attrs="{'invisible': [('pemohon','=',False)]}"/>
+                            <field name="tanggal_nota_dinas_year" string="Tahun" invisible="1"/>
+                            <field name="employee_position_id" invisible="1"/>
+                            <field name="employee_position_komplit_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="employee_position_tembusan_id" invisible="1"/>
+                            <field name="employee_position_komplit_tembusan_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pemberi_perintah_id" readonly="1"/>
+                            <field name="employee_position_applicant_id" invisible="1"/>
+                            <field name="employee_applicant_id" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="division_id" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="perihal_desc" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="tanggal_nota_dinas" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="kata_pengantar" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </group>
+                        <group>
+                            <label for="dinas_date_from" string="Jadwal SPPD"/>
+                            <div class="oe_inline">
+                                <field name="dinas_date_from" class="oe_inline" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/> -
+                                <field name="dinas_date_to" class="oe_inline" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            </div>
+                            <field name="destination_place" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="agenda_desc" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pemberi_undangan_id" invisible="1"/>
+                            <field name="pemberi_undangan" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Peserta">
+                            <field name="nota_dinas_line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence"/>
+                                    <field name="applicant_id"/>
+                                    <field name="jabatan" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_nota_dinas_persetujuan_form" model="ir.ui.view">
+        <field name="name">nota.dinas.persetujuan.form</field>
+        <field name="model">nota.dinas</field>
+        <field name="arch" type="xml">
+            <form string="Nota Dinas">
+                <header>
+                    <button name="action_approve_gm"
+                        type="object"
+                        string="Approve General Manager"
+                        attrs="{'invisible': ['|', ('type_nodin', '!=', 'kantor_cabang'),('state','!=','gm')]}" class="btn-primary"
+                        confirm="Apakah Anda yakin ingin menyetujui Nota Dinas ini sebagai General Manager?"/>
+
+                    <button name="action_approve_mb_keu_sdm_umum"
+                        type="object"
+                        string="Approve MB Keu. SDM &amp; Umum" attrs="{'invisible': ['|', ('type_nodin', '!=', 'kantor_cabang'),('state','!=','mb_keu_sdm_umum')]}" class="btn-primary"
+                        confirm="Apakah Anda yakin ingin menyetujui Nota Dinas ini sebagai MB Keu. SDM &amp; Umum?"/>
+
+                    <button name="action_approve_kadiv_keu_kantor_pusat"
+                        type="object"
+                        string="Approve Kadiv Keu. Kantor Pusat"
+                        attrs="{'invisible': ['|', ('type_nodin', '!=', 'kantor_cabang'),('state','!=','kadiv_keu_kantor_pusat')]}" class="btn-primary"
+                        confirm="Apakah Anda yakin ingin menyetujui Nota Dinas ini sebagai Kadiv Keu. Kantor Pusat?"/>
+
+                    <button name="action_approve_manager_bidang"
+                            type="object"
+                            string="Approve Manager Bidang"
+                            states="manager_bidang"
+                            class="btn-primary"/>
+
+                    <button name="action_approve_kepala_divisi"
+                            type="object"
+                            string="Approve Kepala Divisi"
+                            states="kepala_divisi"
+                            class="btn-primary"/>
+
+                    <button name="action_approve_direktur_operasional_wizard"
+                            type="object"
+                            string="Proses Dirop &amp; Input Disposisi"
+                            states="direktur_operasional"
+                            class="btn-primary"
+                            confirm="Anda akan memproses Nota Dinas ini sebagai Direktur Operasional dan diminta mengisi disposisi. Lanjutkan?"/>
+
+                    <button name="action_approve_direktur_keuangan_wizard"
+                            type="object"
+                            string="Proses Dirkeu &amp; Input Disposisi"
+                            states="direktur_keuangan"
+                            class="btn-primary"
+                            confirm="Anda akan memproses Nota Dinas ini sebagai Direktur Keuangan dan diminta mengisi disposisi. Lanjutkan?"/>
+
+                    <button name="action_approve_direktur_utama_wizard"
+                            type="object"
+                            string="Proses Dirut &amp; Input Disposisi"
+                            states="direktur_utama"
+                            class="btn-primary"
+                            confirm="Anda akan memproses Nota Dinas ini sebagai Direktur Utama dan diminta mengisi disposisi. Lanjutkan?"/>
+
+                    <!-- Button Buat SPPD -->
+                    <button name="action_create_sppd"
+                            type="object"
+                            string="Buat SPPD"
+                            class="btn-success"
+                            attrs="{'invisible': ['|', ('state','!=','done'),('related_sppd_count','!=',0)]}"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_related_sppd"
+                                type="object"
+                                string="SPPD"
+                                icon="fa-plane"
+                                attrs="{'invisible': [('state', '!=', 'done')]}">
+                            <field name="related_sppd_count" widget="statinfo" string="Perjalanan Dinas"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="state" widget="badge" decoration-warning="state not in ['draft','done']" decoration-success="state in ['done']"/>
+                            <field name="type_nodin"/>
+                            <field name="pemohon"/>
+                            <field name="employee_position_id" invisible="1"/>
+                            <field name="employee_position_komplit_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="employee_position_tembusan_id" invisible="1"/>
+                            <field name="employee_position_komplit_tembusan_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pemberi_perintah_id" readonly="1"/>
+                            <field name="employee_position_applicant_id" invisible="1"/>
+                            <field name="employee_applicant_id" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="division_id" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="perihal_desc" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="tanggal_nota_dinas" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="kata_pengantar" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </group>
+                        <group>
+                            <label for="dinas_date_from" string="Jadwal SPPD"/>
+                            <div class="oe_inline">
+                                <field name="dinas_date_from" class="oe_inline" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/> -
+                                <field name="dinas_date_to" class="oe_inline" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            </div>
+                            <field name="destination_place" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="agenda_desc" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pemberi_undangan_id" invisible="1"/>
+                            <field name="pemberi_undangan" required="1"/>
+                            <field name="disposisi_dirop_desc" readonly="1"
+                                   attrs="{'invisible': [('disposisi_dirop_desc', '=', False)]}"/>
+                            <field name="disposisi_dirkeu_desc" readonly="1"
+                                   attrs="{'invisible': [('disposisi_dirkeu_desc', '=', False)]}"/>
+                            <field name="disposisi_dirut_desc" readonly="1"
+                                   attrs="{'invisible': [('disposisi_dirut_desc', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Peserta">
+                            <field name="nota_dinas_line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence"/>
+                                    <field name="applicant_id"/>
+                                    <field name="jabatan" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="nota_dinas_action" model="ir.actions.act_window">
+        <field name="name">Pengajuan Nota Dinas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nota.dinas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('create_uid', '=', uid)]</field>
+        <field name="context">{'group_by': [('tanggal_nota_dinas_year')]}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat nota dinas di sini.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="nota_dinas_view_tree_ib">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_nota_dinas_tree"/>
+        <field name="act_window_id" ref="nota_dinas_action"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="nota_dinas_view_form_ib">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_nota_dinas_form"/>
+        <field name="act_window_id" ref="nota_dinas_action"/>
+    </record>
+
+    <record id="nota_dinas_persetujuan_action" model="ir.actions.act_window">
+        <field name="name">Persetujuan Nota Dinas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nota.dinas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','not in',['draft'])]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                List persetujuan nota dinas akan muncul di sini.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="nota_dinas_persetujuan_view_tree_ib">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_nota_dinas_persetujuan_tree"/>
+        <field name="act_window_id" ref="nota_dinas_persetujuan_action"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="nota_dinas_persetujuan_view_form_ib">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_nota_dinas_persetujuan_form"/>
+        <field name="act_window_id" ref="nota_dinas_persetujuan_action"/>
+    </record>
+
+    <record id="view_employee_position_tree" model="ir.ui.view">
+        <field name="name">employee.position.tree</field>
+        <field name="model">employee.position</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Positions" create="0" edit="1" delete="0" editable="bottom">
+                <field name="employee_id"/>
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_employee_position" model="ir.actions.act_window">
+        <field name="name">Employee Positions</field>
+        <field name="res_model">employee.position</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_employee_position_tree"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+</odoo>

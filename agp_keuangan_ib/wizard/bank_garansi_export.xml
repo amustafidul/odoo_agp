@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="view_bank_garansi_export_wizard" model="ir.ui.view">
+            <field name="name">bank.garansi.export.wizard.form</field>
+            <field name="model">bank.garansi.export.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Export Bank Garansi">
+                    <group>
+                        <field name="tipe_bank_garansi_id"/>
+                    </group>
+                    <footer>
+                        <button string="View" type="object" name="action_print_report" class="btn-primary"/>
+                        <button string="Export to Excel" type="object" name="action_export_bank_garansi" class="btn-primary"/>
+                        <button string="Export to PDF" type="object" name="action_print_pdf" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_open_export_wizard" model="ir.actions.act_window">
+            <field name="name">Export</field>
+            <field name="res_model">bank.garansi.export.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="access_bank_garansi_export_wizard_user" model="ir.model.access">
+            <field name="name">access.bank.garansi.export.wizard.user</field>
+            <field name="model_id" ref="model_bank_garansi_export_wizard"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+    </data>
+</odoo>

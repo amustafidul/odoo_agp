@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- NODIN USAHA  -->
+    <record id="hr_jabatan_kadiv_usaha" model="hr.employee.keterangan.jabatan">
+        <field name="name">Kepala Divisi Usaha</field>
+        <field name="company_id" eval="1"/>
+    </record>
+
+    <record id="hr_jabatan_dir_ops" model="hr.employee.keterangan.jabatan">
+        <field name="name">Direktur Operasional</field>
+        <field name="company_id" eval="1"/>
+    </record>
+
+    <record id="hr_jabatan_dir_keu" model="hr.employee.keterangan.jabatan">
+        <field name="name">Direktur Keuangan</field>
+        <field name="company_id" eval="1"/>
+    </record>
+
+    <!-- NODIN UMUM -->
+    <record id="hr_jabatan_kadiv_umum" model="hr.employee.keterangan.jabatan">
+        <field name="name">Kepala Divisi SDM dan Umum</field>
+        <field name="company_id" eval="1"/>
+    </record>
+
+    <record id="hr_jabatan_kadiv_keu" model="hr.employee.keterangan.jabatan">
+        <field name="name">Kepala Divisi Keuangan</field>
+        <field name="company_id" eval="1"/>
+    </record>
+
+</odoo>

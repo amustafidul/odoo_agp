@@ -1,0 +1,24 @@
+<odoo>
+    <!-- Menu utama dengan ikon -->
+    <menuitem id="menu_tagihan"
+            name="Tagihan"
+            sequence="57"
+            web_icon="agp_custom_fields,static/description/odoo_icon.png"
+            action="action_view_tagihan"
+    />
+
+    <!-- Submenu di bawah menu utama -->
+    <!-- <menuitem id="parent_menu_board_tagihan"
+            name="Tagihan"
+            parent="menu_tagihan"
+            action="action_tagihan"
+            sequence="1"/> -->
+
+    <!-- Menu aksi di bawah submenu -->
+    <!-- <menuitem id="parent_menu_board_keuangan_tagihan"
+            name="Tagihan"
+            parent="parent_menu_board_tagihan"
+            groups="base.group_user" 
+            sequence="1"/> -->
+
+</odoo>

@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_form_sppd_pengajuan_tree" model="ir.ui.view">
+        <field name="name">form.sppd.pengajuan.tree</field>
+        <field name="model">hr.leave.dinas</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="nota_dinas_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="assigner_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="state" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_sppd_pengajuan_form" model="ir.ui.view">
+        <field name="name">form.sppd.pengajuan.form</field>
+        <field name="model">hr.leave.dinas</field>
+        <field name="arch" type="xml">
+            <form string="Pengajuan Dinas">
+                <header>
+                    <button name="action_submit"
+                        type="object"
+                        string="Submit"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_review_biaya,review_biaya_done,running"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="nota_dinas_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="assigner_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="agenda_dinas" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pemberi_undangan_id" invisible="1"/>
+                            <field name="pemberi_undangan" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="transport" invisible="1"/>
+                            <field name="transport_ids" widget="many2many_tags" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="branch_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="destination_place" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </group>
+                        <group>
+                            <field name="date_from" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="date_to" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="facility" readonly="1"/>
+                            <field name="participant_ids" string="Pengikut Internal" widget="many2many_tags" context="{'use_sppd_get': True}" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pengikut_eksternal" widget="boolean_toggle"/>
+                            <field name="attachment_ids" widget="many2many_binary" string="Supporting Documents" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Pengikut Eksternal" attrs="{'invisible': [('pengikut_eksternal','=',False)]}">
+                            <field name="external_follower_ids">
+                                <tree string="Daftar Pengikut Eksternal" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="institution"/>
+                                    <field name="notes"/>
+                                </tree>
+                                <form string="Detail Pengikut Eksternal">
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="institution"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="form_sppd_pengajuan_action" model="ir.actions.act_window">
+        <field name="name">Pengajuan Dinas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.dinas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="form_sppd_pengajuan_tree_view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_form_sppd_pengajuan_tree"/>
+        <field name="act_window_id" ref="form_sppd_pengajuan_action"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="form_sppd_pengajuan_view_form_ib">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_sppd_pengajuan_form"/>
+        <field name="act_window_id" ref="form_sppd_pengajuan_action"/>
+    </record>
+
+    <record id="view_form_sppd_persetujuan_tree" model="ir.ui.view">
+        <field name="name">form.sppd.persetujuan.tree</field>
+        <field name="model">hr.leave.dinas</field>
+        <field name="arch" type="xml">
+            <tree create="0" delete="0">
+                <field name="name" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="nota_dinas_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="assigner_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="date_from" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="date_to" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="state" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_sppd_persetujuan_form" model="ir.ui.view">
+        <field name="name">form.sppd.persetujuan.form</field>
+        <field name="model">hr.leave.dinas</field>
+        <field name="arch" type="xml">
+            <form string="Persetujuan Dinas" create="0" delete="0">
+                <header>
+                    <button name="action_gm_approve_sppd"
+                        type="object"
+                        string="Approve SPPD (GM)"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', ('is_cabang_sppd', '!=', True), ('state', '!=', 'waiting_gm_sppd_approval')]}"
+                        confirm="Apakah Anda yakin ingin menyetujui SPPD ini sebagai General Manager?"/>
+                    <button name="action_dirut_approve_sppd_from_gm"
+                        type="object"
+                        string="Approve SPPD (Dirut)"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', ('is_cabang_sppd', '!=', True), ('state', '!=', 'waiting_dirut_sppd_approval_from_gm')]}"
+                        confirm="Apakah Anda yakin ingin menyetujui SPPD ini sebagai Direktur Utama?"/>
+                    <button name="action_submit_biaya_sppd"
+                        type="object"
+                        string="Submit Rincian Biaya"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', ('is_cabang_sppd', '!=', True), ('state', '!=', 'sppd_approved_input_biaya')]}"
+                        confirm="Pastikan semua rincian biaya sudah benar sebelum disubmit."/>
+                    <field name="is_cabang_sppd" invisible="1"/>
+                    <!--statusbar sppd kantor pusat-->
+                    <field name="state" widget="statusbar"
+                           attrs="{'invisible': [('is_cabang_sppd', '=', True)]}"
+                           statusbar_visible="draft,waiting_for_review_biaya,review_biaya_done,running,pause,done"/>
+                    <!--statusbar sppd kantor cabang-->
+                    <field name="state" widget="statusbar"
+                           attrs="{'invisible': [('is_cabang_sppd', '!=', True)]}"
+                           statusbar_visible="draft,waiting_gm_sppd_approval,waiting_dirut_sppd_approval_from_gm,sppd_approved_input_biaya,waiting_for_review_biaya,review_biaya_done,running,pause,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="nota_dinas_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="assigner_id" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="agenda_dinas" readonly="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pemberi_undangan_id" invisible="1"/>
+                            <field name="pemberi_undangan" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="transport" invisible="1"/>
+                            <field name="transport_ids" widget="many2many_tags" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="branch_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="destination_place" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </group>
+                        <group>
+                            <field name="date_from" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="date_to" required="1" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="is_pindah_tujuan" invisible="1"/>
+                            <field name="date_change_dest" attrs="{'readonly': [('state','not in',['draft'])], 'invisible': [('is_pindah_tujuan','=',False)]}"/>
+                            <field name="facility" readonly="1"/>
+                            <field name="participant_ids" widget="many2many_tags" context="{'use_sppd_get': True}" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                            <field name="pengikut_eksternal" widget="boolean_toggle"/>
+                            <field name="attachment_ids" widget="many2many_binary" string="Supporting Documents" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                        </group>
+                        <group string="Total Biaya Dinas">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="total_biaya_dinas" readonly="1" widget="Monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Pengikut Eksternal" attrs="{'invisible': [('pengikut_eksternal','=',False)]}">
+                            <field name="external_follower_ids">
+                                <tree string="Daftar Pengikut Eksternal" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="institution"/>
+                                    <field name="notes"/>
+                                </tree>
+                                <form string="Detail Pengikut Eksternal">
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="institution"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Biaya Per Peserta" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <field name="biaya_peserta_ids"
+                                   attrs="{'readonly': [
+                                       '|', '&amp;', ('is_cabang_sppd', '=', True),
+                                               ('state', '!=', 'sppd_approved_input_biaya'),
+                                           '&amp;', ('is_cabang_sppd', '=', False),
+                                               ('state', '=', 'draft')
+                                   ]}">
+                                <tree>
+                                    <field name="employee_id"/>
+                                    <field name="biaya_header_id"/>
+                                    <field name="approval_stage"/>
+                                    <button name="%(agp_dinas_ib.action_hr_leave_dinas_modify_wizard)d"
+                                        type="action" icon="fa-pencil-square-o" string="Deviasi"
+                                        context="{'default_sppd_id': parent.id, 'active_model': 'hr.leave.dinas.biaya', 'active_id': id}"
+                                        attrs="{'invisible': [('parent.state', '!=', 'running')]}"/>
+                                </tree>
+                                <form string="Detail Biaya Peserta">
+                                    <header>
+                                        <button name="action_approve_gm_biaya_cabang"
+                                                type="object"
+                                                string="Approve GM Cabang"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '!=', True), ('approval_stage','!=','draft'), ('approval_gm_cabang', '=', True)]}"
+                                                confirm="Approve biaya untuk peserta ini sebagai GM Cabang?"
+                                                />
+                                        <button name="action_kadiv_keu_pusat_transfer_biaya_cabang"
+                                                type="object"
+                                                string="Transfer Biaya (Cabang)"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '!=', True), ('approval_stage', '!=', 'waiting_kadiv_keu_pusat_transfer'), ('approval_kadiv_keu_transfer_cabang', '=', True)]}"
+                                                confirm="Anda yakin ingin transfer biaya untuk keperluan SPPD ini?"/>
+                                        <button name="action_submit_to_mb_umum"
+                                                type="object"
+                                                string="Submit"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','draft')]}"/>
+                                        <button name="action_approve_mb_umum"
+                                                type="object"
+                                                string="Approve MB Umum"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_mb_umum'), ('approval_mb_umum', '=', True)]}"/>
+                                        <button name="action_approve_kadiv_sdm_umum"
+                                                type="object"
+                                                string="Approve Kadiv SDM dan Umum"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_kadiv_sdm_umum'), ('approval_kadiv_sdm_umum', '=', True)]}"/>
+                                        <button name="action_approve_mb_keuangan"
+                                                type="object"
+                                                string="Approve MB Keuangan"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_mb_keuangan_pusat'), ('approval_mb_keuangan', '=', True)]}"/>
+                                        <button name="action_approve_kadiv_keuangan"
+                                                type="object"
+                                                string="Approve Kadiv Keuangan"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_kadiv_keuangan_pusat'), ('approval_kadiv_keuangan', '=', True)]}"/>
+                                        <button name="action_transfer_biaya_mb_keuangan"
+                                                type="object"
+                                                string="Transfer Biaya"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_for_transfer_biaya'), ('approval_mb_keuangan_transfer_biaya', '=', True)]}"/>
+                                        <button name="action_mark_biaya_done"
+                                                type="object"
+                                                string="Mark as Done"
+                                                class="btn-primary"
+                                                attrs="{'invisible': [('approval_stage', '!=', 'biaya_transfered')]}"/>
+                                        <field name="is_sppd_cabang" invisible="1"/>
+                                        <field name="approval_stage" widget="statusbar"
+                                               attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"
+                                               statusbar_visible="draft,waiting_mb_umum,waiting_kadiv_sdm_umum,waiting_mb_keuangan_pusat,waiting_kadiv_keuangan_pusat,waiting_for_transfer_biaya,biaya_transfered,done"/>
+                                        <field name="approval_stage" widget="statusbar"
+                                               attrs="{'invisible': [('is_sppd_cabang', '!=', True)]}"
+                                               statusbar_visible="draft_gm_biaya_cabang,waiting_kadiv_keu_pusat_transfer,biaya_transfered,done"/>
+                                    </header>
+                                    <group>
+                                        <group>
+                                            <field name="employee_id" readonly="1"/>
+                                            <field name="biaya_header_id" attrs="{'readonly': [('approval_stage','!=','draft')]}"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="amount_total" readonly="1" widget="Monetary"/>
+                                        </group>
+                                        <group name="approval_stage_biaya" string="Approval Stage">
+                                            <field name="approval_gm_cabang" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '!=', True)]}"/>
+                                            <field name="approval_kadiv_keu_transfer_cabang" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '!=', True)]}"/>
+                                            <field name="approval_mb_umum" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"/>
+                                            <field name="approval_kadiv_sdm_umum" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"/>
+                                            <field name="approval_mb_keuangan" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"/>
+                                            <field name="approval_kadiv_keuangan" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"/>
+                                            <field name="approval_mb_keuangan_transfer_biaya" readonly="1" attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"/>
+                                        </group>
+                                    </group>
+                                    <field name="biaya_line_ids" attrs="{'readonly': [('approval_stage','!=','draft')]}">
+                                        <tree editable="bottom">
+                                            <field name="komponen_id"/>
+                                            <field name="jenis_lokasi"/>
+                                            <field name="golongan"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="jumlah" widget="Monetary" options="{'currency_field': 'currency_id'}"/>
+                                            <field name="satuan" placeholder='Contoh: Rp / Hari, Rp / 7 Hari, Rp / 3 Bulan'/>
+                                        </tree>
+                                    </field>
+                                    <notebook>
+                                        <page string="Info Deviasi" name="deviasi_info"
+                                              attrs="{'invisible': [('is_deviated', '=', False)]}">
+                                            <group>
+                                                <field name="is_deviated" invisible="1"/>
+                                                <field name="deviation_type" readonly="1"/>
+                                                <field name="deviation_reason" readonly="1"/>
+                                                <field name="deviated_date_to" readonly="1"
+                                                       attrs="{'invisible': [('deviation_type', 'not in', ['early_return', 'extend_days'])]}"/>
+                                                <field name="deviated_destination_place" readonly="1"
+                                                       attrs="{'invisible': [('deviation_type', '!=', 'change_location')]}"/>
+                                                <field name="deviation_city_transfer_date" readonly="1"
+                                                       attrs="{'invisible': [('deviation_type', '!=', 'change_location')]}"/>
+
+                                                <separator string="Status Perpanjangan (jika ada)"
+                                                           attrs="{'invisible': [('deviation_type', '!=', 'extend_days')]}"/>
+                                                <field name="extend_deviation_state" widget="badge"
+                                                       attrs="{'invisible': [('deviation_type', '!=', 'extend_days')]}"/>
+                                            </group>
+                                            <field name="participant_extend_approval_ids"
+                                                   attrs="{'invisible': [('deviation_type', '!=', 'extend_days')]}"
+                                                   context="{'default_biaya_peserta_id': active_id}"> <tree editable="bottom" string="Approval Perpanjangan Peserta">
+                                                    <field name="employee_id"/>
+                                                    <field name="approval_type"/>
+                                                    <field name="state" widget="badge"/>
+                                                    <field name="approval_notes"/>
+                                                    <field name="is_my_turn" invisible="1"/>
+                                                    <button name="action_approve" type="object" string="Setujui"
+                                                            icon="fa-check"
+                                                            attrs="{'invisible': ['|', ('state', '!=', 'waiting'), ('is_my_turn', '=', False)]}"/>
+                                                    <button name="action_reject" type="object" string="Tolak"
+                                                            icon="fa-times"
+                                                            attrs="{'invisible': ['|', ('state', '!=', 'waiting'), ('is_my_turn', '=', False)]}"/>
+                                                </tree>
+                                                </field>
+                                        </page>
+                                    </notebook>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Biaya Pengikut Eksternal" name="biaya_pengikut_eksternal"
+                              attrs="{'invisible': [('pengikut_eksternal','=',False)]}">
+                            <field name="biaya_external_follower_ids"
+                                   context="{'default_leave_dinas_id': active_id}">
+                                <tree string="Biaya Pengikut Eksternal">
+                                    <field name="external_follower_id"
+                                           domain="[('leave_dinas_id', '=', parent.id)]" options="{'no_create': True, 'no_open': True}"
+                                           required="1" readonly="1"/>
+                                    <field name="biaya_header_id" readonly="1"/>
+                                    <field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="approval_stage" widget="badge"/>
+                                    <button name="%(agp_dinas_ib.action_hr_leave_dinas_modify_wizard)d"
+                                        type="action" icon="fa-pencil-square-o" string="Deviasi"
+                                        context="{'default_sppd_id': parent.id, 'active_model': 'hr.leave.dinas.external.follower.biaya', 'active_id': id}"
+                                        attrs="{'invisible': [('parent.state', '!=', 'running')]}"/>
+                                </tree>
+                                <form string="Detail Biaya Pengikut Eksternal">
+                                    <header>
+                                         <button name="action_approve_gm_biaya_cabang_external" type="object"
+                                                string="Approve GM Cabang" class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '!=', True), ('approval_stage','!=','draft'), ('approval_gm_cabang', '=', True)]}"
+                                                confirm="Approve biaya untuk peserta ini sebagai GM Cabang?"
+                                                />
+                                        <button name="action_kadiv_keu_pusat_transfer_biaya_cabang_external" type="object"
+                                                string="Transfer Biaya (Cabang)"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '!=', True), ('approval_stage', '!=', 'waiting_kadiv_keu_pusat_transfer'), ('approval_kadiv_keu_transfer_cabang', '=', True)]}"
+                                                confirm="Anda yakin ingin transfer biaya untuk keperluan SPPD ini?"/>
+                                        <button name="action_submit_to_mb_umum_external" type="object"
+                                                string="Submit"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','draft')]}"/>
+                                        <button name="action_approve_mb_umum_external" type="object"
+                                                string="Approve MB Umum"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_mb_umum'), ('approval_mb_umum', '=', True)]}"/>
+                                        <button name="action_approve_kadiv_sdm_umum_external" type="object"
+                                                string="Approve Kadiv SDM dan Umum"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_kadiv_sdm_umum'), ('approval_kadiv_sdm_umum', '=', True)]}"/>
+                                        <button name="action_approve_mb_keuangan_external" type="object"
+                                                string="Approve MB Keuangan"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_mb_keuangan_pusat'), ('approval_mb_keuangan', '=', True)]}"/>
+                                        <button name="action_approve_kadiv_keuangan_external" type="object"
+                                                string="Approve Kadiv Keuangan"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_kadiv_keuangan_pusat'), ('approval_kadiv_keuangan', '=', True)]}"/>
+                                        <button name="action_transfer_biaya_mb_keuangan_external" type="object"
+                                                string="Transfer Biaya"
+                                                class="btn-primary"
+                                                attrs="{'invisible': ['|', '|', ('is_sppd_cabang', '=', True), ('approval_stage','!=','waiting_for_transfer_biaya'), ('approval_mb_keuangan_transfer_biaya', '=', True)]}"/>
+                                        <button name="action_mark_biaya_done_external" type="object"
+                                                string="Mark as Done"
+                                                class="btn-primary"
+                                                attrs="{'invisible': [('approval_stage', '!=', 'biaya_transfered')]}"/>
+                                        <field name="is_sppd_cabang" invisible="1"/>
+                                        <field name="approval_stage" widget="statusbar"
+                                               attrs="{'invisible': [('is_sppd_cabang', '=', True)]}"
+                                               statusbar_visible="draft,waiting_mb_umum,waiting_kadiv_sdm_umum,waiting_mb_keuangan_pusat,waiting_kadiv_keuangan_pusat,waiting_for_transfer_biaya,biaya_transfered,done"/>
+                                        <field name="approval_stage" widget="statusbar"
+                                               attrs="{'invisible': [('is_sppd_cabang', '!=', True)]}"
+                                               statusbar_visible="draft,waiting_gm_biaya_cabang,waiting_kadiv_keu_pusat_transfer,biaya_transfered,done"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="leave_dinas_id" invisible="1"/> <field name="external_follower_id"
+                                                       domain="[('leave_dinas_id', '=', leave_dinas_id)]" options="{'no_create': True, 'no_open': True}"
+                                                       required="1" readonly="1"/>
+                                                <field name="biaya_header_id" attrs="{'readonly': [('approval_stage','!=','draft')]}"/>
+                                            </group>
+                                            <group>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="amount_total" readonly="1" widget="monetary"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Rincian Komponen Biaya">
+                                                <field name="biaya_line_external_ids" attrs="{'readonly': [('approval_stage','!=','draft')]}">
+                                                    <tree editable="bottom">
+                                                        <field name="komponen_id"/>
+                                                        <field name="jenis_lokasi"/>
+                                                        <field name="golongan"/>
+                                                        <field name="currency_id" invisible="1"/>
+                                                        <field name="jumlah" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                                        <field name="satuan"/>
+                                                    </tree>
+                                                </field>
+                                            </page>
+                                            <page string="Approval" name="approval_info_external_cost">
+                                                <group>
+                                                    <group name="approval_flags_cabang_ext" string="Approval Cabang"
+                                                           attrs="{'invisible': [('is_sppd_cabang', '!=', True)]}">
+                                                        <field name="approval_gm_cabang"/>
+                                                        <field name="approval_kadiv_keu_transfer_cabang"/>
+                                                    </group>
+                                                    <group name="approval_flags_pusat_ext" string="Approval Pusat"
+                                                           attrs="{'invisible': [('is_sppd_cabang', '=', True)]}">
+                                                        <field name="approval_mb_umum"/>
+                                                        <field name="approval_kadiv_sdm_umum"/>
+                                                        <field name="approval_mb_keuangan"/>
+                                                        <field name="approval_kadiv_keuangan"/>
+                                                        <field name="approval_mb_keuangan_transfer_biaya"/>
+                                                    </group>
+                                                </group>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Approval Perpanjangan Hari" attrs="{'invisible': [('extend_state', '=', False)]}">
+                            <field name="extend_date_to" readonly="1"/>
+                            <field name="extend_reason" readonly="1"/>
+                            <field name="extend_state" widget="statusbar"
+                               statusbar_visible="waiting_mb,waiting_kadiv,waiting_gm_cabang_extend,waiting_dirop,waiting_dirkeu,waiting_dirut,approved"
+                               readonly="1"/>
+
+                            <field name="extend_approval_ids" create="0" edit="0" delete="0">
+                                <tree string="Daftar Persetujuan">
+                                    <field name="employee_id"/>
+                                    <field name="approval_type"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form string="Detail Persetujuan">
+                                    <header>
+                                        <button name="action_approve"
+                                                type="object"
+                                                string="Setujui"
+                                                class="btn-primary"
+                                                attrs="{'invisible': [('is_my_turn', '=', False)]}"/>
+
+                                        <button name="action_reject"
+                                                type="object"
+                                                string="Tolak"
+                                                class="btn-danger"
+                                                attrs="{'invisible': [('is_my_turn', '=', False)]}"/>
+                                        <field name="is_my_turn" invisible="1"/>
+                                        <field name="state" widget="statusbar" statusbar_visible="waiting,approved,rejected"/>
+                                    </header>
+                                    <group>
+                                        <field name="employee_id" readonly="1"/>
+                                        <field name="approval_type" readonly="1"/>
+                                        <field name="is_director" readonly="1"/>
+                                    </group>
+                                    <footer>
+                                    </footer>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Biaya Tak Terduga" attrs="{'invisible': [('state', '!=', 'done')]}">
+                            <field name="unexpected_cost_ids">
+                                <tree editable="bottom">
+                                    <field name="name" string="Keterangan Biaya"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="amount" widget="Monetary" options="{'currency_field': 'currency_id'}"/>
+                                </tree>
+                                <form string="Detail Biaya Tak Terduga">
+                                    <group>
+                                        <field name="name" string="Keterangan Biaya"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="amount" widget="Monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="form_sppd_persetujuan_action" model="ir.actions.act_window">
+        <field name="name">Persetujuan Dinas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.dinas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','!=','draft')]</field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="form_sppd_persetujuan_tree_view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_form_sppd_persetujuan_tree"/>
+        <field name="act_window_id" ref="form_sppd_persetujuan_action"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="form_sppd_persetujuan_view_form_ib">
+        <field name="sequence" eval="4"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_sppd_persetujuan_form"/>
+        <field name="act_window_id" ref="form_sppd_persetujuan_action"/>
+    </record>
+</odoo>

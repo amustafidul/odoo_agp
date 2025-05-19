@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="contacts.menu_contacts" model="ir.ui.menu">
+        <field name="sequence">30</field>
+    </record>
+    <record id="hr.menu_hr_root" model="ir.ui.menu">
+        <field name="sequence">31</field>
+    </record>
+    <record id="hr_attendance.menu_hr_attendance_root" model="ir.ui.menu">
+        <field name="sequence">32</field>
+    </record>
+    <record id="hr_payroll_community.menu_hr_payroll_community_root" model="ir.ui.menu">
+        <field name="sequence">36</field>
+    </record>
+    <menuitem
+        id="menu_hr_employee_unit_tree"
+        action="hr_employee_unit_action"
+        parent="hr.menu_config_employee"
+        sequence="90"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_hr_employee_keterangan_jabatan_tree"
+        action="hr_employee_keterangan_jabatan_action"
+        parent="hr.menu_config_employee"
+        sequence="91"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_hr_employee_jabatan_komplit_tree"
+        action="hr_employee_jabatan_komplit_action"
+        parent="hr.menu_config_employee"
+        sequence="92"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_hr_employee_kelompok_umur_tree"
+        action="hr_employee_kelompok_umur_action"
+        parent="hr.menu_config_employee"
+        sequence="92"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_hr_employee_fungsi_penugasan_tree"
+        action="hr_employee_fungsi_penugasan_action"
+        parent="hr.menu_config_employee"
+        sequence="93"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_hr_employee_unit_penempatan_tree"
+        action="hr_employee_unit_penempatan_action"
+        parent="hr.menu_config_employee"
+        sequence="94"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_hr_employee_status_pajak_tree"
+        action="hr_employee_status_pajak_action"
+        parent="hr.menu_config_employee"
+        sequence="95"
+        groups="hr.group_hr_user"/>
+    <menuitem
+        id="menu_agp_vendor_tad_tree"
+        action="agp_vendor_tad_action"
+        parent="hr.menu_config_employee"
+        sequence="97"
+        groups="hr.group_hr_user"/>
+    <menuitem id="menu_employee_dashboard" name="Dashboard" parent="hr.menu_hr_root" action="action_employee_dashboard" sequence="1"/>
+    <menuitem id="menu_employee_uniform_root" name="Seragam" parent="hr.menu_hr_root" sequence="94"/>
+    <menuitem id="menu_employee_uniform_hr_assignment" name="HC Assignment" parent="menu_employee_uniform_root" action="employee_uniform_action_hc_assignment" sequence="1"/>
+    <menuitem id="menu_employee_uniform_kadiv_gm" name="Kadiv &amp; GM" parent="menu_employee_uniform_root" action="employee_uniform_action_kadiv_gm" sequence="2"/>
+    <menuitem id="menu_selected_employee_uniform" name="Form Pengisian Seragam" parent="menu_employee_uniform_root" action="selected_employee_uniform_action" sequence="3"/>
+    <menuitem id="menu_alokasi_anggaran_hr" name="HR" parent="agp_keuangan_ib.parent_menu_board_keuangan_anggaran" action="kode_anggaran_hr_action" sequence="19"/>
+    <record id="hr.menu_hr_employee_payroll" model="ir.ui.menu">
+        <field name="sequence">5</field>
+    </record>
+</odoo>

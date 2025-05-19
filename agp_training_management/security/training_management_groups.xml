@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="ir.module.category" id="module_category_agp_training_management">
+            <field name="name">Training Management AGP</field>
+            <field name="description">Hak akses untuk modul Training Management AGP.</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="group_agp_training_user" model="res.groups">
+            <field name="name">Training - Pengusul TNA (Kadiv/GM)</field>
+            <field name="category_id" ref="module_category_agp_training_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Grup untuk user yang membuat dan mengajukan Usulan TNA (Kadiv/GM).</field>
+        </record>
+
+        <record id="group_agp_training_officer" model="res.groups">
+            <field name="name">Training - Officer SDM</field>
+            <field name="category_id" ref="module_category_agp_training_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_agp_training_user')), (4, ref('hr.group_hr_user'))]"/>
+            <field name="comment">Grup untuk staf SDM yang memproses TNA, realisasi training, dan evaluasi.</field>
+        </record>
+
+        <record id="group_agp_training_manager" model="res.groups">
+            <field name="name">Training - Manager SDM</field>
+            <field name="category_id" ref="module_category_agp_training_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_agp_training_officer')), (4, ref('hr.group_hr_manager'))]"/>
+            <field name="comment">Grup untuk manajer SDM yang memiliki akses penuh, termasuk approval final dan konfigurasi modul training.</field>
+        </record>
+    </data>
+</odoo>

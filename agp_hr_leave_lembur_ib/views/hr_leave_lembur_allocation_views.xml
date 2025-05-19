@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="hr_leave_lembur_allocation_view_form" model="ir.ui.view">
+        <field name="name">hr.leave.lembur.allocation.view.form</field>
+        <field name="model">hr.leave.lembur.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="after">
+                <field name="lembur_status_id"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="placeholder">e.g. Tipe lembur (From validity start to validity end / no limit)</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_allocation_view_tree_my" model="ir.ui.view">
+        <field name="name">hr.leave.lembur.allocation.view.tree.my</field>
+        <field name="model">hr.leave.lembur.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_tree"/>
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_validate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_refuse']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_leave_lembur_allocation_action_my" model="ir.actions.act_window">
+        <field name="name">My Allocations</field>
+        <field name="res_model">hr.leave.lembur.allocation</field>
+        <field name="view_mode">tree,kanban,form,activity</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat alokasi untuk lembur
+            </p>
+        </field>
+        <field name="context">{}</field>
+        <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+    </record>
+
+    <record id="hr_leave_lembur_allocation_action_my_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="hr_leave_lembur_allocation_action_my"/>
+        <field name="view_id" ref="hr_leave_lembur_allocation_view_tree_my"/>
+    </record>
+
+    <record id="hr_leave_lembur_allocation_action_my_view_form" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">form</field>
+        <field name="act_window_id" ref="hr_leave_lembur_allocation_action_my"/>
+        <field name="view_id" ref="hr_leave_lembur_allocation_view_form"/>
+    </record>
+</odoo>

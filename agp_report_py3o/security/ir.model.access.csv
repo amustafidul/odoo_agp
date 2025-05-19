@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_agp_report_py3o_agp_report_py3o,agp_report_py3o.agp_report_py3o,model_agp_report_py3o_agp_report_py3o,base.group_user,1,1,1,1

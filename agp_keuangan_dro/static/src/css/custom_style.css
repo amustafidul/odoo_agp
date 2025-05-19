@@ -1,0 +1,46 @@
+.grey-button {
+    background-color: #6e6e6e !important; 
+    border-color: #6e6e6e !important;
+    color: white !important;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.second-nodin-class {
+    width: 100% !important; 
+}
+
+.txt-page-nodins-class {
+    margin-left: 12px;
+}
+
+.o_ThreadView_core .o_MessageList
+.o_Message_custom.current_user {
+	direction: ltr;
+	background-color: #d6d6d6;
+	color: #d6d6d6;
+}
+
+.o_Message_authorName.o_redirect.me-1.text-truncate.cursor-pointer {
+	color: navy;
+}
+
+.o_Message_date.o_Message_headerDate.text-muted.opacity-50.me-2 {
+	color: magenta !important;
+}
+
+[data-xmlid="agp_keuangan_dro.monitoring_master_menu"] {
+    color: #4285F4;
+}
+
+[data-xmlid="agp_keuangan_dro.monitoring_parent_rkap"] {
+    color: #4285F4;
+}
+
+[data-xmlid="agp_keuangan_dro.monitoring_parent_kkhc"] {
+    color: #4285F4;
+}
+
+[data-xmlid="agp_keuangan_dro.monitoring_kkhc_parent_menu"] {
+    color: #4285F4;
+}

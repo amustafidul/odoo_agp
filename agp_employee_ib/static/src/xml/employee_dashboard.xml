@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+  <t t-name="agp_employee_ib.EmployeeDashboardTemplate">
+    <div id="loadingOverlay" class="text-center my-5" style="display: none;">
+      <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem;">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <h4 class="mt-3">⏳ Sedang memuat data, mohon tunggu...</h4>
+    </div>
+    <div id="dashboardContent" class="oh_dashboards container-fluid">
+      <div class="row my-3">
+        <div class="col-12 text-center">
+          <img src="/agp_employee_ib/static/src/img/logo.png" alt="PT Adhi Guna Putera"
+               class="img-fluid" style="max-width: 150px;"/>
+          <h3>PT Adhi Guna Putera</h3>
+        </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-md-4">
+          <div class="card text-center">
+            <h5 class="card-header"><i class="fa fa-users"></i> KELOMPOK UMUR</h5>
+            <div class="card-body">
+              <canvas id="ageGroupChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-center">
+            <h5 class="card-header">CONTROLLER</h5>
+            <br/>
+            <label for="employmentTypeSelect">Jenis Pegawai</label>
+            <select id="employmentTypeSelect" class="form-control">
+              <option value="">ALL</option>
+              <option value="organik">ORGANIK</option>
+              <option value="pkwt">PKWT</option>
+              <option value="tad">TAD</option>
+            </select>
+            <br/>
+            <label for="branchSelect">Cabang Kerja</label>
+            <select id="branchSelect" class="form-control">
+              <option value="">Semua Cabang</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-center">
+            <h5 class="card-header"><i class="fa fa-venus-mars"></i> JENIS KELAMIN</h5>
+            <div class="card-body">
+              <canvas id="genderChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-md-6">
+          <div class="card text-center">
+            <h5 class="card-header"><i class="fa fa-graduation-cap"></i> PENDIDIKAN</h5>
+            <div class="card-body">
+              <canvas id="educationChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <h5 class="card-header"><i class="fa fa-table"></i> TABEL SUMMARY</h5>
+            <div class="card-body" id="summaryTableContainer">
+              <div class="table-responsive" style="white-space: nowrap; overflow-x: auto;">
+                <table class="table table-bordered table-hover" id="summaryTable">
+                  <thead></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="errorMessage"></div>
+    </div>
+  </t>
+</templates>

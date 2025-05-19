@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_account_keuangan_transaction_tree" model="ir.ui.view">
+        <field name="name">account.keuangan.transaction.tree</field>
+        <field name="model">account.keuangan.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Transaction List">
+                <!-- <field name="payment_id"/> -->
+                <field name="invoice_id"/>
+                <!-- <field name="jenis_kegiatan_id"/> -->
+                <field name="account_code_id"/>
+                <field name="jenis_kegiatan_id"/>
+                <field name="kode_anggaran"/>
+                <field name="amount_paid"/>
+                <field name="payment_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_account_keuangan_transaction" model="ir.actions.act_window">
+        <field name="name">Cash In / Cash Out</field>
+        <field name="res_model">account.keuangan.transaction</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- <menuitem id="menu_account_keuangan_transaction" 
+              name="Transactions" 
+              parent="menu_account_keuangan" 
+              action="action_account_keuangan_transaction"/> -->
+</odoo>

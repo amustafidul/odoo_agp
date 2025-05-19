@@ -1,0 +1,126 @@
+
+<odoo>
+    <data>
+        <template id="report_konsolidasi_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <style>
+                            .main-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-top: 20px;
+                            }
+                            .main-table th, .main-table td {
+                                border: 1px solid black;
+                                padding: 8px;
+                                text-align: center;
+                            }
+                            .header-section {
+                                text-align: center;
+                                margin-bottom: 20px;
+                            }
+                            .company-header {
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 20px;
+                            }
+                            .company-logo {
+                                width: 10%;
+                                height: auto;
+                                margin-right: 20px;
+                            }
+                            .text-bold {
+                                font-weight: bold;
+                            }
+                            .text-right {
+                                text-align: right;
+                            }
+                            .text-left {
+                                text-align: left;
+                            }
+                            .company-title {
+                                flex-grow: 1;
+                                text-align: left;
+                            }
+                        </style>
+
+                        <!-- Company Header Section -->
+                        <div class="company-header">
+                            <img class="company-logo" 
+                                 t-att-src="o.img_src"
+                                 alt="Company Logo"/>
+                            <div class="company-title">
+                                <h3 style="margin: 0; font-weight: bold;">
+                                    PT. ADHI GUNA PUTERA
+                                </h3>
+                                <h4 style="margin: 5px 0 0 0;" t-field="o.name"/>
+                            </div>
+                        </div>
+
+                        <div class="header-section">
+                            <h2>LAPORAN KONSOLIDASI RKAP</h2>
+                        </div>
+
+                        <table class="main-table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">Kode</th>
+                                    <th rowspan="2">COA</th>
+                                    <th rowspan="2">Uraian</th>
+                                    <th t-att-colspan="len(o.get_data_konsolidasi().get('headers', [])) - 3">
+                                        Cabang
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <t t-foreach="o.get_data_konsolidasi().get('headers', [])[3:]" t-as="branch">
+                                        <th t-esc="branch.replace('_', ' ').title()"/>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.get_data_konsolidasi().get('lines', [])" t-as="line">
+                                    <tr>
+                                        <td class="text-center" t-esc="line.get('kode', '')"/>
+                                        <td class="text-center" t-esc="line.get('coa', '')"/>
+                                        <td class="text-left" t-esc="line.get('uraian', '')"/>
+                                        <t t-foreach="o.get_data_konsolidasi().get('headers', [])[3:]" t-as="branch">
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(line.get(branch, 0.0))"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Total Row -->
+                        <div style="margin-top: 20px;">
+                            <table class="main-table">
+                                <tr class="text-bold">
+                                    <td colspan="3" class="text-right">TOTAL</td>
+                                    <t t-foreach="o.get_data_konsolidasi().get('headers', [])[3:]" t-as="branch">
+                                        <td class="text-right">
+                                            <span t-esc="'{:,.2f}'.format(sum(line.get(branch, 0.0) for line in o.get_data_konsolidasi().get('lines', [])))"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Signature Section -->
+                        <div style="margin-top: 50px; text-align: right;">
+                            <div style="margin-bottom: 80px;">
+                                <p>Jakarta, <span t-field="o.create_date" t-options='{"format": "d MMMM y"}'/></p>
+                                <p>Mengetahui,</p>
+                                <br/><br/>
+                                <p style="border-bottom: 1px solid black; width: 200px; display: inline-block"/>
+                                <p>Direktur Keuangan</p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

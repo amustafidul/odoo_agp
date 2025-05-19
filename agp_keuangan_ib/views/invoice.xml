@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <data noupdate="1">
+            <!-- Sequence Data -->
+            <record id="seq_invoice" model="ir.sequence">
+                <field name="name">Keuangan Invoice</field>
+                <field name="code">sequence.keuangan.invoice</field>
+                <field name="padding">4</field>
+                <field name="number_next">1</field>
+                <field name="number_increment">1</field>
+            </record>
+        </data>
+
+        <!-- Action untuk Invoice -->
+        <record id="action_invoice_keuangan" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.keuangan.invoice</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a customer invoice
+                </p>
+                <p>
+                    Create invoices, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+        <!-- Form View untuk Invoice -->
+        <record id="view_invoice_form" model="ir.ui.view">
+            <field name="name">invoice.form</field>
+            <field name="model">account.keuangan.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Invoice">
+                    <header>
+                        <button name="action_reset_to_draft" type="object" string="Reset to Draft" states="confirmed" class="oe_highlight"/>
+                        <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/>
+                        <!-- <button name="action_preview_invoice" type="object" string="Preview" class="oe_highlight"/> -->
+                        <!-- <button name="action_print" type="object" string="Preview" states="draft" class="btn-secondary"/> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                        <button name="action_register_payment" type="object" string="Register Payment" class="btn-primary" attrs="{'invisible': [('state', '=', 'payment_registered'), ('state', '=', 'draft')]}"/>
+
+                        <!-- Tombol untuk menandai pembayaran penuh -->
+                        <!-- <button name="action_mark_as_paid" string="Mark as Paid" type="object" class="btn-success" states="confirmed,partial"/> -->
+                    </header>
+                    <sheet>
+                        <xpath expr="//div[@class='oe_title']" position="before">
+                            <widget name="web_ribbon" title="Not Paid" 
+                                    attrs="{'invisible': ['|', ('payment_status', '!=', 'not_paid'), ('state', '=', 'draft')]}" 
+                                    bg_color="bg-danger"/>
+                            <widget name="web_ribbon" title="Partial Paid" 
+                                    attrs="{'invisible': [('payment_status', '!=', 'partial_paid')]}" bg_color="bg-warning"/>
+                            <widget name="web_ribbon" title="Paid" 
+                                    attrs="{'invisible': [('payment_status', '!=', 'paid')]}" bg_color="bg-success"/>
+                        </xpath>
+                        <div class="oe_title">
+                            <!-- Menggunakan span untuk teks statis "Invoice" -->
+                            <span class="o_form_label">Invoice</span>
+
+                            <h1>
+                                <!-- Menggunakan field name untuk menampilkan nilai dari field 'name' di model -->
+                                <field name="name" placeholder="Draft"/>
+                                <!-- <span attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'draft'), ('name', '!=', '/'), ('posted_before', '=', True), ('quick_edit_mode', '=', True)]}">Draft</span> -->
+                            </h1>
+                        </div>
+                        <br></br>
+
+                        <group>
+                            <group>
+                                <field name="kepada"/>
+                                <field name="ditujukan_kepada"/>
+                                <field name="alamat_perusahaan" readonly="1"/>
+                                <!-- <field name="is_scf" readonly="1"/> -->
+                                <field name="jenis_kegiatan_id"/>
+                                <field name="tipe_tarif" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Assist Tug')]}" />
+                                <field name="tipe_bm" string="Tipe" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Bongkar Muat')]}" />
+                                <!-- <field name="nomor_referensi"/> -->
+                                <field name="kata_pengantar"/>
+                                <field name="informasi_pembayaran"/>
+                                <field name="bank_account_id"/>
+                                <field name="company_name"/>
+                                <field name="acc_holder_name"/>
+                                <field name="acc_number"/>
+                                <!-- <field name="phone"/> -->
+                                <!-- <field name="email"/> -->
+                                <!-- <field name="ta" attrs="{'invisible': [('jenis_kegiatan_name', '=', 'Assist Tug')]}" />
+                                <field name="td" attrs="{'invisible': [('jenis_kegiatan_name', '=', 'Assist Tug')]}" /> -->
+                                <!-- <field name="muatan" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Keagenan', 'Bongkar Muat'))]}" />
+                                <field name="gtbg" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Bongkar Muat', 'EMKL', 'Keagenan', 'Jetty Manajemen', 'Jasa Operasi Lainnya', 'Logistik'))]}" />
+                                <field name="tu_assist_fc" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Bongkar Muat', 'EMKL', 'Keagenan', 'Jetty Manajemen', 'Jasa Operasi Lainnya', 'Logistik'))]}" />
+                                <field name="tu_assist_vc" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Bongkar Muat', 'EMKL', 'Keagenan', 'Jetty Manajemen', 'Jasa Operasi Lainnya', 'Logistik'))]}" />
+                                <field name="pilotage_fc" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Bongkar Muat', 'EMKL', 'Keagenan', 'Jetty Manajemen', 'Jasa Operasi Lainnya', 'Logistik'))]}" />
+                                <field name="pilotage_vc" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Bongkar Muat', 'EMKL', 'Keagenan', 'Jetty Manajemen', 'Jasa Operasi Lainnya', 'Logistik'))]}" />
+                                <field name="tarif" attrs="{'invisible': [('jenis_kegiatan_name', 'in', ('Assist Tug', 'Bongkar Muat', 'EMKL', 'Keagenan', 'Jetty Manajemen', 'Jasa Operasi Lainnya', 'Logistik'))]}" /> -->
+
+                                <field name="jenis_kegiatan_name" invisible="1" />
+                                <field name="payment_status" invisible="1" />
+                                <field name="company_id" invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="user_branch_id" invisible="1"/>
+                                <field name="branch_address" invisible="1"/>
+                                <field name="phone_branch" invisible="1"/>
+                                <field name="email_branch" invisible="1"/>
+                                <field name="website_branch" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="tanggal_invoice"/>
+                                <field name="nomor_surat_perjanjian"/>
+                                <field name="tanggal_perjanjian"/>
+                                <field name="branch_id"/>
+                                <field name="sub_branch_ids" widget="many2many_tags"/>
+                                <field name="periode_mulai"/>
+                                <field name="periode_akhir"/>
+                                <field name="tempat"/>
+                                <field name="ttd"/>
+                                <field name="jabatan"/>
+                                <field name="keterangan"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page id="invoice_tab" name="invoice_tab" string="Invoice Lines">
+                                <field name="line_ids" widget="section_and_note_one2many" mode="tree,kanban" context="{'default_display_type': 'normal'}">
+                                    <tree editable="bottom" string="Invoice Lines" class="oe_inline_add">
+                                        <field name="sequence" widget="handle"/>
+                                        <control>
+                                            <create name="add_line_control" string="Add a line" context="{'default_display_type': 'normal'}"/>
+                                            <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+                                            <!-- <field name="name" widget="section_and_note_text" optional="show"/> -->
+                                            <field name="tipe_tarif" invisible="1" />
+                                            <field name="jenis_kegiatan_name" invisible="1" />
+                                            <field name="no" invisible="1" />
+
+                                            <!-- Displayed fields -->
+                                            <field name="display_type" invisible="1" value="normal"/>
+                                            <field name="deskripsi_tagihan" widget="section_and_note_text" width="100px" string="Deskripsi" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'in', ['Jetty Manajemen', 'Logistik', 'EMKL', 'Keagenan', 'Assist Tug', 'Jasa Operasi Lainnya', 'Kegiatan Lainnya'])]}"/>
+                                            <!-- <field name="name" widget="section_and_note_text" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'in', ['Jetty Manajemen', 'Logistik', 'EMKL', 'Keagenan'])]}"/> -->
+                                            <field name="name" widget="section_and_note_text" width="100px" string="Deskripsi" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'not in', ['Jetty Manajemen', 'Logistik', 'EMKL', 'Keagenan', 'Jasa Operasi Lainnya', 'Kegiatan Lainnya'])]}"/>
+                                            <field name="name" widget="section_and_note_text" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'in', ['Jetty Manajemen', 'Logistik', 'EMKL', 'Keagenan', 'Jasa Operasi Lainnya', 'Kegiatan Lainnya'])]}"/>
+                                            <field name="nama_shipper" width="150px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'in', ['PBM', 'Bongkar Muat', 'Jetty Manajemen', 'Logistik', 'EMKL', 'Keagenan', 'Dredging', 'Jasa Operasi Lainnya', 'Kegiatan Lainnya'])]}"/>
+                                            <!-- <field name="fixed_cost" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '=', 'Assist Tug')]}"/> -->
+                                            <!-- <field name="variable_cost" width="200px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '=', 'Assist Tug')]}"/> -->
+                                            <field name="ta" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'not in', ['Assist Tug', 'PBM', 'Bongkar Muat'])]}"/>
+                                            <field name="td" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', 'not in', ['Assist Tug', 'PBM', 'Bongkar Muat'])]}"/>
+                                            <field name="tarif" width="100px" widget="float" options="{'precision': 0}" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '=', 'Assist Tug')]}"/>
+                                            <field name="unit" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '=', 'Assist Tug')]}"/>
+                                            <field name="satuan" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '=', 'Assist Tug')]}"/>
+                                            <field name="lumpsum" width="100px" options="{'precision': 0}" attrs="{'column_invisible': [('parent.tipe_tarif', '!=', 'lumpsum')]}"/>
+                                            <!-- <field name="bl" attrs="{'column_invisible': [('parent.tipe_tarif', '!=', 'mt')]}"/> -->
+                                            
+                                            <field name="ds" width="100px"
+                                                string="BL"
+                                                attrs="{'column_invisible': [('parent.tipe_bm', 'not in', ['darat_ds', 'laut'])], 
+                                                        'string': [('parent.tipe_bm', 'in', ['darat_ds', 'laut'])]}"/>
+                                            <field name="ds" width="100px"
+                                                string="DS"
+                                                 attrs="{'column_invisible': [('parent.tipe_bm', 'not in', ['darat_bl'])], 
+                                                        'string': [('parent.tipe_bm', 'in', ['darat_bl'])]}"/>
+                                            
+                                            <field name="muatan" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '!=', 'Assist Tug')]}"/>
+                                            <field name="tarif" width="100px" attrs="{'column_invisible': [('parent.tipe_tarif', '!=', 'mt')]}"/>
+                                            <field name="fc_tunda" width="100px" attrs="{'column_invisible': ['|', ('parent.jenis_kegiatan_name', '!=', 'Assist Tug'), ('parent.tipe_tarif', 'in', ('lumpsum', 'mt'))]}"/>
+                                            <field name="vc_tunda" width="100px" attrs="{'column_invisible': ['|', ('parent.jenis_kegiatan_name', '!=', 'Assist Tug'), ('parent.tipe_tarif', 'in', ('lumpsum', 'mt'))]}"/>
+                                            <field name="fc_pandu" width="100px" attrs="{'column_invisible': ['|', ('parent.jenis_kegiatan_name', '!=', 'Assist Tug'), ('parent.tipe_tarif', 'in', ('lumpsum', 'mt'))]}"/>
+                                            <field name="vc_pandu" width="100px" attrs="{'column_invisible': ['|', ('parent.jenis_kegiatan_name', '!=', 'Assist Tug'), ('parent.tipe_tarif', 'in', ('lumpsum', 'mt'))]}"/>
+                                            <field name="gtbg" width="100px" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '!=', 'Assist Tug')]}"/>
+                                            <!-- <field name="qty" attrs="{'column_invisible': [('parent.jenis_kegiatan_name', '=', 'Assist Tug')]}"/> -->
+                                            <field name="pergerakan_in_out" width="100px" attrs="{'column_invisible': ['|', ('parent.jenis_kegiatan_name', '!=', 'Assist Tug'), ('parent.tipe_tarif', '=', 'lumpsum')]}"/>
+                                            <field name="tax_ids" width="100px" widget="many2many_tags" options="{'no_create': True}" />
+                                            <!-- <field name="tax_pph_ids" options="{'no_create': True}" /> -->
+                                            <!-- <field name="pph_amoun t"/> -->
+                                            <field name="total_sebelum_pajak" width="100px" widget="float" options="{'precision': 0}"/>
+                                            <field name="tax_amount" width="100px" widget="float" options="{'precision': 0}"/>
+                                            <field name="total_sesudah_pajak" width="100px" widget="float" options="{'precision': 0}"/>
+                                                                                       
+                                            <!-- <field name="total_harga" string="Total Harga" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/> -->
+                                        </tree>
+                                    </field>
+                                    <group class="oe_subtotal_footer oe_right">
+                                        <field name="show_admin_bag" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Assist Tug')]}" />
+                                        <field name="show_nilai_pekerjaan" attrs="{'invisible': [('jenis_kegiatan_name', 'not in', ['Jetty Manajemen', 'Logistik', 'Dredging'])]}" />
+                                        <field name="show_biaya_inklaring" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'EMKL')]}" />
+                                        <field name="show_call_fee" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Keagenan')]}" />
+                                        <field name="show_uang_muka" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Keagenan')]}" />
+                                        <!-- <field name="total_sebelum_pajak"/> -->
+                                        <field name="admin_bag" attrs="{'invisible': [('show_admin_bag', '=', False)]}" widget="float" options="{'precision': 0}"/>
+                                        <field name="nilai_pekerjaan" attrs="{'invisible': [('show_nilai_pekerjaan', '=', False)]}" widget="float" options="{'precision': 0}"/>
+                                        <!-- <field name="total_sesudah_pajak" string = 'Nilai Pekerjaan' attrs="{'invisible': [('show_nilai_pekerjaan', '=', False)]}" widget="float" options="{'precision': 0}"/> -->
+                                        <field name="total_sebelum_pajak" widget="float" options="{'precision': 0}" readonly="1"/>
+                                        <field name="biaya_inklaring" attrs="{'invisible': [('show_biaya_inklaring', '=', False)]}" widget="float" options="{'precision': 0}"/>
+                                        <field name="call_fee" attrs="{'invisible': [('show_call_fee', '=', False)]}" widget="float" options="{'precision': 0}"/>
+                                        <field name="total_pajak_call_fee" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Keagenan')]}" widget="float" options="{'precision': 0}" readonly="1"/>
+                                        <field name="total_pajak_lain" attrs="{'invisible': [('jenis_kegiatan_name', '!=', 'Keagenan')]}" />
+                                        <field name="total_pajak" widget="float" options="{'precision': 0}" readonly="1"/>
+                                        <!-- <field name="total_pajak_pph" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/> -->
+                                        <field name="uang_muka" attrs="{'invisible': [('show_uang_muka', '=', False)]}" widget="float" options="{'precision': 0}"/>
+                                        <field name="total_sesudah_pajak" widget="float" options="{'precision': 0}" readonly="1"/>
+                                        <field name="total_paid" widget="float" options="{'precision': 0}" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                                        <field name="remaining_balance" widget="float" options="{'precision': 0}" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+
+                                        <!-- <field name="payment_ids" widget="one2many_list" options="{'no_create': True}"/> -->
+                                    </group>
+                                </page>
+                            </notebook>
+                        </sheet>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </form>
+                </field>
+            </record>
+
+            <!-- Tree View untuk Invoice -->
+            <record id="view_invoice_tree" model="ir.ui.view">
+                <field name="name">invoice.tree</field>
+                <field name="model">account.keuangan.invoice</field>
+                <field name="arch" type="xml">
+                    <tree string="Invoices" >
+                        <field name="name" optional="show"/>
+                        <field name="tanggal_invoice" optional="show"/>
+                        <field name="ditujukan_kepada" optional="show"/>
+                        <field name="jenis_kegiatan_id" optional="show"/>
+                        <!-- <field name="nomor_referensi" optional="show"/> -->
+                        <field name="state" width="50px" widget="badge" optional="show"/>
+                        <field name="payment_status" widget="badge" optional="show"/>
+                        <field name="kata_pengantar" optional="hide"/>
+                        <field name="informasi_pembayaran" optional="hide"/>
+                        <field name="nomor_surat_perjanjian" optional="hide"/>
+                        <field name="tanggal_perjanjian" optional="hide"/>
+                        <field name="branch_id" optional="hide"/>
+                        <field name="sub_branch_ids" optional="hide"/>
+                        <field name="keterangan" optional="hide"/>
+                        <field name="admin_bag" optional="hide"/>
+                        <field name="nilai_pekerjaan" optional="hide"/>
+                        <field name="total_sebelum_pajak" optional="hide"/>
+                        <field name="total_pajak" optional="hide"/>
+                        <field name="total_sesudah_pajak" optional="hide"/>
+                    </tree>
+                </field>
+            </record>
+
+        </data>
+    </odoo>

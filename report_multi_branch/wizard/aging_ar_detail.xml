@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form view for Aging AR Wizard -->
+    <record id="aging_ar_detail_view" model="ir.ui.view">
+        <field name="name">Aging AR Detail</field>
+        <field name="model">aging.ar.detail.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="periode"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="jenis_kegiatan_id" domain="[('company_id', '=', company_id)]"/>
+                        <field name="partner_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button name="action_xls" string="Cetak Xls" type="object" class="oe_highlight" data-hotkey="w"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the Aging AR Wizard form -->
+    <record id="action_aging_ar_detail" model="ir.actions.act_window">
+        <field name="name">Aging AR Detail</field>
+        <field name="res_model">aging.ar.detail.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="aging_ar_detail_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu item to access the Aging AR Wizard -->
+    <menuitem id="menu_aging_ar_detail" name="Aging AR Detail" sequence="52" action="action_aging_ar_detail" parent="accounting_pdf_reports.menu_finance_partner_reports" groups="account.group_account_manager"/>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_department_form_ib" model="ir.ui.view">
+        <field name="name">view.hr.department.form.ib</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="department_type" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='manager_id']" position="after">
+                <field name="penanggung_jawab_ids" widget="many2many_tags" domain="['|', ('company_id','=',False),('company_id','=',company_id)]"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page name="sppd_role_config" string="SPPD Role Configuration">
+                        <label for="biaya_sppd_role" string="Biaya SPPD Role Configuration"/>
+                        <field name="biaya_sppd_role"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

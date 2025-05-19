@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="menu_hr_dinas_root" name="SPPD" sequence="34" web_icon="agp_dinas_ib,static/description/icon_dinas.png"/>
+
+    <menuitem id="menu_hr_dinas_pengajuan" name="Pengajuan" parent="menu_hr_dinas_root" sequence="1"/>
+    <menuitem id="menu_pengajuan_nota_dinas_root" name="Nota Dinas" parent="menu_hr_dinas_pengajuan" sequence="1"/>
+    <menuitem id="menu_nota_dinas" name="Nota Dinas SPPD" parent="menu_pengajuan_nota_dinas_root" action="agp_dinas_ib.nota_dinas_action" sequence="1"/>
+    <menuitem id="menu_pengajuan_sppd_root" name="SPPD" parent="menu_hr_dinas_pengajuan" sequence="2"/>
+    <menuitem id="menu_pengajuan_dinas" name="Form SPPD" parent="menu_pengajuan_sppd_root" action="agp_dinas_ib.form_sppd_pengajuan_action" sequence="1"/>
+
+    <menuitem id="menu_hr_dinas_persetujuan" name="Persetujuan" parent="menu_hr_dinas_root" sequence="2"/>
+    <menuitem id="menu_persetujuan_nota_dinas_root" name="Nota Dinas" parent="menu_hr_dinas_persetujuan" sequence="1"/>
+    <menuitem id="menu_persetujuan_nota_dinas" name="Nota Dinas SPPD" parent="menu_persetujuan_nota_dinas_root" action="agp_dinas_ib.nota_dinas_persetujuan_action" sequence="1"/>
+    <menuitem id="menu_persetujuan_sppd_root" name="SPPD" parent="menu_hr_dinas_persetujuan" sequence="2"/>
+    <menuitem id="menu_persetujuan_dinas" name="Form SPPD" parent="menu_persetujuan_sppd_root" action="agp_dinas_ib.form_sppd_persetujuan_action" sequence="1"/>
+
+    <menuitem id="menu_anggaran_dinas" name="Anggaran" parent="menu_hr_dinas_root" sequence="3"/>
+    <menuitem id="menu_anggaran_spp_dinas" name="Surat Permintaan Pembayaran" parent="menu_anggaran_dinas" action="report_multi_branch.action_view_spp" sequence="1"/>
+
+    <menuitem id="menu_hr_dinas_configuration" name="Configuration" parent="menu_hr_dinas_root" sequence="4"/>
+    <menuitem id="menu_employee_position" name="Employee Position" parent="menu_hr_dinas_configuration" action="agp_dinas_ib.action_employee_position" sequence="1"/>
+</odoo>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tna_proposed_training_search" model="ir.ui.view">
+        <field name="name">tna.proposed.training.search</field>
+        <field name="model">tna.proposed.training</field>
+        <field name="arch" type="xml">
+            <search string="Cari Usulan Training">
+                <field name="name" string="Nama Training"/>
+                <field name="submission_id" string="Nomor Usulan Induk"/>
+                <field name="period_id"/>
+                <field name="department_id"/>
+                <field name="branch_id"/>
+                <field name="training_scope_id"/>
+                <field name="state"/>
+                <filter string="Baru Diinput" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="Menunggu Approval SDM" name="pending_approval" domain="[('state', '=', 'pending_approval')]"/>
+                <filter string="Disetujui" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Ditolak" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter string="Sudah Direalisasi" name="realized" domain="[('state', '=', 'realized')]"/>
+                <group expand="0" string="Kelompokkan Berdasarkan...">
+                    <filter string="Periode TNA" name="group_by_period" context="{'group_by': 'period_id'}"/>
+                    <filter string="Submission Induk" name="group_by_submission" context="{'group_by': 'submission_id'}"/>
+                    <filter string="Divisi" name="group_by_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Cabang" name="group_by_branch" context="{'group_by': 'branch_id'}"/>
+                    <filter string="Lingkup Diklat" name="group_by_scope" context="{'group_by': 'training_scope_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_tna_proposed_training_tree" model="ir.ui.view">
+        <field name="name">tna.proposed.training.tree</field>
+        <field name="model">tna.proposed.training</field>
+        <field name="arch" type="xml">
+            <tree string="Detail Usulan Training" decoration-info="state=='new' or state=='pending_approval'" decoration-success="state=='approved' or state=='realized'" decoration-danger="state=='rejected'">
+                <field name="submission_id" optional="hide"/>
+                <field name="period_id" optional="show"/>
+                <field name="branch_id" optional="show"/>
+                <field name="department_id" optional="show"/>
+                <field name="name" string="Nama Training"/>
+                <field name="training_scope_id"/>
+                <field name="estimated_participant_count" string="Jml Peserta"/>
+                <field name="estimated_cost" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total Estimasi Biaya"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="state" widget="badge"/>
+                <field name="training_realization_id" string="Link Realisasi" optional="show" widget="many2one_tags" options="{'no_open':True}"/>
+                <field name="can_approve_or_reject" invisible="1"/>
+                <button name="action_approve" string="Approve" type="object" icon="fa-check" class="oe_highlight" attrs="{'invisible': ['|', ('state', '!=', 'pending_approval'), ('can_approve_or_reject', '=', False)]}" groups="hr.group_hr_manager"/>
+                <button name="action_reject" string="Reject" type="object" icon="fa-times" class="oe_highlight oe_button_danger" attrs="{'invisible': ['|', ('state', '!=', 'pending_approval'), ('can_approve_or_reject', '=', False)]}" groups="hr.group_hr_manager" confirm="Isi alasan penolakan di form jika ada. Lanjutkan menolak?"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tna_proposed_training_form" model="ir.ui.view">
+        <field name="name">tna.proposed.training.form</field>
+        <field name="model">tna.proposed.training</field>
+        <field name="arch" type="xml">
+            <form string="Detail Usulan Training">
+                <header>
+                    <button name="action_approve" string="Approve Usulan Ini" type="object" class="btn-primary" attrs="{'invisible': ['|', ('state', '!=', 'pending_approval'), ('can_approve_or_reject', '=', False)]}" groups="agp_training_management.group_agp_training_manager"/>
+                    <button name="action_reject" string="Reject Usulan Ini" type="object" attrs="{'invisible': ['|', ('state', '!=', 'pending_approval'), ('can_approve_or_reject', '=', False)]}" groups="agp_training_management.group_agp_training_manager" class="oe_highlight oe_button_danger" confirm="Apakah Anda yakin ingin menolak usulan ini? Jangan lupa isi alasan penolakan jika perlu."/>
+                    <button name="action_realize_training" string="Realisasikan Training" type="object"
+                        class="btn-success" attrs="{'invisible': ['|', ('state', '!=', 'approved'), ('training_realization_id', '!=', False)]}"
+                        groups="agp_training_management.group_agp_training_manager"
+                        confirm="Anda akan membuat draft Realisasi Training berdasarkan usulan ini. Lanjutkan?"/>
+                    <button name="action_set_to_pending_approval" string="Kembalikan ke Pending" type="object" attrs="{'invisible': [('state', 'not in', ['approved', 'rejected'])]}" groups="agp_training_management.group_agp_training_manager" confirm="Aksi ini akan mengembalikan status ke 'Menunggu Approval SDM'. Lanjutkan?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,pending_approval,approved,rejected,realized"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="submission_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="name" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                            <field name="training_scope_id" options="{'no_create': True}" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                        </group>
+                        <group>
+                            <field name="period_id" readonly="1" force_save="1"/>
+                            <field name="branch_id" readonly="1" force_save="1"/>
+                            <field name="department_id" readonly="1" force_save="1"/>
+                            <field name="company_id" invisible="1" force_save="1"/>
+                            <field name="can_approve_or_reject" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Kebutuhan &amp; Estimasi">
+                            <group>
+                                 <field name="description" nolabel="1" placeholder="Justifikasi dan deskripsi kebutuhan training..." attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                            </group>
+                            <separator string="Estimasi Pelaksanaan &amp; Biaya"/>
+                            <group>
+                                <group>
+                                    <field name="proposed_period_char" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                                    <field name="estimated_duration_days" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                                    <field name="estimated_duration_hours" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                                </group>
+                                <group>
+                                    <field name="estimated_cost" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}" required="1"/>
+                                    <field name="currency_id" invisible="1" force_save="1"/>
+                                    <field name="proposed_organizer" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Peserta Diusulkan &amp; Biaya Individual" name="page_participants">
+                            <field name="participant_line_ids"
+                                   attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"
+                                   context="{'default_proposed_training_id': active_id, 'default_currency_id': currency_id}">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="employee_id" required="1" options="{'no_create': True}"/>
+                                    <field name="employment_type" readonly="1" force_save="1"/>
+                                    <field name="estimated_cost_participant" required="1" sum="Total Biaya Peserta"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="notes" optional="show"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="employee_id" required="1"/>
+                                        <field name="employment_type" readonly="1"/>
+                                        <field name="estimated_cost_participant" required="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" name="tna_proposed_training_total_manual">
+                                <field name="estimated_participant_count" nolabel="0" readonly="1" force_save="1"/>
+                                <field name="estimated_cost" nolabel="0" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1" force_save="1"/>
+                            </group>
+                            <div style="clear:both;"/>
+                        </page>
+                        <page string="Rekapitulasi Otomatis (Review SDM)" groups="hr.group_hr_user" name="page_rekap_sdm">
+                             <group string="Rekapitulasi Peserta &amp; Biaya per Tipe Karyawan">
+                                <group>
+                                    <field name="participants_for_rekap_organik" readonly="1" force_save="1"/>
+                                    <field name="cost_for_rekap_organik" readonly="1" force_save="1"/>
+                                    <field name="days_for_rekap_organik" readonly="1" force_save="1" string="Man-days Organik"/>
+                                </group>
+                                <group>
+                                    <field name="participants_for_rekap_tad_pkwt" readonly="1" force_save="1"/>
+                                    <field name="cost_for_rekap_tad_pkwt" readonly="1" force_save="1"/>
+                                    <field name="days_for_rekap_tad_pkwt" readonly="1" force_save="1" string="Man-days TAD/PKWT"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Review &amp; Status SDM" groups="hr.group_hr_manager">
+                            <group>
+                                <field name="sdm_approver_id" readonly="1"/>
+                                <field name="approval_date" readonly="1"/>
+                                <field name="rejection_reason" attrs="{'readonly': [('state', 'not in', ['new', 'pending_approval'])]}"/>
+                                <field name="training_realization_id" readonly="1" string="Link ke Realisasi Training"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tna_proposed_training_all_sdm_review" model="ir.actions.act_window">
+        <field name="name">Review Usulan Training (SDM)</field>
+        <field name="res_model">tna.proposed.training</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', 'in', ['pending_approval', 'approved', 'rejected', 'realized'])]</field>
+        <field name="context">{'search_default_state': 'pending_approval', 'group_by': ['period_id', 'branch_id', 'department_id']}</field>
+        <field name="search_view_id" ref="view_tna_proposed_training_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Belum ada usulan training yang perlu direview oleh SDM.
+            </p>
+        </field>
+    </record>
+</odoo>

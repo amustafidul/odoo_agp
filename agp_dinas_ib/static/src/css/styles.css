@@ -1,0 +1,20 @@
+th.o_column_sortable[data-name="name"]
+{
+    width:350px !important;
+    max-width:350px !important;
+}
+th.o_column_sortable[data-name="employee_position_id"]
+{
+    width:350px !important;
+    max-width:350px !important;
+}
+th.o_column_sortable[data-name="tanggal_nota_dinas"]
+{
+    width:350px !important;
+    max-width:350px !important;
+}
+th.o_column_sortable[data-name="state"]
+{
+    width:350px !important;
+    max-width:350px !important;
+}

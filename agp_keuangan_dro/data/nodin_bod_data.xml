@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_nota_dinas_bod" model="ir.sequence">
+            <field name="name">Nota Dinas BoD</field>
+            <field name="code">sequence.nota.dinas.bod</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

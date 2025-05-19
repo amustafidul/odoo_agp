@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="mail_template_hr_edit_request" model="mail.template">
+            <field name="name">Request to Edit HR Document</field>
+            <field name="email_from">amustafidul@gmail.com</field>
+            <field name="subject">Request to Edit HR Document for ${object.name}</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="email_to">${object.x_approver_id.email|safe}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html" type="html">
+                <p>Dear ${object.x_approver_id.name},</p>
+                <p>The HR document for <strong>${object.name}</strong> is awaiting your approval for editing.</p>
+                <p>Please review the document and approve the request to enable editing.</p>
+                <p>Best regards,<br/>Your HR Team</p>
+            </field>
+        </record>
+    </data>
+</odoo>

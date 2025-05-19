@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem name="Keuangan"
+        id="menu_keuangan"
+        web_icon="agp_keuangan_ib,static/description/icons8-bonds-48.png"
+        sequence="56">
+
+        <menuitem id="parent_menu_board_keuangan_pendapatan" 
+                  name="Pendapatan" 
+                  sequence="4">
+
+            <menuitem id="parent_menu_board_keuangan_pendapatan_invoice" 
+                      name="Invoice" 
+                      action="action_invoice_keuangan" 
+                      sequence="1"/>
+
+            <menuitem id="parent_menu_board_keuangan_pendapatan_invoice_scf" 
+                      name="Invoice - SCF"
+                      action="action_scf"  
+                      sequence="2"/>
+
+            <menuitem id="parent_menu_board_keuangan_payment" 
+                      name="Payment"
+                      action="action_payment"  
+                      sequence="3"/>
+            
+            <menuitem id="menu_permohonan_pembayaran" 
+                        name="Permohonan Pembayaran" 
+                        action="action_permohonan_pembayaran" 
+                        sequence="4"/>
+        </menuitem>
+        
+        <menuitem id="parent_menu_board_keuangan" 
+                  name="Keuangan" 
+                  sequence="2">
+
+            <menuitem id="parent_menu_board_keuangan_tagihan" 
+                      name="Tagihan" 
+                      action="action_tagihan" 
+                      sequence="1"/>
+
+            <!-- <menuitem id="parent_menu_board_keuangan_antrian_pembayaran" 
+                      name="Antrian Pembayaran" 
+                      action="action_antrian_pembayaran" 
+                      sequence="2"/> -->
+            
+            <menuitem id="parent_menu_board_keuangan_spp" 
+                      name="Surat Permintaan Pembayaran" 
+                      action="report_multi_branch.action_view_spp" 
+                      sequence="3"/>
+
+            <!-- <menuitem id="parent_menu_board_keuangan_monitoring_notes" 
+                      name="Monitoring Notes" 
+                      action="action_move_out_invoice_type_ib" 
+                      sequence="3"/>     -->
+
+            <menuitem id="parent_menu_board_keuangan_monitoring_bank_garansi" 
+                      name="Monitoring Bank Garansi" 
+                      action="action_bank_garansi" 
+                      sequence="4"/>
+
+            <menuitem id="parent_menu_board_keuangan_monitoring_sinking_fund" 
+                      name="Monitoring Sinking Fund Notes" 
+                      action="action_sinking" 
+                      sequence="5"/>
+            
+             <menuitem id="parent_menu_board_keuangan_monitoring_deposito" 
+                      name="Monitoring Deposito" 
+                      action="action_deposito" 
+                      sequence="6"/>
+            
+             <menuitem id="parent_menu_board_keuangan_monitoring_shareholder_loan" 
+                      name="Monitoring Shareholder Loan" 
+                      action="action_shl" 
+                      sequence="7"/>
+            
+             <menuitem id="parent_menu_board_keuangan_monitoring_national_pooling" 
+                      name="Monitoring National Pooling" 
+                      action="action_np" 
+                      sequence="8"/>
+
+             <!-- <menuitem id="parent_menu_board_keuangan_invoice_scf" 
+                      name="Invoice - SCF" 
+                      action="action_scf" 
+                      sequence="9"/> -->
+            
+            <menuitem id="parent_menu_board_keuangan_cash_in_out" 
+                      name="Cash In Cash Out" 
+                      action="action_account_keuangan_transaction" 
+                      sequence="10"/>
+
+            <menuitem id="menu_tagihan_rutin" 
+                        name="Tagihan Rutin Otomatis" 
+                        action="action_tagihan_rutin" 
+                        sequence="12"/>
+                        
+            <menuitem id="menu_anggaran_harian" 
+                        name="Anggaran Harian" 
+                        action="action_anggaran_harian" 
+                        sequence="14"/>
+            
+            <!-- <menuitem id="menu_permohonan_pembayaran" 
+                        name="Permohonan Pembayaran" 
+                        action="action_permohonan_pembayaran" 
+                        sequence="14"/> -->
+
+            <menuitem id="menu_tagihan_rutin_manual" 
+                        name="Tagihan Rutin Manual" 
+                        action="action_tagihan_rutin_manual" 
+                        sequence="13"/>
+            
+            <menuitem id="menu_bank_harian" 
+                        name="Bank Harian" 
+                        action="action_bank_harian" 
+                        sequence="15"/>
+                        
+            <menuitem id="menu_rekap_pelunasan" 
+                        name="Rekap Pelunasan dan Dropping Dana" 
+                        action="action_rekap_pelunasan" 
+                        sequence="16"/>
+        </menuitem>
+
+        <menuitem id="parent_menu_board_keuangan_anggaran" 
+                  name="Anggaran" 
+                  sequence="3">
+
+            <menuitem id="parent_menu_board_keuangan_anggaran_rkap" 
+                      name="RKAP" 
+                      action="action_rkap" 
+                      sequence="1"/>
+
+            <menuitem id="parent_menu_board_keuangan_anggaran_kkhc" 
+                      name="KKHC" 
+                      action="action_kkhc" 
+                      sequence="2"/>
+
+            <menuitem id="parent_menu_board_keuangan_anggaran_persetujuan_anggaran" 
+                      name="SPA"
+                      action="action_pa" 
+                      sequence="10"/>
+
+            <!-- <menuitem id="parent_menu_board_keuangan_anggaran_nota_dinas" 
+                      name="Nota Dinas"
+                      groups="group_nodin_header"
+                      sequence="4"/> -->
+                      
+            <!-- <menuitem id="parent_menu_board_keuangan_anggaran_nota_dinas" 
+                      name="Nota Dinas"
+                      sequence="4"/> -->
+
+            <menuitem id="parent_menu_board_keuangan_anggaran_asuransi" 
+                      name="Asuransi" 
+                      action="action_asuransi" 
+                      sequence="6"/>
+        </menuitem> 
+
+        <!-- <menuitem id="parent_menu_board_keuangan_dashboard" 
+                  name="Dashboard" 
+                  action="action_move_out_invoice_type_ib" 
+                  sequence="1"/> -->
+        
+      <!-- <menuitem id="parent_menu_board_keuangan_approval" 
+            name="Item Anggaran"
+            groups="base.group_no_one"
+            parent="agp_keuangan_ib.parent_menu_board_keuangan_configuration" 
+            sequence="12"/>
+
+      <menuitem id="parent_menu_board_keuangan_approval_kkhc" 
+            name="Item KKHC" 
+            groups="base.group_no_one"
+            parent="agp_keuangan_ib.parent_menu_board_keuangan_approval" 
+            action="action_approval" 
+            sequence="1"/>
+            
+      <menuitem id="parent_menu_board_keuangan_approval_rkap" 
+            name="Item RKAP" 
+            groups="base.group_no_one"
+            parent="agp_keuangan_ib.parent_menu_board_keuangan_approval" 
+            action="action_approval_rkap" 
+            sequence="2"/> -->
+
+      <!-- </menuitem> -->
+
+        <menuitem id="parent_menu_board_keuangan_configuration" 
+                  name="Configuration" 
+                  sequence="6">
+
+            <menuitem id="parent_menu_board_keuangan_pendapatan_kode_anggaran" 
+                      name="Kode Anggaran" 
+                      action="action_kode_anggaran" 
+                      sequence="1"/>
+            
+            <menuitem id="parent_menu_board_keuangan_pendapatan_periode_produk" 
+                      name="Periode Produk" 
+                      action="action_periode_produk" 
+                      sequence="2"/>
+
+            <menuitem id="parent_menu_board_keuangan_pendapatan_saldo" 
+                      name="Saldo Kode Anggaran" 
+                      action="action_account_keuangan_saldo" 
+                      sequence="1"/>
+                      
+            <menuitem id="parent_menu_board_keuangan_pendapatan_surat_perjanjian" 
+                      name="Nomor Surat Perjanjian" 
+                      action="action_surat_perjanjian" 
+                      sequence="3"/>
+                      
+            <menuitem id="parent_menu_board_bank_harian_master" 
+                      name="Bank Harian Master" 
+                      action="action_bank_harian_master" 
+                      sequence="4"/>            
+            
+            <menuitem id="parent_menu_board_tipe_bank_garansi_master" 
+                      name="Tipe Bank Garansi" 
+                      action="action_tipe_bank_garansi" 
+                      sequence="5"/>
+                      
+            <menuitem id="parent_menu_board_jenis_bank_garansi_master" 
+                      name="Jenis Bank Garansi" 
+                      action="action_jenis_bank_garansi" 
+                      sequence="6"/>
+        </menuitem>
+
+    </menuitem>
+</odoo>

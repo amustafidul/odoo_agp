@@ -1,0 +1,53 @@
+<odoo>
+    <!-- Form view for wizard -->
+    <record id="view_account_keuangan_cash_wizard_form" model="ir.ui.view">
+        <field name="name">account.keuangan.cash.wizard.form</field>
+        <field name="model">account.keuangan.cash.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cash In Out" version="7.0">
+                <group>
+                    <field name="payment_date"/>
+                    <field name="income_account"/>
+                    <field name="payment_amount"/>
+                    <field name="discount_type"/>
+                    <field name="discount_amount"/>
+                </group>
+                <!-- <group>
+                    <field name="payment_line_ids" context="{'default_payment_wizard_id': active_id}">
+                        <tree editable="bottom">
+                            <field name="description"/>
+                            <field name="amount"/>
+                            <field name="account_id"/>
+                        </tree>
+                    </field>
+                </group> -->
+                <footer>
+                    <button name="action_confirm" string="Submit" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cash_line_tree" model="ir.ui.view">
+        <field name="name">account.keuangan.cash.wizard.line.tree</field>
+        <field name="model">account.keuangan.cash.line</field>
+        <field name="arch" type="xml">
+            <tree string="Detail Pembayaran">
+                <field name="description" />
+                <field name="amount" />
+                <field name="account_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_cash_in_out_wizard" model="ir.actions.act_window">
+        <field name="name">Cash In Out</field>
+        <field name="res_model">account.keuangan.cash.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_keuangan_cash_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

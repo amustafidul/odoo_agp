@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_leave_spd_transport,access_hr_leave_spd_transport,model_hr_leave_spd_transport,,1,1,1,1
+access_hr_leave_paid_timeoff_type,access_hr_leave_paid_timeoff_type,model_hr_leave_paid_timeoff_type,,1,1,1,1
+access_hr_leave_allocation_rule,access_hr_leave_allocation_rule,model_hr_leave_allocation_rule,,1,1,1,1
+access_hr_leave_ask_for_revision_wizard,access_hr_leave_ask_for_revision_wizard,model_hr_leave_ask_for_revision_wizard,,1,1,1,1
+access_hr_leave_reject_wizard,access_hr_leave_reject_wizard,model_hr_leave_reject_wizard,,1,1,1,1

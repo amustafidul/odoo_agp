@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rkap_form_inherit" model="ir.ui.view">
+        <field name="name">rkap.form.inherit.dro</field>
+        <field name="model">account.keuangan.rkap</field>
+        <field name="inherit_id" ref="agp_keuangan_ib.view_rkap_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="replace">
+                <header>
+                    <button name="action_submit" type="object" states="draft,rejected" string="SUBMIT" class="oe_highlight"/> 
+                    <button name="action_approve" type="object" states="on_review" string="APPROVE" class="oe_highlight"/> 
+                    <button name="action_reject" type="object" states="on_review" string="REJECT" class="btn-danger"/> 
+                    <field name="state" widget="statusbar" statusbar_visible="draft,on_review,approved" readonly="1"/> 
+                </header>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title']" position="before">
+                <widget name="web_ribbon" title="On Review" attrs="{'invisible': [('state', '!=', 'on_review')]}" bg_color="bg-info"/>
+                <widget name="web_ribbon" title="Approved" attrs="{'invisible': [('state', '!=', 'approved')]}" bg_color="bg-success"/>
+                <widget name="web_ribbon" title="Rejected" attrs="{'invisible': [('state', '!=', 'rejected')]}" bg_color="bg-danger"/>
+            </xpath>
+
+            <xpath expr="//page[@id='rkap_tab']" position="after">
+                <page string="Riwayat Approval">
+                    <field name="history_approval_ids" readonly="1">
+                        <tree create="0">
+                            <field name="rkap_id" invisible="1"/>
+                            <field name="user_id"/>
+                            <field name="date"/>
+                            <field name="note"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="List KKHC">
+                    <field name="kkhc_ids" readonly="1">
+                        <tree create="0">
+                            <field name="rkap_id" invisible="1"/>
+                            <field name="name"/>
+                            <field name="branch_id"/>
+                            <field name="jumlah_pemasukan_disetujui"/>
+                            <field name="jumlah_pengeluaran_disetujui"/>
+                            <field name="periode_kkhc_start" string="Periode Awal"/>
+                            <field name="periode_kkhc_end" string="Periode Akhir"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

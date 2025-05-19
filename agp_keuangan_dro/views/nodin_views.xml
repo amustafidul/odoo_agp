@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nota_dinas_form_inherit" model="ir.ui.view">
+        <field name="name">nota.dinas.form.inherit</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="inherit_id" ref="agp_keuangan_ib.view_nota_dinas_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="replace">
+                <header>
+                    <button name="action_submit" type="object" states="draft,rejected" string="SUBMIT" class="oe_highlight"/> 
+                    <button name="action_approve" type="object" states="on_review" string="APPROVE" class="oe_highlight"/> 
+                    <button name="action_reject" type="object" states="on_review" string="REJECT" class="btn-danger"/> 
+                    <field name="state" widget="statusbar" statusbar_visible="draft,on_review,approved" /> 
+                </header>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title']" position="before">
+                <widget name="web_ribbon" title="On Review" attrs="{'invisible': [('state', '!=', 'on_review')]}" bg_color="bg-info"/>
+                <widget name="web_ribbon" title="Approved" attrs="{'invisible': [('state', '!=', 'approved')]}" bg_color="bg-success"/>
+                <widget name="web_ribbon" title="Rejected" attrs="{'invisible': [('state', '!=', 'rejected')]}" bg_color="bg-danger"/>
+            </xpath>
+
+            <xpath expr="//field[@name='kepada']" position="replace">
+                <field name="periode_kkhc" widget="date" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}" />
+                <field name="sifat_nodin" readonly="1"/>
+                <field name="kepada_id" />
+                <field name="is_umum" widget="boolean_toggle" />
+                <field name="is_not_activity_user" invisible="1" />
+                <field name="button_class" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='pengirim']" position="replace">
+                <field name="pengirim_id" />
+            </xpath>
+
+            <xpath expr="//field[@name='keterangan']" position="after">
+                <field name="state" invisible="1"/>
+                <div>
+                    <p><strong>Tipe Nota Dinas Divisi</strong></p>
+                </div>
+                <div style="margin-left: 15px;">
+                    <field name="tipe_nodin" readonly="1"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='tembusan']" position="replace">
+                <field name="tembusan_id"/>
+            </xpath>
+
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='branch_ids']" position="replace">
+                <field name="branch_ids" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='kode_anggaran_id']" position="before">
+                <field name="kkhc_id" />
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='kode_anggaran_id']" position="before">
+                <field name="branch_id" />
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='account_code_id']" position="replace">
+                <field name="account_code_id" string="COA"/>
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='branch_ids']" position="replace">
+                <field name="branch_ids" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='uraian']" position="replace">
+                <field name="uraian" string="Uraian Kegiatan" />
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='total_harga']" position="before">
+                <field name="jumlah_biaya" />
+            </xpath>
+            <xpath expr="//field[@name='nota_dinas_line_ids']/tree/field[@name='total_harga']" position="replace">
+                <field name="total_harga" string="Biaya Disetujui" />
+                <field name="sisa_belum_dibayar" />
+                <field name="tanggal_dibayar" />
+                <field name="state" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//page[@id='nota_dinas_tab']" position="replace">
+
+                <page string="Nota Dinas Lines">
+                    <field name="monitored_kkhc_ids" attrs="{'readonly': [('state', '=', 'approved')]}">
+                        <tree create="0">
+                            <field name="header_state_non_bod" invisible="1" />
+                            <field name="header_state_bod" invisible="1" />
+                            <field name="nodin_id" invisible="1" />
+                            <field name="kkhc_id" readonly="1" />
+                            <field name="branch_id" readonly="1" />
+                            <field name="kode_anggaran_id" readonly="1" />
+                            <field name="account_code_id" readonly="1" />
+                            <field name="deskripsi" string="Deskripsi" readonly="1" />
+                            <field name="uraian" string="Uraian" readonly="1" />
+                            <field name="nominal_final" readonly="1" string="Subtotal Nota Dinas" />
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="amount_total_jumlah_biaya" string="Total Nota Dinas" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1" />
+                    </group>
+                    <div class="clearfix"/>
+                    
+                </page>
+
+                    <page string="Rejected Nota Dinas Lines" groups="base.group_no_one">
+                        <field name="rejected_monitored_kkhc_ids" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}" widget="section_and_note_one2many" context="{'default_nota_dinas_id': id}">
+                            <tree create="0">
+                                <field name="nodin_id" invisible="1" />
+                                <field name="kkhc_id" />
+                                <field name="branch_id" />
+                                <field name="kode_anggaran_id" />
+                                <field name="account_code_id" />
+                                <field name="deskripsi" string="Deskripsi" />
+                                <field name="uraian" string="Uraian" />
+                                <field name="nominal_final" readonly="1" string="Subtotal Nota Dinas Reject" />
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="total" widget='monetary' string="Total Nota Dinas Reject" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                        </group>
+                    </page>
+
+                <page string="Riwayat Approval">
+                    <field name="history_approval_ids" readonly="1">
+                        <tree create="0">
+                            <field name="nodin_id" invisible="1"/>
+                            <field name="user_id" readonly="1" />
+                            <field name="date" readonly="1" />
+                            <field name="note" readonly="1" />
+                        </tree>
+                    </field>
+                </page>
+
+                <page string="Dokumen Terkait">
+                    <group>
+                        <field name="document_ids" nolabel="1" colspan="2" attrs="{'readonly': [('state', 'in', ('on_review', 'approved'))]}">
+                            <tree string="Dokumen-dokumen Terkait Nota Dinas" create="0">
+                                <field name="document_id" readonly="1"/>
+                                <field name="document" widget="binary_button" filename="filename"/>
+                                <field name="filename" invisible="1"/>
+                                <field name="state" readonly="1"/>
+                            </tree>
+                            <form string="Dokumen-dokumen Terkait Nota Dinas">
+                                <group>
+                                    <field name="document_id" groups="base.group_no_one" readonly="1"/>
+                                    <field name="document" string="Preview Dokumen Dinas" widget="pdf_viewer" filename="filename"/>
+                                    <field name="filename" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                </page>
+
+                <page string="Disposisi" attrs="{'invisible': [('is_umum', '=', True)]}">
+                    <h7 class='txt-page-nodins-class'><strong>Teks Disposisi</strong></h7>
+                    <div>
+                        <field style="background-color: #c9d5ff;" name="disposisi" string="Teks Disposisi" placeholder="Ketik di sini..." />
+                    </div>
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

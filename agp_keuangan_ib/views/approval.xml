@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_approval" model="ir.actions.act_window">
+        <field name="name">Approval KKHC</field>
+        <field name="res_model">account.keuangan.kkhc.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+
+    <record id="view_kanban_approval_kkhc" model="ir.ui.view">
+        <field name="name">approval.kanban</field>
+        <field name="model">account.keuangan.kkhc.line</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <template>
+                    <div class="o_kanban_card">
+                        <div class="o_kanban_details">
+                            <!-- <strong><field name="kkhc_id"/></strong> -->
+                            <p><field name="deskripsi_penggunaan"/></p>
+                            <!-- <p><field name="state" invisible = "True"/></p> -->
+                            <!-- <p>Branch: <field name="branch_id"/></p> -->
+                            <!-- <p>Jumlah Ajuan Anggaran: <field name="jumlah_ajuan_anggaran"/></p> -->
+                            <!-- <p>Jumlah Pemasukan Disetujui: <field name="jumlah_pemasukan_disetujui"/></p> -->
+                            <!-- <p>Jumlah Pengeluaran Disetujui: <field name="jumlah_pengeluaran_disetujui"/></p> -->
+                        </div>
+                        <!-- <div class="o_kanban_footer">
+                            <button name="approve" type="object" string="Approve" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                            <button name="reject" type="object" string="Reject" class="btn-danger" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        </div> -->
+                    </div>
+                </template>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_approval_kkhc" model="ir.ui.view">
+        <field name="name">approval.kkhc.list</field>
+        <field name="model">account.keuangan.kkhc.line</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1" string="Approval List">
+                <field name="kkhc_id"/>
+                <field name="deskripsi_penggunaan"/>
+                <field name="available_kode_anggaran_ids" invisible="1"/>
+                <field name="kode_anggaran_id"/>
+                <field name="nominal_pengajuan"/>
+                <field name="pagu_limit"/>
+                <field name="unit_penempatan_id"/>
+                <field name="nominal_disetujui"/>
+                <!-- <field name="approval_status"/> -->
+                <!-- <field name="sisa_pengajuan"/> -->
+                <field name="state" invisible='True'/>
+                <button name="action_approval_kkhc" type="object" string="Approve" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                <!-- <button name="action_reject" type="object" string="Reject" class="btn-danger" attrs="{'invisible': [('state', '!=', 'draft')]}"/> -->
+                <!-- <field name="notes" attrs="{'invisible': [('state', '!=', 'rejected')]}"/> -->
+            </tree>
+        </field>
+    </record>
+    
+
+    <record id="action_approval_rkap" model="ir.actions.act_window">
+        <field name="name">Approval RKAP</field>
+        <field name="res_model">account.keuangan.rkap.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <record id="view_approval_rkap" model="ir.ui.view">
+        <field name="name">approval.rkap.list</field>
+        <field name="model">account.keuangan.rkap.line</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1" string="Approval List">
+                <field name="rkap_id"/>
+                <field name="branch_id"/>
+                <field name="kode_anggaran_id"/>
+                <field name="deskripsi_penggunaan"/>
+                <field name="nominal"/>
+                <!-- <button name="action_approval_rkap" type="object" string="Approve" class="btn-primary"/> -->
+            </tree>
+        </field>
+    </record>
+
+</odoo>

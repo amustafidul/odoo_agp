@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ams_sql_config_view_tree" model="ir.ui.view">
+        <field name="name">ams.sql.config.view.tree</field>
+        <field name="model">ams.sql.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="type" />
+                <field name="host" />
+                <!-- <field name="port" /> -->
+                <!-- <field name="user" /> -->
+                <field name="database" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ams_sql_config_view_form" model="ir.ui.view">
+        <field name="name">ams.sql.config.view.form</field>
+        <field name="model">ams.sql.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="test_connection" string="Test MySQL Connection" type="object" class="oe_highlight" attrs="{'invisible': [('type', '!=', 'direct_sql')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />   
+                            <field name="type" />
+                        </group>
+                        <group attrs="{'invisible': [('type', '!=', 'direct_sql')]}">    
+                            <field name="host" />   
+                            <field name="port" />   
+                            <field name="user" />   
+                            <field name="password" password="True" />
+                            <field name="database" />
+                            <div>
+                                <h6>Query Testing</h6>
+                                <field name="query" string="Query" />
+                                <button name="execute_query" string="Execute Query" type="object" class="oe_highlight" />
+                            </div>   
+                        </group>
+                        <group attrs="{'invisible': [('type', '!=', 'api')]}">    
+                            <field name="url" />
+                            <field name="api_key" />
+                            <field name="user" />
+                            <field name="password" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="qry_result" attrs="{'invisible': [('type', '!=', 'direct_sql')]}" string="Query Result">
+                            <field name="query_res" widget="text" readonly="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

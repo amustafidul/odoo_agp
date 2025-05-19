@@ -1,0 +1,138 @@
+<odoo>
+    <data>
+
+        <!-- Define the report -->
+        <report
+            id="report_credit_note_pdf"
+            string="Credit Note Report"
+            model="report.report_multi_branch.credit_note"
+            report_type="qweb-pdf"
+            name="report_multi_branch.report_credit_note"/>
+
+        <!-- Define the template for the report -->
+        <template id="report_credit_note">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- Header with company logo and name -->
+                                    <div style="float: left;">
+                                        <h2>PT. ADHI GUNA PUTERA</h2>
+                                        <h2>KANTOR PUSAT</h2>
+                                    </div>
+                                    <div style="float: right; background-color: #ADD8E6; color: white; padding: 10px; width: 220px; text-align: center;">
+                                        <h2 style="font-size: 18px; font-style: italic; font-weight: bold; margin: 0;">NOTA KREDIT</h2>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                    <br/>
+                                    
+                                    <!-- Report details -->
+                                    <div style="display: flex; flex-direction: column;">
+                                        <div style="display: flex; margin-bottom: 5px;">
+                                            <strong style="min-width: 150px;">Nomor:</strong>
+                                            <span t-field="o.name"/>
+                                        </div>
+                                        <div style="display: flex; margin-bottom: 5px;">
+                                            <strong style="min-width: 150px;">Untuk:</strong>
+                                            <span t-field="o.to"/>
+                                        </div>
+                                        <div style="display: flex; margin-bottom: 5px;">
+                                            <strong style="min-width: 150px;">Date:</strong>
+                                            <span t-field="o.date"/>
+                                        </div>
+                                        <div style="display: flex; margin-bottom: 5px;">
+                                            <strong style="min-width: 150px;">Perihal:</strong>
+                                            <span t-field="o.perihal"/>
+                                        </div>
+                                        <div style="display: flex; margin-bottom: 5px;">
+                                            <strong style="min-width: 150px;">Lampiran:</strong>
+                                            <span t-field="o.lampiran"/>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <div style="margin-bottom: 30px;">
+                                        <span t-field="o.note" style="word-break: break-word;"/>
+                                    </div>
+
+                                    <!-- Central Journal table -->
+                                    <p><strong>JURNAL PUSAT</strong></p>
+                                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Akun</th>
+                                                <!-- <th style="text-align: right;">Amount</th> -->
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+                                            </tr>
+                                        </thead>
+                                        <!-- <tbody>
+                                            <t t-set="total_amount" t-value="0.0"/>
+                                            <t t-foreach="o.account_line_ids" t-as="line">
+                                                <tr>
+                                                    <td style="text-align: left;"><span t-field="line.account_id.code"/></td>
+                                                    <td style="text-align: right;"><span t-field="line.amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                                </tr>
+                                                <t t-set="total_amount" t-value="line.amount"/>
+                                            </t>
+                                            <tr>
+                                                <th style="text-align: center;">Total</th>
+                                                <th style="text-align: right;"><span t-field="o.total_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></th>
+                                            </tr>
+                                        </tbody> -->
+
+                                        <tbody>
+                                            <t t-set="total_debit" t-value="0.0"/>
+                                            <t t-set="total_credit" t-value="0.0"/>
+                                            <t t-foreach="o.account_line_ids" t-as="line">
+                                                <tr>
+                                                    <td><span t-field="line.account_id.code"/></td>
+                                                    <td><span t-field="line.debit"/></td>
+                                                    <td><span t-field="line.credit"/></td>
+                                                </tr>
+                                                <t t-set="total_debit" t-value="total_debit + line.debit"/>
+                                                <t t-set="total_credit" t-value="total_credit + line.credit"/>
+                                            </t>
+                                            <tr>
+                                                <th>Total</th>
+                                                <th><span t-esc="total_debit"/></th>
+                                                <th><span t-esc="total_credit"/></th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br/>
+
+                                    <!-- Signature table -->
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="width: 33%; text-align: center; padding: 10px; border: 1px solid #000;">
+                                                MENGETAHUI,<br/><br/><br/><br/>
+                                                __________________________<br/>
+                                                HENDRA SUZERI<br/>
+                                                KADIV AKUNTANSI
+                                            </td>
+                                            <td style="width: 33%; text-align: center; padding: 10px; border: 1px solid #000;">
+                                                MENYETUJUI,<br/><br/><br/><br/>
+                                                __________________________<br/>
+                                                IRSALINA NUR IDZNI<br/>
+                                                PLT MANAJER AKUNTANSI
+                                            </td>
+                                            <td style="width: 33%; text-align: center; padding: 10px; border: 1px solid #000;">
+                                                DIBUAT OLEH,<br/><br/><br/><br/>
+                                                __________________________<br/>
+                                                DIMAS ARIO WICAKSONO<br/>
+                                                STAFF AKUNTANSI
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

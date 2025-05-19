@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_view_account_financial_report_form">
+            <field name="name">account.financial.report.form</field>
+            <field name="model">account.financial.report</field>
+            <field name="inherit_id" ref="accounting_pdf_reports.view_account_financial_report_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="name_eng" required="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

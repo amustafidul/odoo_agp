@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ams_sql_config_action" model="ir.actions.act_window">
+        <field name="name">Action Name</field>
+        <field name="res_model">ams.sql.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <!-- <field name="context">{}</field> -->
+        <!-- <field name="help" type="html">
+            
+        </field> -->
+    </record>
+
+    <menuitem id="menu_integration_settings" name="Integrations"
+        parent="base.menu_administration" action="ams_sql_config_action"
+        sequence="9"/>
+        
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="report_paperformat_landscape" model="report.paperformat">
+        <field name="name">A4 Landscape</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">20</field>
+        <field name="margin_right">20</field>
+    </record>
+
+    <template id="report_payroll_dekom_pdf_template_new">
+        <t t-call="web.external_layout">
+            <main class="page" style="font-family: sans-serif;">
+                <h2 style="text-align: center; font-size: 20px; color: #2F5597;">
+                    DAFTAR HONORARIUM DEWAN KOMISARIS, SEKRETARIS DEKOM dan ANGGOTA KOMITE
+                </h2>
+                <h3 style="text-align: center; font-size: 16px;">
+                    BULAN <t t-esc="data['month_name']"/> <t t-esc="data['year_str']"/>
+                </h3>
+                <br/>
+                <table class="table table-sm" style="width: 100%; border-collapse: collapse; font-size: 10px;" border="1">
+                    <thead>
+                        <tr style="background-color: #B4C6E7; color: #000000; text-align: center;">
+                            <th style="padding: 6px; min-width: 30px;">No</th>
+                            <th style="padding: 6px; min-width: 100px;">Jabatan</th>
+                            <t t-foreach="data['sorted_categories']" t-as="cat">
+                                <t t-foreach="data['category_lines_map'][cat]" t-as="rule">
+                                    <th style="padding: 6px; min-width: 80px;" t-esc="rule"/>
+                                </t>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="row_no" t-value="0"/>
+                        <t t-foreach="data['sorted_jabatans']" t-as="jab">
+                            <t t-set="row_no" t-value="row_no + 1"/>
+                            <t t-set="row_style" t-value="'background-color:#f9f9f9;' if row_no % 2 == 0 else ''"/>
+                            <tr t-attf-style="{{ row_style }}">
+                                <td style="padding: 5px; text-align: center;" t-esc="row_no"/>
+                                <td style="padding: 5px;" t-esc="jab.name if jab else 'Tanpa Jabatan'"/>
+                                <t t-foreach="data['sorted_categories']" t-as="cat">
+                                    <t t-foreach="data['category_lines_map'][cat]" t-as="rule">
+                                        <td style="text-align: right; padding: 5px;">
+                                            <t t-set="amount" t-value="data['jabatan_totals_map'][jab][cat][rule]"/>
+                                            <t t-esc="'Rp ' + ('{:,.0f}'.format(amount)).replace(',', '.')"/>
+                                        </td>
+                                    </t>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </main>
+        </t>
+    </template>
+
+    <report
+        id="report_payroll_dekom_pdf_template"
+        model="payroll.dekom.report.wizard"
+        string="Payroll Dekom Summary"
+        report_type="qweb-pdf"
+        name="payroll_ib.report_payroll_dekom_pdf_template_new"
+        paperformat="report_paperformat_landscape"
+        print_report_name="(object.date_to).strftime('Daftar_Gaji_DEKOM_%B_%Y')"
+    />
+</odoo>

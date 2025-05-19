@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_odoo_payroll_grade_master_tree" model="ir.ui.view">
+        <field name="name">odoo.payroll.grade.master.tree</field>
+        <field name="model">odoo.payroll.grade</field>
+        <field name="arch" type="xml">
+            <tree string="Grade Master">
+                <field name="grade"/>
+                <field name="grade_type"/>
+                <field name="inverse_grade"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="grade_amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoo_payroll_grade_master_form" model="ir.ui.view">
+        <field name="name">odoo.payroll.grade.master.form</field>
+        <field name="model">odoo.payroll.grade</field>
+        <field name="arch" type="xml">
+            <form string="Grade Master">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="grade"/>
+                            <field name="grade_type"/>
+                            <field name="inverse_grade"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount_fasilitas_kendaraan_dinas" attrs="{'invisible': [('grade_type','=',False)]}"/>
+                            <field name="amount_tunjangan_komunikasi" attrs="{'invisible': [('grade_type','=',False)]}"/>
+                            <field name="amount_tunjangan_perumahan" attrs="{'invisible': [('grade_type','=',False)]}"/>
+                            <field name="amount_tunjangan_transport_dekom" attrs="{'invisible': [('grade_type','=',False)]}"/>
+                            <field name="subject_matter_expert_amount" invisible="1"/>
+                            <field name="asistensi_pajak" invisible="1"/>
+                            <field name="matter_expert_asistensi_pajak_amount" attrs="{'invisible': ['|', ('grade_type','=',False), ('grade_type','in',['direktur_utama','direktur'])]}"/>
+                            <field name="grade_amount"/>
+                            <field name="tahun"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_odoo_payroll_grade_master" model="ir.actions.act_window">
+        <field name="name">Salary Grade</field>
+        <field name="res_model">odoo.payroll.grade</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create your payroll grade here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_payroll_grade" parent="hr_payroll_community.menu_hr_payroll_community_configuration"
+              action="action_odoo_payroll_grade_master" sequence="12"/>
+</odoo>

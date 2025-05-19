@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_keuangan_nota_dinas_bod_view_tree" model="ir.ui.view">
+        <field name="name">account.keuangan.nota.dinas.bod.view.tree</field>
+        <field name="model">account.keuangan.nota.dinas.bod</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="tanggal_pengajuan" />
+                <field name="kepada_id" />
+                <field name="state" />
+                <field name="total" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="account_keuangan_nota_dinas_bod_view_form" model="ir.ui.view">
+        <field name="name">nota.dinas.bod.form</field>
+        <field name="model">account.keuangan.nota.dinas.bod</field>
+        <field name="arch" type="xml">
+            <form string="Nota Dinas">
+                <header>
+                    <button name="action_submit" type="object" states="draft,rejected" string="SUBMIT" class="oe_highlight"/> 
+                    <button name="action_approve" type="object" states="on_review" string="APPROVE" class="oe_highlight"/> 
+                    <field name="state" widget="statusbar" statusbar_visible="draft,on_review,approved" /> 
+                    <!-- <button name="action_reject" type="object" states="on_review" string="REJECT" class="btn-danger"/>  -->
+                    <button name="action_check_lines" type="object" groups="base.group_no_one" string="CHECK MONITORING LINES" class="oe_highlight"/> 
+                </header>
+                <sheet>
+                <widget name="web_ribbon" title="On Review" attrs="{'invisible': [('state', '!=', 'on_review')]}" bg_color="bg-info"/>
+                <widget name="web_ribbon" title="Approved" attrs="{'invisible': [('state', '!=', 'approved')]}" bg_color="bg-success"/>
+                <widget name="web_ribbon" title="Rejected" attrs="{'invisible': [('state', '!=', 'rejected')]}" bg_color="bg-danger"/>
+                <div class="oe_title">
+                    <span class="o_form_label">Nota Dinas BoD</span>
+                    <h1>
+                        <field name="name" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}" placeholder="Draft"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="state" invisible="1" />
+                        <field name="kepada_id" />
+                        <field name="pengirim_id" />
+                        <field name="perihal" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                        <field name="kata_pengantar" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                    </group>
+                    <group>
+                        <field name="tanggal_pengajuan" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                        <field name="tembusan_id" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                        <field name="keterangan" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                        <div>
+                            <p><strong>Tipe Nota Dinas Divisi</strong></p>
+                        </div>
+                        <div style="margin-left: 15px;">
+                            <field name="tipe_nodin" readonly="1"/>
+                        </div>
+                    </group>
+                </group>
+                <notebook>
+
+                    <page string="Nota Dinas Lines">
+                        <field name="monitored_kkhc_ids" attrs="{'readonly': [('state', '=', 'approved')]}">
+                            <tree create="0" delete="0">
+                                <field name="header_state_non_bod" invisible="1" />
+                                <field name="header_state_bod" invisible="1" />
+                                <field name="nodin_id" invisible="1" />
+                                <field name="kkhc_id" readonly="1" />
+                                <field name="branch_id" readonly="1" />
+                                <field name="kode_anggaran_id" readonly="1" />
+                                <field name="account_code_id" readonly="1" />
+                                <field name="deskripsi" string="Deskripsi" readonly="1" />
+                                <field name="uraian" string="Uraian" readonly="1" />
+                                <field name="nominal_final" readonly="1" string="Subtotal Nota Dinas" />
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_total_jumlah_biaya" string="Total Nota Dinas" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1" />
+                        </group>
+                        <div class="clearfix"/>
+                        
+                    </page>
+
+                    <page string="Rejected Nota Dinas Lines" groups="base.group_no_one">
+                        <field name="rejected_monitored_kkhc_ids" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}" widget="section_and_note_one2many" context="{'default_nota_dinas_id': id}">
+                            <tree create="0">
+                                <field name="nodin_id" invisible="1" />
+                                <field name="kkhc_id" />
+                                <field name="branch_id" />
+                                <field name="kode_anggaran_id" />
+                                <field name="account_code_id" />
+                                <field name="deskripsi" string="Deskripsi" />
+                                <field name="uraian" string="Uraian" />
+                                <field name="nominal_final" readonly="1" string="Subtotal Nota Dinas Reject" />
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="total" widget='monetary' string="Total Nota Dinas Reject" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                        </group>
+                    </page>
+
+                    <page string="Riwayat Approval">
+                        <field name="history_approval_ids" readonly="1">
+                            <tree create="0">
+                                <field name="nodin_id" invisible="1"/>
+                                <field name="user_id"/>
+                                <field name="date"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Dokumen Terkait">
+                        <group>
+                            <field name="document_ids" nolabel="1" colspan="2" attrs="{'readonly': [('state', 'in', ('on_review', 'approved'))]}">
+                                <tree string="Dokumen-dokumen Terkait Nota Dinas" create="0">
+                                    <field name="document_id" readonly="1"/>
+                                    <field name="document" widget="binary_button" filename="filename"/>
+                                    <field name="filename" invisible="1"/>
+                                    <field name="state" readonly="1"/>
+                                </tree>
+                                <form string="Dokumen-dokumen Terkait Nota Dinas">
+                                    <group>
+                                        <field name="document_id" groups="base.group_no_one" readonly="1"/>
+                                        <field name="document" string="Preview Dokumen Dinas" widget="pdf_viewer" filename="filename"/>
+                                        <field name="filename" invisible="1"/>
+                                        <field name="state" invisible="1"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </page>
+
+                    <page string="Disposisi Dir Ops">
+                        <h7 class='txt-page-nodins-class'><strong>Teks Disposisi</strong></h7>
+                        <div>
+                            <field style="background-color: #c9d5ff;" name="disposisi_pertama" string="Teks Disposisi" placeholder="Ketik di sini..."/>
+                        </div>
+                    </page>
+                    <page string="Disposisi Dir Keu">
+                        <h7 class='txt-page-nodins-class'><strong>Teks Disposisi</strong></h7>
+                        <div>
+                            <field style="background-color: #c9d5ff;" name="disposisi_kedua" string="Teks Disposisi" placeholder="Ketik di sini..."/>
+                        </div>
+                    </page>
+
+                </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>

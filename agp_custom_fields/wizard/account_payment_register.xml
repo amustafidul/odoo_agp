@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <!-- Inherit the existing view -->
+        <record id="view_account_payment_register_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.register.form.inherit</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//field[@name='journal_id']" position="attributes">
+                    <attribute name="string">Nama Rekening</attribute>
+                </xpath> -->
+                <xpath expr="//field[@name='journal_id']" position="before">
+                    <field name="rk_bank_account" required="1"/>
+                    <field name="rk_account_id" domain="[('name', 'ilike', 'R/K')]" attrs="{'invisible':[('rk_bank_account', '!=', 'rk')], 'required':[('rk_bank_account', '=', 'rk')]}"/>
+                    <field name="bank_account_id" attrs="{'invisible':[('rk_bank_account', '!=', 'bank_account')], 'required':[('rk_bank_account', '=', 'bank_account')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

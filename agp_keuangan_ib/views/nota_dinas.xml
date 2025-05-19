@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence Data -->
+        <record id="seq_nota_dinas" model="ir.sequence">
+            <field name="name">Nota Dinas</field>
+            <field name="code">sequence.nota.dinas</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+
+    <!-- Action untuk Invoice -->
+    <record id="action_nota_dinas" model="ir.actions.act_window">
+        <field name="name">Nota Dinas</field>
+        <field name="res_model">account.keuangan.nota.dinas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a nota dinas
+            </p><p>
+                Create nota dinas, register payments and keep track of the discussions with your customers.
+            </p>
+        </field>
+    </record>
+
+    <!-- Form View untuk Invoice -->
+    <record id="view_nota_dinas_form" model="ir.ui.view">
+        <field name="name">nota.dinas.form</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="arch" type="xml">
+            <form string="Nota Dinas">
+                <header>
+                    <!-- <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/> -->
+                    <!-- <button name="action_print" type="object" string="Preview" states="posted" class="btn-secondary"/> -->
+                    <!-- <button name="action_print" type="object" string="Preview" states="draft" class="btn-secondary"/> -->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Nota Dinas</span>
+                        <h1>
+                            <field name="name" placeholder="Nomor Nota Dinas akan terisi otomatis..." style="opacity: 0.5;" readonly="1" />
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="state" invisible="1" />
+                            <field name="kepada" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                            <field name="pengirim" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                            <field name="perihal" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                            <field name="kata_pengantar" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                        </group>
+                        <group>
+                            <field name="tanggal_pengajuan" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                            <field name="tembusan" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                            <field name="keterangan" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page id="nota_dinas_tab" name="nota_dinas_tab" string="Nota Dinas Lines">
+                            <field name="nota_dinas_line_ids" attrs="{'readonly': [('state', 'in', ['on_review', 'approved'])]}" widget="section_and_note_one2many" context="{'default_nota_dinas_id': id}">
+                                <tree editable="bottom" string="Nota Dinas Lines" default_order="id">
+                                    <control>
+                                        <create name="add_line_control" string="Add a line"/>
+                                        <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                    </control>
+                                    <field name="kode_anggaran_id" string="Kode Anggaran"/>
+                                    <field name="deskripsi"/>
+                                    <field name="account_code_id"/>
+                                    <field name="branch_ids"/>
+                                    <field name="uraian"/>
+                                    <field name="total_harga" string="Total Harga" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                    <field name="total" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                </group>
+                            </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View untuk Invoice -->
+    <record id="view_nota_dinas_tree" model="ir.ui.view">
+        <field name="name">nota.dinas.tree</field>
+        <field name="model">account.keuangan.nota.dinas</field>
+        <field name="arch" type="xml">
+            <tree string="Nota Dinas">
+                <field name="name" />
+                <field name="kepada" optional="show"/>
+                <field name="tanggal_pengajuan" optional="show"/>
+                <!-- <field name="perihal" optional="show"/> -->
+                <field name="tembusan" optional="hide"/>
+                <field name="disposisi" optional="hide"/>
+                <field name="total" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

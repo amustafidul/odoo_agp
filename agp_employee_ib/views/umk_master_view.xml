@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_umk_master_form" model="ir.ui.view">
+        <field name="name">umk.master.form</field>
+        <field name="model">umk.master</field>
+        <field name="arch" type="xml">
+            <form string="Data UMK">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Eg. Kantor Pusat..." invisible="1"/>
+                            <field name="hr_branch_id"/>
+                            <field name="region_id" invisible="1"/>
+                            <field name="sub_region_id"/>
+                            <field name="province_id"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <label for="year_from" string="Periode (Tahun)"/>
+                            <div>
+                                <field name="year_from" class="oe_inline"/>
+                                To
+                                <field name="year_to" class="oe_inline"/>
+                            </div>
+                            <field name="increase_amount" readonly="1" widget="monetary"/>
+                            <field name="increase_percentage" readonly="1" widget="float"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="umk_amount_from" widget="monetary"/>
+                            <field name="umk_amount_to" widget="monetary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_umk_master_tree" model="ir.ui.view">
+        <field name="name">umk.master.tree</field>
+        <field name="model">umk.master</field>
+        <field name="arch" type="xml">
+            <tree string="Data UMK">
+                <field name="name"/>
+                <field name="sub_region_id"/>
+                <field name="year_from" string="Periode Tahun Sebelumnya"/>
+                <field name="year_to" string="Periode Tahun Ini"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_umk_master" model="ir.actions.act_window">
+        <field name="name">Data UMK</field>
+        <field name="res_model">umk.master</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>Manage UMK Master Data.</p>
+        </field>
+    </record>
+
+    <record id="view_province_master_form" model="ir.ui.view">
+        <field name="name">province.master.form</field>
+        <field name="model">umk.province</field>
+        <field name="arch" type="xml">
+            <form string="Master Data Provinsi">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Eg. Jawa Barat..." string="Provinsi"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_province_master_tree" model="ir.ui.view">
+        <field name="name">province.master.tree</field>
+        <field name="model">umk.province</field>
+        <field name="arch" type="xml">
+            <tree string="Master Data Provinsi">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_province_master" model="ir.actions.act_window">
+        <field name="name">Provinsi</field>
+        <field name="res_model">umk.province</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>Manage Master Data Provinsi</p>
+        </field>
+    </record>
+
+    <record id="view_sk_tim_penugasan_tree" model="ir.ui.view">
+        <field name="name">hr.sk.tim.penugasan.master.tree</field>
+        <field name="model">hr.sk.tim.penugasan</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="employee_id"/>
+                <field name="no_sk"/>
+                <field name="upload_sk"/>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="jabatan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sk_tim_penugasan" model="ir.actions.act_window">
+        <field name="name">SK Tim</field>
+        <field name="res_model">hr.sk.tim.penugasan</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_peraturan_perusahaan_tree" model="ir.ui.view">
+        <field name="name">peraturan.perusahaan.master.tree</field>
+        <field name="model">peraturan.perusahaan</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="tahun_berlaku"/>
+                <field name="attachment_file"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_peraturan_perusahaan" model="ir.actions.act_window">
+        <field name="name">Peraturan Perusahaan</field>
+        <field name="res_model">peraturan.perusahaan</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_keputusan_direksi_tree" model="ir.ui.view">
+        <field name="name">keputusan.direksi.master.tree</field>
+        <field name="model">keputusan.direksi</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="keterangan"/>
+                <field name="date"/>
+                <field name="attachment_file"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_keputusan_direksi" model="ir.actions.act_window">
+        <field name="name">Keputusan Direksi</field>
+        <field name="res_model">keputusan.direksi</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_se_direksi_tree" model="ir.ui.view">
+        <field name="name">se.direksi.master.tree</field>
+        <field name="model">surat.edaran.direksi</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="keterangan"/>
+                <field name="date"/>
+                <field name="attachment_file"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_se_direksi" model="ir.actions.act_window">
+        <field name="name">Surat Edaran Direksi</field>
+        <field name="res_model">surat.edaran.direksi</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_nodin_summary_tree" model="ir.ui.view">
+        <field name="name">nodin_summary.master.tree</field>
+        <field name="model">nota.dinas.summary</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="nodin_collective_id"/>
+                <field name="nama_nodin"/>
+                <field name="date"/>
+                <field name="attachment_file"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_nodin_summary" model="ir.actions.act_window">
+        <field name="name">Nota Dinas Summary</field>
+        <field name="res_model">nota.dinas.summary</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_umk_master_root" name="Keterangan Peraturan" parent="hr.menu_hr_root" sequence="93"/>
+    <menuitem id="menu_peraturan_perusahaan" name="Peraturan Perusahaan" parent="menu_umk_master_root" action="action_peraturan_perusahaan" sequence="1"/>
+    <menuitem id="menu_umk_master" name="Data UMK" parent="menu_umk_master_root" action="action_umk_master" sequence="2"/>
+    <menuitem id="menu_province_master" name="Data Provinsi" parent="menu_umk_master_root" action="action_province_master" sequence="3"/>
+    <menuitem id="menu_hr_sk_tim_penugasan" name="SK Tim" parent="menu_umk_master_root" action="action_sk_tim_penugasan" sequence="4"/>
+    <menuitem id="menu_keputusan_direksi" name="Keputusan Direksi" parent="menu_umk_master_root" action="action_keputusan_direksi" sequence="5"/>
+    <menuitem id="menu_se_direksi" name="Surat Edaran Direksi" parent="menu_umk_master_root" action="action_se_direksi" sequence="6"/>
+    <menuitem id="menu_nodin_summary" name="Nota Dinas Summary" parent="menu_umk_master_root" action="action_nodin_summary" sequence="7"/>
+</odoo>

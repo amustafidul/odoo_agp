@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bank_harian_master" model="ir.ui.view">
+        <field name="name">bank.harian.master.list</field>
+        <field name="model">account.keuangan.bank.harian.master</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- <record id="view_bank_harian_master_search" model="ir.ui.view">
+        <field name="name">bank.harian.master.search</field>
+        <field name="model">account.keuangan.bank.harian.master</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Bank" name="filter_name" domain="[('name', 'ilike', self)]"/>
+            </search>
+        </field>
+    </record> -->
+
+    <record id="action_bank_harian_master" model="ir.actions.act_window">
+        <field name="name">Bank Harian Master</field>
+        <field name="res_model">account.keuangan.bank.harian.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

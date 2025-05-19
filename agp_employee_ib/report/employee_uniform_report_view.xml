@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_employee_uniform_report_wizard" model="ir.ui.view">
+        <field name="name">employee.uniform.report.wizard.form</field>
+        <field name="model">employee.uniform.report</field>
+        <field name="arch" type="xml">
+            <form string="Employee Uniform Report">
+                <sheet>
+                    <group>
+                        <label for="date_from" string="Rentang Tanggal"/>
+                        <div>
+                            <field name="date_from" class="oe_inline" required="1"/>to
+                            <field name="date_to" class="oe_inline" required="1"/>
+                        </div>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Print Report" name="action_print_report" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_employee_uniform_report_wizard" model="ir.actions.act_window">
+        <field name="name">Employee Uniform Report</field>
+        <field name="res_model">employee.uniform.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_employee_uniform_report" name="Employee Uniform Report" parent="hr.hr_menu_hr_reports"
+              action="action_employee_uniform_report_wizard" sequence="4"/>
+</odoo>

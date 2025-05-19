@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_lembur_ask_for_revision_wizard_form" model="ir.ui.view">
+        <field name="name">lembur.ask.for.revision.wizard.form</field>
+        <field name="model">lembur.ask.for.revision.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Ask for Revision">
+                <group>
+                    <field name="reason" placeholder="Enter reason"/>
+                </group>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button string="Submit" type="object" name="action_ask_for_revision" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

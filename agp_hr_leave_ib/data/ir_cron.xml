@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ir_cron_auto_reset_leave_allocation" model="ir.cron">
+            <field name="name">Leave allocation: Auto Reset</field>
+            <field name="model_id" ref="model_hr_leave_allocation"/>
+            <field name="state">code</field>
+            <field name="code">model.reset_leave_allocations()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="ir_cron_generate_leaves_data_sample" model="ir.cron">
+            <field name="name">Generate Leaves Data Sample</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="state">code</field>
+            <field name="code">model.create_sample_leave_data()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>
